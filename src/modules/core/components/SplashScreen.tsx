@@ -8,7 +8,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import React from "react";
-import Logo from "../modules/core/components/Logo";
+import Logo from "./Logo";
 
 export default function SplashScreen() {
   return (
@@ -21,6 +21,7 @@ export default function SplashScreen() {
       fontSize={"10px"}
       color={"gray.500"}
       borderRadius={"lg"}
+      boxShadow={'0 4px 120px #E8E8E8'}
     >
       <Box width={"full"}></Box>
       <Stack
