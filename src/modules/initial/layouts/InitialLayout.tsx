@@ -10,7 +10,7 @@ export default function InitialLayout({ children }: Props) {
     <Center
       minHeight={"100vh"}
       width={"full"}
-      backgroundColor={"#F5F9FC"}
+      backgroundColor={"#F3F7F9"}
       borderRadius={"lg"}
     >
       {children}

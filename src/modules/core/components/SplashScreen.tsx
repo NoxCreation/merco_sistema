@@ -8,7 +8,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import React from "react";
-import Logo from "../modules/core/components/Logo";
+import Logo from "./Logo";
 
 export default function SplashScreen() {
   return (
