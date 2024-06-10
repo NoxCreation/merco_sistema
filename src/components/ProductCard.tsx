@@ -28,11 +28,13 @@ export default function ProductCard({
   return (
     <Stack
       cursor={"pointer"}
-      width={"150px"}
+      minWidth={"150px"}
+      width={"full"}
       backgroundColor={"white"}
       borderRadius={"lg"}
       border={isSelected ? "2px solid" : "nonde"}
       borderColor={"cyan.500"}
+      boxShadow={"0 4px 120px 0 rgba(115, 115, 155, 8%)"}
     >
       <Center
         width={"150px"}
