@@ -1,40 +1,33 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+Proyecto React Next + Electron.js
 
-## Getting Started
+## Compilar
 
-First, run the development server:
+La idea es construir una aplicación React/Next y levantarla con Electron para que sea visto desde una app de escritorio. Para ello:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+1. Se levanta el servidor en producción
+2. Se levanta Electron y este consume del servidor local
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Compilar React/Next
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+Primero se debe realizar el compilado de React/Next con el comando:
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+        yarn build
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+## Crear compilación EXE
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+Crear compilación EXE e instalador.
 
-## Learn More
+        yarn electron
 
-To learn more about Next.js, take a look at the following resources:
+## Probar app con Electron
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Si tienes el build hecho, puedes levantarlo en electron sin necesidad de compilarlo con:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+        yarn start-electron
 
-## Deploy on Vercel
+## Build + Compilar
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Si desea obtener el Build de React/Next y luego compilarlo puedes usar
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+        yarn build-electron
+
