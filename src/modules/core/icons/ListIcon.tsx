@@ -1,6 +1,10 @@
 import React from "react";
 
-export default function ListIcon() {
+type Props = {
+  color?: string;
+};
+
+export default function ListIcon({ color = "#718096" }: Props) {
   return (
     <svg
       width="16"
@@ -11,7 +15,7 @@ export default function ListIcon() {
     >
       <path
         d="M15 2H6M15 7H6M15 12H6M1 1H3V3H1V1ZM1 6H3V8H1V6ZM1 11H3V13H1V11Z"
-        stroke="#718096"
+        stroke={color}
         stroke-width="1.25"
         stroke-linecap="round"
       />

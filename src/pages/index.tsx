@@ -1,14 +1,6 @@
-import Head from "next/head";
-import Image from "next/image";
 import { Inter } from "next/font/google";
-import styles from "@/styles/Home.module.css";
-import { Box, Button, SimpleGrid } from "@chakra-ui/react";
-import Navbar from "@/components/Navbar";
-import MainLayout from "@/components/layouts/MainLayout";
-import InfoCard from "@/components/InfoCard";
-import GraphicGrowingIcon from "@/components/icons/GraphicGrowingIcon";
-import ProductCard from "@/components/ProductCard";
-import SplashScreen from "@/components/SplashScreen";
+import SplashScreen from "@/modules/core/components/SplashScreen";
+import InitialLayout from "@/modules/initial/layouts/InitialLayout";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -79,6 +71,8 @@ export default function Home() {
     //     ></ProductCard>
     //   </SimpleGrid>
     // </MainLayout>
-    <SplashScreen />
+    <InitialLayout>
+      <SplashScreen />
+    </InitialLayout>
   );
 }

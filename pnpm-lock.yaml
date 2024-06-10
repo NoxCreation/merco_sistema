@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@chakra-ui/icons':
+        specifier: ^2.1.1
+        version: 2.1.1(@chakra-ui/system@2.6.2(@emotion/react@11.11.4(@types/react@18.3.3)(react@18.3.1))(@emotion/styled@11.11.5(@emotion/react@11.11.4(@types/react@18.3.3)(react@18.3.1))(@types/react@18.3.3)(react@18.3.1))(react@18.3.1))(react@18.3.1)
       '@chakra-ui/next-js':
         specifier: ^2.2.0
         version: 2.2.0(@chakra-ui/react@2.8.2(@emotion/react@11.11.4(@types/react@18.3.3)(react@18.3.1))(@emotion/styled@11.11.5(@emotion/react@11.11.4(@types/react@18.3.3)(react@18.3.1))(@types/react@18.3.3)(react@18.3.1))(@types/react@18.3.3)(framer-motion@11.2.10(@emotion/is-prop-valid@1.2.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@emotion/react@11.11.4(@types/react@18.3.3)(react@18.3.1))(next@14.2.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
@@ -32,6 +35,12 @@ importers:
       react-dom:
         specifier: ^18
         version: 18.3.1(react@18.3.1)
+      sweetalert2:
+        specifier: ^11.11.1
+        version: 11.11.1
+      sweetalert2-react-content:
+        specifier: ^5.0.7
+        version: 5.0.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sweetalert2@11.11.1)
     devDependencies:
       '@types/node':
         specifier: ^20
@@ -199,6 +208,12 @@ packages:
 
   '@chakra-ui/icon@3.2.0':
     resolution: {integrity: sha512-xxjGLvlX2Ys4H0iHrI16t74rG9EBcpFvJ3Y3B7KMQTrnW34Kf7Da/UC8J67Gtx85mTHW020ml85SVPKORWNNKQ==}
+    peerDependencies:
+      '@chakra-ui/system': '>=2.0.0'
+      react: '>=18'
+
+  '@chakra-ui/icons@2.1.1':
+    resolution: {integrity: sha512-3p30hdo4LlRZTT5CwoAJq3G9fHI0wDc0pBaMHj4SUn0yomO+RcDRlzhdXqdr5cVnzax44sqXJVnf3oQG0eI+4g==}
     peerDependencies:
       '@chakra-ui/system': '>=2.0.0'
       react: '>=18'
@@ -1969,6 +1984,16 @@ packages:
     resolution: {integrity: sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==}
     engines: {node: '>= 0.4'}
 
+  sweetalert2-react-content@5.0.7:
+    resolution: {integrity: sha512-8Fk82Mpk45lFXpJWKIFF/lq8k/dJKDDQGFcuqVosaL/qRdViyAs5+u37LoTGfnOIvf+rfQB3PAXcp1XLLn+0ew==}
+    peerDependencies:
+      react: ^18.0.0
+      react-dom: ^18.0.0
+      sweetalert2: ^11.0.0
+
+  sweetalert2@11.11.1:
+    resolution: {integrity: sha512-7jumu0I0/QdRa5R7K1mh05ZdhmsMV6rZOVtjpratZGidxyJD4Sn7rDSA+zmKHzvMef9hVTwPmDU3VxnvhVQMNg==}
+
   tapable@2.2.1:
     resolution: {integrity: sha512-GNzQvQTOIP6RyTfE2Qxb8ZVlNmw0n88vp1szwWRimP02mnTsx3Wtn5qRdqY9w2XduFNUgvOwhNnQsjwCp+kqaQ==}
     engines: {node: '>=6'}
@@ -2301,6 +2326,12 @@ snapshots:
   '@chakra-ui/icon@3.2.0(@chakra-ui/system@2.6.2(@emotion/react@11.11.4(@types/react@18.3.3)(react@18.3.1))(@emotion/styled@11.11.5(@emotion/react@11.11.4(@types/react@18.3.3)(react@18.3.1))(@types/react@18.3.3)(react@18.3.1))(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@chakra-ui/shared-utils': 2.0.5
+      '@chakra-ui/system': 2.6.2(@emotion/react@11.11.4(@types/react@18.3.3)(react@18.3.1))(@emotion/styled@11.11.5(@emotion/react@11.11.4(@types/react@18.3.3)(react@18.3.1))(@types/react@18.3.3)(react@18.3.1))(react@18.3.1)
+      react: 18.3.1
+
+  '@chakra-ui/icons@2.1.1(@chakra-ui/system@2.6.2(@emotion/react@11.11.4(@types/react@18.3.3)(react@18.3.1))(@emotion/styled@11.11.5(@emotion/react@11.11.4(@types/react@18.3.3)(react@18.3.1))(@types/react@18.3.3)(react@18.3.1))(react@18.3.1))(react@18.3.1)':
+    dependencies:
+      '@chakra-ui/icon': 3.2.0(@chakra-ui/system@2.6.2(@emotion/react@11.11.4(@types/react@18.3.3)(react@18.3.1))(@emotion/styled@11.11.5(@emotion/react@11.11.4(@types/react@18.3.3)(react@18.3.1))(@types/react@18.3.3)(react@18.3.1))(react@18.3.1))(react@18.3.1)
       '@chakra-ui/system': 2.6.2(@emotion/react@11.11.4(@types/react@18.3.3)(react@18.3.1))(@emotion/styled@11.11.5(@emotion/react@11.11.4(@types/react@18.3.3)(react@18.3.1))(@types/react@18.3.3)(react@18.3.1))(react@18.3.1)
       react: 18.3.1
 
@@ -4464,6 +4495,14 @@ snapshots:
       has-flag: 4.0.0
 
   supports-preserve-symlinks-flag@1.0.0: {}
+
+  sweetalert2-react-content@5.0.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sweetalert2@11.11.1):
+    dependencies:
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+      sweetalert2: 11.11.1
+
+  sweetalert2@11.11.1: {}
 
   tapable@2.2.1: {}
 
