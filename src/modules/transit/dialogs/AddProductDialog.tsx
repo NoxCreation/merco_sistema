@@ -1,4 +1,4 @@
-import ProductCard from "@/components/ProductCard";
+import ProductCard from "@/modules/core/components/ProductCard";
 import { SearchIcon } from "@chakra-ui/icons";
 import {
   Modal,
@@ -9,12 +9,10 @@ import {
   ModalBody,
   Stack,
   Input,
-  Flex,
   ModalFooter,
   Button,
   InputGroup,
   InputRightElement,
-  Grid,
   SimpleGrid,
 } from "@chakra-ui/react";
 import React from "react";

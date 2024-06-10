@@ -1,6 +1,10 @@
 import React from "react";
 
-export default function ShoppingCartIcon() {
+type Props = {
+  color?: string;
+};
+
+export default function ShoppingCartIcon({ color = "#718096" }: Props) {
   return (
     <svg
       width="20"
@@ -11,7 +15,7 @@ export default function ShoppingCartIcon() {
     >
       <path
         d="M1.5 1L3.37153 1.62385C4.06699 1.85566 4.57989 2.44939 4.7082 3.17114L5.80668 9.3501C5.97638 10.3046 6.80628 11 7.7758 11H15.396C16.2868 11 17.0702 10.4109 17.3174 9.5551L18.7619 4.55508C19.1313 3.27618 18.1716 2 16.8404 2H7.5M8.5 14.5C8.5 15.3284 7.82843 16 7 16C6.17157 16 5.5 15.3284 5.5 14.5C5.5 13.6716 6.17157 13 7 13C7.82843 13 8.5 13.6716 8.5 14.5ZM16.5 14.5C16.5 15.3284 15.8284 16 15 16C14.1716 16 13.5 15.3284 13.5 14.5C13.5 13.6716 14.1716 13 15 13C15.8284 13 16.5 13.6716 16.5 14.5Z"
-        stroke="#718096"
+        stroke={color}
         stroke-width="1.25"
         stroke-linecap="round"
       />
