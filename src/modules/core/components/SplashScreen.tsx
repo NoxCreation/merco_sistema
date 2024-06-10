@@ -21,6 +21,7 @@ export default function SplashScreen() {
       fontSize={"10px"}
       color={"gray.500"}
       borderRadius={"lg"}
+      boxShadow={'0 4px 120px #E8E8E8'}
     >
       <Box width={"full"}></Box>
       <Stack
