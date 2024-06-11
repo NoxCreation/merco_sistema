@@ -11,7 +11,7 @@ type Props = {
 export default function ExportableTableContainer({ title, children }: Props) {
   return (
     <Stack spacing={5} backgroundColor={"white"} paddingY={"20px"} paddingX={"30px"} borderRadius={"md"}>
-      <Flex width={"full"} justifyContent={"space-between"}>
+      <Flex width={"full"} justifyContent={"space-between"} alignItems={"center"}>
         <Heading
           as={"h4"}
           fontSize={"12px"}
@@ -22,7 +22,7 @@ export default function ExportableTableContainer({ title, children }: Props) {
           {title}
         </Heading>
         <Tooltip hasArrow label="Exportar a Excel" fontSize={"sm"}>
-          <Box cursor={"pointer"}>
+          <Box paddingX={"8px"} paddingY={"6px"} cursor={"pointer"} borderRadius={"full"} _hover={{ backgroundColor: "gray.200" }}>
             <ExcelIcon />
           </Box>
         </Tooltip>
