@@ -9,17 +9,23 @@ import {
   TableContainer,
   TableCaption,
   Checkbox,
+  Flex,
   Badge,
+  Text,
+  Box,
 } from "@chakra-ui/react";
 import {
   ColumnDef,
   flexRender,
   getCoreRowModel,
+  getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
 
 import ExportableTableContainer from "@/modules/core/components/ExportableTableContainer";
-import { table } from "console";
+import OrderByIcon from "@/modules/core/icons/OrderByIcon";
+import { SearchIcon } from "@chakra-ui/icons";
+import Pagination from "@/modules/core/components/Pagination";
 
 type InTransitMerchancyItem = {
   id: string;
@@ -34,8 +40,20 @@ type InTransitMerchancyItem = {
 };
 
 export default function InTransitMerchancyTable() {
+  // Datos de prueba
   const mockData = React.useMemo<InTransitMerchancyItem[]>(
     () => [
+      {
+        id: "item001",
+        category: "Electrónicos",
+        product: "Smartphone Samsung Galaxy S21 Ultra",
+        deliveryDate: new Date("2024-07-15T00:00:00"),
+        paymentDate: new Date("2024-06-20T00:00:00"),
+        quantity: 10,
+        amount: "$1200",
+        amortized: "$100",
+        type: "New",
+      },
       {
         id: "item001",
         category: "Electrónicos",
@@ -73,6 +91,7 @@ export default function InTransitMerchancyTable() {
     []
   );
 
+  // Configuracion de las columnas de la tabla
   const columns = React.useMemo<ColumnDef<InTransitMerchancyItem>[]>(
     () => [
       {
@@ -163,6 +182,7 @@ export default function InTransitMerchancyTable() {
     data: mockData,
     columns: columns,
     getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
     enableRowSelection: true,
   });
 
@@ -172,16 +192,33 @@ export default function InTransitMerchancyTable() {
     <ExportableTableContainer title="Mercancias en transito">
       <TableContainer>
         <Table variant="striped">
-          <TableCaption>Imperial to metric conversion factors</TableCaption>
           <Thead>
             {getHeaderGroups().map((headerGroup) => (
               <Tr key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
-                  <Th key={header.id}>
-                    {flexRender(
-                      header.column.columnDef.header,
-                      header.getContext()
-                    )}
+                  <Th
+                    key={header.id}
+                    justifyContent={"space-between"}
+                    alignItems={"center"}
+                    onClick={() => header.column.toggleSorting()}
+                    cursor={"pointer"}
+                  >
+                    <Flex width={"full"} justifyContent={"space-between"}>
+                      <Text lineHeight={2}>
+                        {flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                      </Text>
+                      <Flex alignItems={"center"} gap={"2px"}>
+                        <Box>
+                          <OrderByIcon />
+                        </Box>
+                        <Box>
+                          <SearchIcon />
+                        </Box>
+                      </Flex>
+                    </Flex>
                   </Th>
                 ))}
               </Tr>
@@ -191,7 +228,12 @@ export default function InTransitMerchancyTable() {
             {getRowModel().rows.map((row) => (
               <Tr key={row.id}>
                 {row.getVisibleCells().map((cell) => (
-                  <Td key={cell.id}>
+                  <Td
+                    key={cell.id}
+                    backgroundColor={
+                      row.getIsSelected() ? "cyan.50  !important" : ""
+                    }
+                  >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </Td>
                 ))}
@@ -200,6 +242,7 @@ export default function InTransitMerchancyTable() {
           </Tbody>
         </Table>
       </TableContainer>
+      <Pagination pages={3} selectedPage={1}/>
     </ExportableTableContainer>
   );
 }
