@@ -2,6 +2,10 @@ import { Sequelize } from "sequelize";
 import { ProductModel } from "./Product";
 import { CategoryModel } from "./Category";
 import { UnitModel } from "./Unit";
+import { CoinModel } from "./Coin";
+import { ValueCoinModel } from "./ValueCoin";
+import { StockModel } from "./Stock";
+import { InventoryModel } from "./Inventory";
 export const sequelize = new Sequelize({
     dialect: 'sqlite',
     storage: 'database.sqlite'
@@ -13,6 +17,10 @@ export const Manager = () => {
     const Category = CategoryModel()
     const Unit = UnitModel()
     const Product = ProductModel(Category, Unit)
+    const Coin = CoinModel()
+    const ValueCoin = ValueCoinModel(Coin)
+    const Stock = StockModel(Product)
+    const Inventory = InventoryModel(Product, Stock, ValueCoin)
 
     // Relación Uno a Mucho entre product y category
     relateOneToMany(
@@ -32,25 +40,53 @@ export const Manager = () => {
         'unitId'
     )
 
+    // Relación Uno a Mucho entre valuecoin y coin
+    relateOneToMany(
+        ValueCoin,
+        Coin,
+        'valuecoins',
+        'coin',
+        'coinId'
+    )
+
+    // Relación Uno a Mucho entre inventary y valuecoin
+    relateOneToMany(
+        Inventory,
+        ValueCoin,
+        'inventaries',
+        'valuecoin',
+        'priceId'
+    )
+
+    // Relación Uno a Mucho entre inventary y product
+    relateOneToMany(
+        Inventory,
+        Product,
+        'inventaries',
+        'product',
+        'productId'
+    )
+
+    // Relación Mucho a Mucho entre inventary y stock
+    relateManyToMany(
+        Inventory,
+        Stock,
+        'InventoryStock',
+    )
+
     sequelize.sync().then(() => console.log('Base de datos y tablas creadas!'));
 
     return {
         Product: new Model(Product),
         Category: new Model(Category),
-        Unit: new Model(Unit)
+        Unit: new Model(Unit),
+        Coin: new Model(Coin),
+        ValueCoin: new Model(ValueCoin),
+        Stock: new Model(Stock),
+        Inventory: new Model(Inventory),
     }
 }
 
-const relateOneToOne = (model1: any, model2: any, foreignKey: string, model1as: string, model2as: string) => {
-    model1.hasOne(model2, {
-        foreignKey: foreignKey,
-        as: model1as,
-    });
-    model2.belongsTo(model1, {
-        foreignKey: foreignKey,
-        as: model2as,
-    });
-}
 
 const relateOneToMany = (model1: any, model2: any, model1as: string, model2as: string, foreignKey: string) => {
     model2.hasMany(model1, {

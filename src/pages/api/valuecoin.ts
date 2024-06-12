@@ -14,15 +14,12 @@ export default async function handler(
             _page = parseInt(page as string)
         if(pageSize != undefined)
             _pageSize = parseInt(pageSize as string)
-        const products = (await Manager().Product.findAll({
+        const valuecoin = (await Manager().ValueCoin.findAll({
             limit: _pageSize,
             offset: (_page - 1) * _pageSize,
             include: [
                 {
-                    model: Manager().Category.model, as: 'category'
-                },
-                {
-                    model: Manager().Unit.model, as: 'unit'
+                    model: Manager().Coin.model, as: 'coin'
                 },
             ]
         })).toJSON()
@@ -30,26 +27,25 @@ export default async function handler(
         res.status(200).json({
             page: _page,
             pageSize: _pageSize,
-            data: products
+            data: valuecoin
         })
     }
     else if (req.method == "POST") {
         try {
             await sequelize.transaction(async (t) => {
-                const product = (await Manager().Product.create(req.body, { transaction: t })).toJSON()
-                res.status(200).json(product)
+                const valuecoin = (await Manager().ValueCoin.create(req.body, { transaction: t })).toJSON()
+                res.status(200).json(valuecoin)
             })
         }
-        catch (e){
-            console.log("error", e)
+        catch {
             res.status(500).json({})
         }
     }
     else if (req.method == "DELETE") {
         const { id } = req.query
         if (id != null) {
-            const product = (await Manager().Product.delete(parseInt(id as string))).toJSON()
-            res.status(200).json(product)
+            const valuecoin = (await Manager().ValueCoin.delete(parseInt(id as string))).toJSON()
+            res.status(200).json(valuecoin)
         }
         else{
             res.status(400).json({
@@ -60,8 +56,8 @@ export default async function handler(
     else if (req.method == "PUT") {
         const { id } = req.query
         if (id != null) {
-            const product = (await Manager().Product.update(parseInt(id as string), req.body)).toJSON()
-            res.status(200).json(product)
+            const valuecoin = (await Manager().ValueCoin.update(parseInt(id as string), req.body)).toJSON()
+            res.status(200).json(valuecoin)
         }
         else{
             res.status(400).json({
