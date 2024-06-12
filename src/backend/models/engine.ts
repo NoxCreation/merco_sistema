@@ -2,6 +2,19 @@ import { Sequelize } from "sequelize";
 import { ProductModel } from "./Product";
 import { CategoryModel } from "./Category";
 import { UnitModel } from "./Unit";
+import { CoinModel } from "./Coin";
+import { ValueCoinModel } from "./ValueCoin";
+import { StockModel } from "./Stock";
+import { InventoryModel } from "./Inventory";
+import { ShopModel } from "./Shop";
+import { BusinessModel } from "./Business";
+import { ChargeEmployeeModel } from "./ChargeEmployee";
+import { EmployeeModel } from "./Employee";
+import { CardAccountModel } from "./CardAccount";
+import { HistoryCardAccountModel } from "./HistoryCardAccount";
+import { ProfitEmployeeModel } from "./ProfitEmployee";
+import { RoleModel } from "./Role";
+import { UserModel } from "./User";
 export const sequelize = new Sequelize({
     dialect: 'sqlite',
     storage: 'database.sqlite'
@@ -13,6 +26,20 @@ export const Manager = () => {
     const Category = CategoryModel()
     const Unit = UnitModel()
     const Product = ProductModel(Category, Unit)
+    const Coin = CoinModel()
+    const ValueCoin = ValueCoinModel(Coin)
+    const Stock = StockModel(Product)
+    const Inventory = InventoryModel(Product, Stock, ValueCoin)
+    const Shop = ShopModel()
+    const Business = BusinessModel(Shop)
+    const ChargeEmployee = ChargeEmployeeModel()
+    const Employee = EmployeeModel(Shop, ChargeEmployee)
+    const HistoryCardAccount = HistoryCardAccountModel(ValueCoin)
+    const CardAccount = CardAccountModel(Coin, HistoryCardAccount)
+    const ProfitEmployee = ProfitEmployeeModel(Employee, ValueCoin)
+    const Role = RoleModel()
+    const User = UserModel(Role, Shop)
+    
 
     // Relación Uno a Mucho entre product y category
     relateOneToMany(
@@ -32,25 +59,132 @@ export const Manager = () => {
         'unitId'
     )
 
+    // Relación Uno a Mucho entre valuecoin y coin
+    relateOneToMany(
+        ValueCoin,
+        Coin,
+        'valuecoins',
+        'coin',
+        'coinId'
+    )
+
+    // Relación Uno a Mucho entre inventary y valuecoin
+    relateOneToMany(
+        Inventory,
+        ValueCoin,
+        'inventaries',
+        'valuecoin',
+        'priceId'
+    )
+
+    // Relación Uno a Mucho entre inventary y product
+    relateOneToMany(
+        Inventory,
+        Product,
+        'inventaries',
+        'product',
+        'productId'
+    )
+
+    // Relación Mucho a Mucho entre inventary y stock
+    relateManyToMany(
+        Inventory,
+        Stock,
+        'InventoryStock',
+    )
+
+    // Relación Mucho a Mucho entre bussiness y shop
+    relateManyToMany(
+        Business,
+        Shop,
+        'BusinessShop',
+    )
+
+    // Relación Uno a Mucho entre employee y shop
+    relateOneToMany(
+        Employee,
+        Shop,
+        'employees',
+        'shop',
+        'shopId'
+    )
+
+    // Relación Uno a Mucho entre employee y shargeemployee
+    relateOneToMany(
+        Employee,
+        ChargeEmployee,
+        'employees',
+        'shargeemployee',
+        'chargeId'
+    )
+
+    // Relación Uno a Mucho entre CardAccount y HistoryCardAccount
+    relateOneToMany(
+        CardAccount,
+        HistoryCardAccount,
+        'cardaccounts',
+        'historycardaccount',
+        'historyId'
+    )
+
+    // Relación Uno a Mucho entre ProfitEmployee y Employee
+    relateOneToMany(
+        ProfitEmployee,
+        Employee,
+        'profitemployees',
+        'employee',
+        'employeeId'
+    )
+
+    // Relación Uno a Mucho entre ProfitEmployee y ValueCoin
+    relateOneToMany(
+        ProfitEmployee,
+        ValueCoin,
+        'profitemployees',
+        'valuecoin',
+        'valueId'
+    )
+
+    // Relación Uno a Mucho entre User y Role
+    relateOneToMany(
+        User,
+        Role,
+        'users',
+        'role',
+        'roleId'
+    )
+
+    // Relación Uno a Mucho entre User y Shop
+    relateOneToMany(
+        User,
+        Shop,
+        'users',
+        'shop',
+        'shopId'
+    )
+
     sequelize.sync().then(() => console.log('Base de datos y tablas creadas!'));
 
     return {
         Product: new Model(Product),
         Category: new Model(Category),
-        Unit: new Model(Unit)
+        Unit: new Model(Unit),
+        Coin: new Model(Coin),
+        ValueCoin: new Model(ValueCoin),
+        Stock: new Model(Stock),
+        Inventory: new Model(Inventory),
+        Shop: new Model(Shop),
+        Business: new Model(Business),
+        ChargeEmployee: new Model(ChargeEmployee),
+        Employee: new Model(Employee),
+        HistoryCardAccount:  new Model(HistoryCardAccount),
+        CardAccount: new Model(CardAccount),
+        ProfitEmployee: new Model(ProfitEmployee),
+        Role: new Model(Role),
+        User: new Model(User),
     }
 }
 
-const relateOneToOne = (model1: any, model2: any, foreignKey: string, model1as: string, model2as: string) => {
-    model1.hasOne(model2, {
-        foreignKey: foreignKey,
-        as: model1as,
-    });
-    model2.belongsTo(model1, {
-        foreignKey: foreignKey,
-        as: model2as,
-    });
-}
 
 const relateOneToMany = (model1: any, model2: any, model1as: string, model2as: string, foreignKey: string) => {
     model2.hasMany(model1, {

@@ -1,8 +1,8 @@
 import { Sequelize } from "sequelize";
 import { sequelize } from "./engine";
 
-export const CategoryModel = () => {
-    const Category = sequelize.define('Category', {
+export const ChargeEmployeeModel = () => {
+    const ChargeEmployee = sequelize.define('ChargeEmployee', {
         name: {
             type: (Sequelize as any).STRING
         },
@@ -11,6 +11,6 @@ export const CategoryModel = () => {
         },
     }, {});
 
-    return Category
+    return ChargeEmployee
 }
 

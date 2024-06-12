@@ -1,16 +1,16 @@
 import { Sequelize } from "sequelize";
 import { sequelize } from "./engine";
 
-export const CategoryModel = () => {
-    const Category = sequelize.define('Category', {
+export const ShopModel = () => {
+    const Shop = sequelize.define('Shop', {
         name: {
             type: (Sequelize as any).STRING
         },
         description: {
             type: (Sequelize as any).STRING
-        },
+        }
     }, {});
 
-    return Category
+    return Shop
 }
 

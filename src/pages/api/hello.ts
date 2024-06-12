@@ -1,10 +1,6 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import { PostModel } from "@/backend/models/Product";
-import { ProfileModel } from "@/backend/models/Profile";
-import { UserModel } from "@/backend/models/User";
-import { Manager, sequelize } from "@/backend/models/engine";
+import { Manager } from "@/backend/models/engine";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { where } from "sequelize";
 
 type Data = {
   name: string;
