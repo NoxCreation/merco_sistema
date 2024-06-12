@@ -14,6 +14,7 @@ import { CardAccountModel } from "./CardAccount";
 import { HistoryCardAccountModel } from "./HistoryCardAccount";
 import { ProfitEmployeeModel } from "./ProfitEmployee";
 import { RoleModel } from "./Role";
+import { UserModel } from "./User";
 export const sequelize = new Sequelize({
     dialect: 'sqlite',
     storage: 'database.sqlite'
@@ -37,6 +38,7 @@ export const Manager = () => {
     const CardAccount = CardAccountModel(Coin, HistoryCardAccount)
     const ProfitEmployee = ProfitEmployeeModel(Employee, ValueCoin)
     const Role = RoleModel()
+    const User = UserModel(Role, Shop)
     
 
     // Relación Uno a Mucho entre product y category
@@ -143,6 +145,24 @@ export const Manager = () => {
         'valueId'
     )
 
+    // Relación Uno a Mucho entre User y Role
+    relateOneToMany(
+        User,
+        Role,
+        'users',
+        'role',
+        'roleId'
+    )
+
+    // Relación Uno a Mucho entre User y Shop
+    relateOneToMany(
+        User,
+        Shop,
+        'users',
+        'shop',
+        'shopId'
+    )
+
     sequelize.sync().then(() => console.log('Base de datos y tablas creadas!'));
 
     return {
@@ -161,6 +181,7 @@ export const Manager = () => {
         CardAccount: new Model(CardAccount),
         ProfitEmployee: new Model(ProfitEmployee),
         Role: new Model(Role),
+        User: new Model(User),
     }
 }
 
