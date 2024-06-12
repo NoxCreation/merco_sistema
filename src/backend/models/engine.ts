@@ -15,6 +15,7 @@ import { HistoryCardAccountModel } from "./HistoryCardAccount";
 import { ProfitEmployeeModel } from "./ProfitEmployee";
 import { RoleModel } from "./Role";
 import { UserModel } from "./User";
+import { SaleModel } from "./SaleModel";
 
 export const sequelize = new Sequelize({
     dialect: 'sqlite',
@@ -43,7 +44,7 @@ export const Manager = () => {
     const ProfitEmployee = ProfitEmployeeModel(Employee, ValueCoin)//-
     const Role = RoleModel()//-
     const User = UserModel(Role, Shop)
-
+    const Sale = SaleModel(Coin, ValueCoin, Product, User, ProfitEmployee, CardAccount)// en el api modificar el post
 
     // Relación Uno a Mucho entre Product y Category
     relateOneToMany(
@@ -171,13 +172,85 @@ export const Manager = () => {
         'roleId'
     )
 
-    // Relación Uno a Mucho entre User y Shop
+    // Relación Uno a Mucho entre Sale y Coin
     relateOneToMany(
+        Sale,
+        Coin,
+        'sales',
+        'coin',
+        'coinId'
+    )
+
+    // Relación Uno a Mucho entre Sale y ValueCoin
+    relateOneToMany(
+        Sale,
+        ValueCoin,
+        'sales',
+        'valuecoin',
+        'amountId'
+    )
+
+    // Relación Uno a Mucho entre Sale y ValueCoin
+    relateOneToMany(
+        Sale,
+        ValueCoin,
+        'sales2',
+        'valuecoin2',
+        'investmentId'
+    )
+
+    // Relación Uno a Mucho entre Sale y ValueCoin
+    relateOneToMany(
+        Sale,
+        ValueCoin,
+        'sales3',
+        'valuecoin3',
+        'profitId'
+    )
+
+    // Relación Mucho a Mucho entre Sale y Product
+    relateManyToMany(
+        Sale,
+        Product,
+        'sales',
+        'products',
+        'SaleProduct',
+    )
+
+    // Relación Uno a Mucho entre Sale y User
+    relateOneToMany(
+        Sale,
         User,
-        Shop,
-        'users',
-        'shop',
-        'shopId'
+        'sales',
+        'user',
+        'userId'
+    )
+
+    // Relación Uno a Mucho entre Sale y ProfitEmployee
+    relateOneToMany(
+        Sale,
+        ProfitEmployee,
+        'sales',
+        'profitemployee',
+        'profit_sellerId'
+    )
+
+    // Relación Uno a Mucho entre Sale y ProfitEmployee
+    relateOneToMany(
+        Sale,
+        ProfitEmployee,
+        'sales2',
+        'profitemployee2',
+        'profit_sponsorId'
+    )
+
+    // Relación Uno a Mucho entre Sale y CardAccount
+    relateOneToMany(
+        Sale,
+        CardAccount,
+        'sales',
+        'cardaccount',
+        'cardId'
     )
 
     sequelize.sync().then(() => console.log('Base de datos y tablas creadas!'));
@@ -199,6 +272,7 @@ export const Manager = () => {
         ProfitEmployee: new Model(ProfitEmployee),
         Role: new Model(Role),
         User: new Model(User),
+        Sale: new Model(Sale)
     }
 }
 
@@ -265,5 +339,6 @@ class Model {
         return JSON.parse(JSON.stringify(this.query))
     }
 }
+
 
 
