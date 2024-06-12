@@ -1,8 +1,8 @@
 import { Sequelize } from "sequelize";
 import { sequelize } from "./engine";
 
-export const CardAccountModel = (Coin?: any) => {
-    const CardAccount = sequelize.define('Employee', {
+export const CardAccountModel = (Coin?: any, HistoryCardAccount?: any) => {
+    const CardAccount = sequelize.define('CardAccount', {
         name: {
             type: (Sequelize as any).STRING
         },
@@ -21,6 +21,13 @@ export const CardAccountModel = (Coin?: any) => {
         },
         percent_flexibility: {
             type: (Sequelize as any).FLOAT
+        },
+        historyId: {
+            type: (Sequelize as any).INTEGER,
+            references: {
+                model: HistoryCardAccount,
+                key: 'id'
+            }
         },
     }, {});
 
