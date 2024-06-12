@@ -96,7 +96,6 @@ class Model {
         return this
     }
 
-
     async update(id: number, props: any) {
         this.query = await this.model.update(props, { where: { id } })
         return this
