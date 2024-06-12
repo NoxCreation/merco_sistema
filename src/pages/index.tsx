@@ -1,8 +1,5 @@
-import { Inter } from "next/font/google";
 import SplashScreen from "@/modules/core/components/SplashScreen";
 import InitialLayout from "@/modules/initial/layouts/InitialLayout";
-
-const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
   return (
