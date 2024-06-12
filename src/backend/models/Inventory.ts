@@ -16,14 +16,7 @@ export const InventoryModel = (Product?: any, ValueCoin?: any) => {
                 model: ValueCoin,
                 key: 'id'
             }
-        }/* ,
-        stockId: {
-            type: (Sequelize as any).INTEGER,
-            references: {
-                model: Stock,
-                key: 'id'
-            }
-        }, */
+        }
     }, {});
 
     return Inventory

@@ -6,10 +6,11 @@ export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse<any>,
 ) {
+
     return ApiRequestTemplate(
         req,
         res,
-        Manager().Category
+        Manager().Role
     )
 
 }

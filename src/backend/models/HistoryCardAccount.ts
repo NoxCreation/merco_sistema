@@ -11,8 +11,8 @@ export const HistoryCardAccountModel = (ValueCoin?: any) => {
             }
         },
         description: {
-            type: (Sequelize as any).FLOAT
-        },
+            type: (Sequelize as any).STRING
+        }
     }, {});
 
     return HistoryCardAccount

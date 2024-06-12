@@ -1,17 +1,13 @@
 import { Sequelize } from "sequelize";
 import { sequelize } from "./engine";
 
-export const CardAccountModel = (Coin?: any, HistoryCardAccount?: any) => {
+export const CardAccountModel = (HistoryCardAccount?: any) => {
     const CardAccount = sequelize.define('CardAccount', {
         name: {
             type: (Sequelize as any).STRING
         },
         code: {
-            type: (Sequelize as any).INTEGER,
-            references: {
-                model: Coin,
-                key: 'id'
-            }
+            type: (Sequelize as any).STRING
         },
         value: {
             type: (Sequelize as any).FLOAT
