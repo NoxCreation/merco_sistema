@@ -10,7 +10,7 @@ import { ShopModel } from "./Shop";
 import { BusinessModel } from "./Business";
 import { ChargeEmployeeModel } from "./ChargeEmployee";
 import { EmployeeModel } from "./Employee";
-import { CardAccountModel } from "./Employee copy";
+import { CardAccountModel } from "./CardAccount";
 export const sequelize = new Sequelize({
     dialect: 'sqlite',
     storage: 'database.sqlite'
