@@ -6,6 +6,9 @@ import { CoinModel } from "./Coin";
 import { ValueCoinModel } from "./ValueCoin";
 import { StockModel } from "./Stock";
 import { InventoryModel } from "./Inventory";
+import { ShopModel } from "./Shop";
+import { BusinessModel } from "./Business";
+import { ChargeEmployeeModel } from "./ChargeEmployee";
 export const sequelize = new Sequelize({
     dialect: 'sqlite',
     storage: 'database.sqlite'
@@ -21,6 +24,9 @@ export const Manager = () => {
     const ValueCoin = ValueCoinModel(Coin)
     const Stock = StockModel(Product)
     const Inventory = InventoryModel(Product, Stock, ValueCoin)
+    const Shop = ShopModel()
+    const Business = BusinessModel(Shop)
+    const ChargeEmployee = ChargeEmployeeModel()
 
     // Relación Uno a Mucho entre product y category
     relateOneToMany(
@@ -74,6 +80,13 @@ export const Manager = () => {
         'InventoryStock',
     )
 
+    // Relación Mucho a Mucho entre bussiness y shop
+    relateManyToMany(
+        Business,
+        Shop,
+        'BusinessShop',
+    )
+
     sequelize.sync().then(() => console.log('Base de datos y tablas creadas!'));
 
     return {
@@ -84,6 +97,9 @@ export const Manager = () => {
         ValueCoin: new Model(ValueCoin),
         Stock: new Model(Stock),
         Inventory: new Model(Inventory),
+        Shop: new Model(Shop),
+        Business: new Model(Business),
+        ChargeEmployee: new Model(ChargeEmployee),
     }
 }
 
