@@ -12,20 +12,14 @@ export default async function handler(
         const { page, pageSize } = req.query;
         if (page != undefined)
             _page = parseInt(page as string)
-        if(pageSize != undefined)
+        if (pageSize != undefined)
             _pageSize = parseInt(pageSize as string)
-        const inventary = (await Manager().Inventory.findAll({
+        const data = (await Manager().Business.findAll({
             limit: _pageSize,
             offset: (_page - 1) * _pageSize,
             include: [
                 {
-                    model: Manager().Product.model, as: 'product'
-                },
-                {
-                    model: Manager().ValueCoin.model, as: 'valuecoin'
-                },
-                {
-                    model: Manager().Stock.model, as: 'stocks'
+                    model: Manager().Shop.model, as: 'shops'
                 }
             ]
         })).toJSON()
@@ -33,32 +27,32 @@ export default async function handler(
         res.status(200).json({
             page: _page,
             pageSize: _pageSize,
-            data: inventary
+            data
         })
     }
     else if (req.method == "POST") {
         try {
             await sequelize.transaction(async (t) => {
-                const inventary = (await Manager().Inventory.create({
-                    productId: req.body.productId,
-                    priceId: req.body.priceId,
+                const business = (await Manager().Business.create({
+                    name: req.body.name,
                 }, { transaction: t })).query
-                console.log(req.body.stocksId)
-                await inventary.setStocks(req.body.stocksId, { transaction: t });
-                res.status(200).json(inventary)
+                await business.setShops(req.body.shopsId, { transaction: t });
+
+                res.status(200).json(business)
             })
         }
-        catch {
+        catch (e) {
+            console.log("error", e)
             res.status(500).json({})
         }
     }
     else if (req.method == "DELETE") {
         const { id } = req.query
         if (id != null) {
-            const inventary = (await Manager().Inventory.delete(parseInt(id as string))).toJSON()
-            res.status(200).json(inventary)
+            const data = (await Manager().Business.delete(parseInt(id as string))).toJSON()
+            res.status(200).json(data)
         }
-        else{
+        else {
             res.status(400).json({
                 'details': "Debe indicar el id del elemento a eliminar."
             })
@@ -67,10 +61,10 @@ export default async function handler(
     else if (req.method == "PUT") {
         const { id } = req.query
         if (id != null) {
-            const inventary = (await Manager().Inventory.update(parseInt(id as string), req.body)).toJSON()
-            res.status(200).json(inventary)
+            const data = (await Manager().Business.update(parseInt(id as string), req.body)).toJSON()
+            res.status(200).json(data)
         }
-        else{
+        else {
             res.status(400).json({
                 'details': "Debe indicar el id del elemento a actualizar."
             })

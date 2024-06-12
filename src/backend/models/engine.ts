@@ -15,9 +15,13 @@ import { HistoryCardAccountModel } from "./HistoryCardAccount";
 import { ProfitEmployeeModel } from "./ProfitEmployee";
 import { RoleModel } from "./Role";
 import { UserModel } from "./User";
+
 export const sequelize = new Sequelize({
     dialect: 'sqlite',
-    storage: 'database.sqlite'
+    storage: 'database.sqlite',
+    dialectOptions: {
+        busyTimeout: 3000, // Tiempo de espera en milisegundos
+    },
 }) as Sequelize;
 
 export const Manager = () => {
@@ -29,9 +33,9 @@ export const Manager = () => {
     const Coin = CoinModel()//
     const ValueCoin = ValueCoinModel(Coin)//
     const Stock = StockModel(Product)//
-    const Inventory = InventoryModel(Product, Stock, ValueCoin)//
-    const Shop = ShopModel()
-    const Business = BusinessModel(Shop)
+    const Inventory = InventoryModel(Product, ValueCoin)//
+    const Shop = ShopModel()//
+    const Business = BusinessModel(Shop)//
     const ChargeEmployee = ChargeEmployeeModel()
     const Employee = EmployeeModel(Shop, ChargeEmployee)
     const HistoryCardAccount = HistoryCardAccountModel(ValueCoin)
@@ -39,7 +43,7 @@ export const Manager = () => {
     const ProfitEmployee = ProfitEmployeeModel(Employee, ValueCoin)
     const Role = RoleModel()
     const User = UserModel(Role, Shop)
-    
+
 
     // Relación Uno a Mucho entre product y category
     relateOneToMany(
@@ -72,7 +76,7 @@ export const Manager = () => {
     relateOneToMany(
         Inventory,
         ValueCoin,
-        'inventaries',
+        'inventaries1',
         'valuecoin',
         'priceId'
     )
@@ -81,7 +85,7 @@ export const Manager = () => {
     relateOneToMany(
         Inventory,
         Product,
-        'inventaries',
+        'inventaries2',
         'product',
         'productId'
     )
@@ -90,6 +94,8 @@ export const Manager = () => {
     relateManyToMany(
         Inventory,
         Stock,
+        'inventaries3',
+        'stocks',
         'InventoryStock',
     )
 
@@ -97,6 +103,8 @@ export const Manager = () => {
     relateManyToMany(
         Business,
         Shop,
+        'businesses',
+        'shops',
         'BusinessShop',
     )
 
@@ -177,7 +185,7 @@ export const Manager = () => {
         Business: new Model(Business),
         ChargeEmployee: new Model(ChargeEmployee),
         Employee: new Model(Employee),
-        HistoryCardAccount:  new Model(HistoryCardAccount),
+        HistoryCardAccount: new Model(HistoryCardAccount),
         CardAccount: new Model(CardAccount),
         ProfitEmployee: new Model(ProfitEmployee),
         Role: new Model(Role),
@@ -197,9 +205,9 @@ const relateOneToMany = (model1: any, model2: any, model1as: string, model2as: s
     });
 }
 
-const relateManyToMany = (model1: any, model2: any, relationTable: string) => {
-    model2.belongsToMany(model1, { through: relationTable });
-    model1.belongsToMany(model2, { through: relationTable });
+const relateManyToMany = (model1: any, model2: any, model1as: string, model2as: string, relationTable: string) => {
+    model2.belongsToMany(model1, { through: relationTable, as: model1as });
+    model1.belongsToMany(model2, { through: relationTable, as: model2as });
 }
 
 class Model {
