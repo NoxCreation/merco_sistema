@@ -23,13 +23,13 @@ export const sequelize = new Sequelize({
 export const Manager = () => {
 
     // Creando modelos
-    const Category = CategoryModel()
-    const Unit = UnitModel()
-    const Product = ProductModel(Category, Unit)
-    const Coin = CoinModel()
-    const ValueCoin = ValueCoinModel(Coin)
-    const Stock = StockModel(Product)
-    const Inventory = InventoryModel(Product, Stock, ValueCoin)
+    const Category = CategoryModel()//
+    const Unit = UnitModel()//
+    const Product = ProductModel(Category, Unit)//
+    const Coin = CoinModel()//
+    const ValueCoin = ValueCoinModel(Coin)//
+    const Stock = StockModel(Product)//
+    const Inventory = InventoryModel(Product, Stock, ValueCoin)//
     const Shop = ShopModel()
     const Business = BusinessModel(Shop)
     const ChargeEmployee = ChargeEmployeeModel()
