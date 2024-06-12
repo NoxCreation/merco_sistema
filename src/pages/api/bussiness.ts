@@ -1,3 +1,4 @@
+import { PAGESIZE } from "@/backend/models/VARS";
 import { Manager, sequelize } from "@/backend/models/engine";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { ApiRequestTemplate } from "../ApiRequestTemplate";
@@ -10,35 +11,29 @@ export default async function handler(
     return ApiRequestTemplate(
         req,
         res,
-        Manager().Inventory,
+        Manager().Business,
         [
             {
-                model: Manager().ValueCoin.model, as: 'valuecoin', include: [
-                    {
-                        model: Manager().Coin.model, as: 'coin'
-                    }
-                ]
+                model: Manager().Shop.model, as: 'shops'
             }
         ],
         async () => {
             try {
                 await sequelize.transaction(async (t) => {
-                    const inventary = (await Manager().Inventory.create({
-                        productId: req.body.productId,
-                        priceId: req.body.priceId,
+                    const business = (await Manager().Business.create({
+                        name: req.body.name,
                     }, { transaction: t })).query
-                    console.log(req.body.stocksId)
-                    await inventary.setStocks(req.body.stocksId, { transaction: t });
-                    res.status(200).json(inventary)
+                    await business.setShops(req.body.shopsId, { transaction: t });
+
+                    res.status(200).json(business)
                 })
             }
-            catch (e){
-                console.log(e)
+            catch (e) {
+                console.log("error", e)
                 res.status(500).json({})
             }
         }
     )
-
 
 
 }

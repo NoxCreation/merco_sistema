@@ -9,7 +9,12 @@ export default async function handler(
     return ApiRequestTemplate(
         req,
         res,
-        Manager().Category
+        Manager().CardAccount,
+        [
+            {
+                model: Manager().HistoryCardAccount.model, as: 'historycardaccount'
+            }
+        ]
     )
 
 }

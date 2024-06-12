@@ -15,33 +15,37 @@ import { HistoryCardAccountModel } from "./HistoryCardAccount";
 import { ProfitEmployeeModel } from "./ProfitEmployee";
 import { RoleModel } from "./Role";
 import { UserModel } from "./User";
+
 export const sequelize = new Sequelize({
     dialect: 'sqlite',
-    storage: 'database.sqlite'
+    storage: 'database.sqlite',
+    dialectOptions: {
+        busyTimeout: 3000, // Tiempo de espera en milisegundos
+    },
 }) as Sequelize;
 
 export const Manager = () => {
 
     // Creando modelos
-    const Category = CategoryModel()
-    const Unit = UnitModel()
-    const Product = ProductModel(Category, Unit)
-    const Coin = CoinModel()
-    const ValueCoin = ValueCoinModel(Coin)
-    const Stock = StockModel(Product)
-    const Inventory = InventoryModel(Product, Stock, ValueCoin)
-    const Shop = ShopModel()
-    const Business = BusinessModel(Shop)
-    const ChargeEmployee = ChargeEmployeeModel()
-    const Employee = EmployeeModel(Shop, ChargeEmployee)
-    const HistoryCardAccount = HistoryCardAccountModel(ValueCoin)
-    const CardAccount = CardAccountModel(Coin, HistoryCardAccount)
-    const ProfitEmployee = ProfitEmployeeModel(Employee, ValueCoin)
-    const Role = RoleModel()
+    const Category = CategoryModel()//-
+    const Unit = UnitModel()//-
+    const Product = ProductModel(Category, Unit)//-
+    const Coin = CoinModel()//-
+    const ValueCoin = ValueCoinModel(Coin)//-
+    const Stock = StockModel(Product)//-
+    const Inventory = InventoryModel(Product, ValueCoin)//Tiene problema aun
+    const Shop = ShopModel()//-
+    const Business = BusinessModel(Shop)//-
+    const ChargeEmployee = ChargeEmployeeModel()//-
+    const Employee = EmployeeModel(Shop, ChargeEmployee)//-
+    const HistoryCardAccount = HistoryCardAccountModel(ValueCoin)//-
+    const CardAccount = CardAccountModel(HistoryCardAccount)//-
+    const ProfitEmployee = ProfitEmployeeModel(Employee, ValueCoin)//-
+    const Role = RoleModel()//-
     const User = UserModel(Role, Shop)
-    
 
-    // Relación Uno a Mucho entre product y category
+
+    // Relación Uno a Mucho entre Product y Category
     relateOneToMany(
         Product,
         Category,
@@ -50,7 +54,7 @@ export const Manager = () => {
         'categoryId'
     )
 
-    // Relación Uno a Mucho entre product y unit
+    // Relación Uno a Mucho entre Product y Unit
     relateOneToMany(
         Product,
         Unit,
@@ -59,7 +63,7 @@ export const Manager = () => {
         'unitId'
     )
 
-    // Relación Uno a Mucho entre valuecoin y coin
+    // Relación Uno a Mucho entre ValueCoin y Coin
     relateOneToMany(
         ValueCoin,
         Coin,
@@ -68,7 +72,7 @@ export const Manager = () => {
         'coinId'
     )
 
-    // Relación Uno a Mucho entre inventary y valuecoin
+    // Relación Uno a Mucho entre Inventary y ValueCoin
     relateOneToMany(
         Inventory,
         ValueCoin,
@@ -77,7 +81,7 @@ export const Manager = () => {
         'priceId'
     )
 
-    // Relación Uno a Mucho entre inventary y product
+    // Relación Uno a Mucho entre Inventary y Product
     relateOneToMany(
         Inventory,
         Product,
@@ -86,21 +90,25 @@ export const Manager = () => {
         'productId'
     )
 
-    // Relación Mucho a Mucho entre inventary y stock
+    // Relación Mucho a Mucho entre Inventary y Stock
     relateManyToMany(
         Inventory,
         Stock,
+        'inventaries',
+        'stocks',
         'InventoryStock',
     )
 
-    // Relación Mucho a Mucho entre bussiness y shop
+    // Relación Mucho a Mucho entre Bussiness y Shop
     relateManyToMany(
         Business,
         Shop,
+        'businesses',
+        'shops',
         'BusinessShop',
     )
 
-    // Relación Uno a Mucho entre employee y shop
+    // Relación Uno a Mucho entre Employee y Shop
     relateOneToMany(
         Employee,
         Shop,
@@ -109,13 +117,22 @@ export const Manager = () => {
         'shopId'
     )
 
-    // Relación Uno a Mucho entre employee y shargeemployee
+    // Relación Uno a Mucho entre Employee y Chargeemployee
     relateOneToMany(
         Employee,
         ChargeEmployee,
         'employees',
-        'shargeemployee',
+        'chargeemployee',
         'chargeId'
+    )
+
+    // Relación Uno a Mucho entre HistoryCardAccount y ValueCoin
+    relateOneToMany(
+        HistoryCardAccount,
+        ValueCoin,
+        'historycardaccount',
+        'valuecoin',
+        'amountId'
     )
 
     // Relación Uno a Mucho entre CardAccount y HistoryCardAccount
@@ -177,7 +194,7 @@ export const Manager = () => {
         Business: new Model(Business),
         ChargeEmployee: new Model(ChargeEmployee),
         Employee: new Model(Employee),
-        HistoryCardAccount:  new Model(HistoryCardAccount),
+        HistoryCardAccount: new Model(HistoryCardAccount),
         CardAccount: new Model(CardAccount),
         ProfitEmployee: new Model(ProfitEmployee),
         Role: new Model(Role),
@@ -197,9 +214,9 @@ const relateOneToMany = (model1: any, model2: any, model1as: string, model2as: s
     });
 }
 
-const relateManyToMany = (model1: any, model2: any, relationTable: string) => {
-    model2.belongsToMany(model1, { through: relationTable });
-    model1.belongsToMany(model2, { through: relationTable });
+const relateManyToMany = (model1: any, model2: any, model1as: string, model2as: string, relationTable: string) => {
+    model2.belongsToMany(model1, { through: relationTable, as: model1as });
+    model1.belongsToMany(model2, { through: relationTable, as: model2as });
 }
 
 class Model {
@@ -225,7 +242,7 @@ class Model {
         return this
     }
 
-    async create(props: any, transaction: any) {
+    async create(props: any, transaction?: any) {
         this.query = await this.model.create(props, transaction)
         return this
     }
