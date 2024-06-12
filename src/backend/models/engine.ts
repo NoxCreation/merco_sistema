@@ -135,6 +135,7 @@ export const Manager = () => {
         Business: new Model(Business),
         ChargeEmployee: new Model(ChargeEmployee),
         Employee: new Model(Employee),
+        HistoryCardAccount:  new Model(HistoryCardAccount),
         CardAccount: new Model(CardAccount),
     }
 }
