@@ -13,6 +13,7 @@ import { EmployeeModel } from "./Employee";
 import { CardAccountModel } from "./CardAccount";
 import { HistoryCardAccountModel } from "./HistoryCardAccount";
 import { ProfitEmployeeModel } from "./ProfitEmployee";
+import { RoleModel } from "./Role";
 export const sequelize = new Sequelize({
     dialect: 'sqlite',
     storage: 'database.sqlite'
@@ -35,6 +36,7 @@ export const Manager = () => {
     const HistoryCardAccount = HistoryCardAccountModel(ValueCoin)
     const CardAccount = CardAccountModel(Coin, HistoryCardAccount)
     const ProfitEmployee = ProfitEmployeeModel(Employee, ValueCoin)
+    const Role = RoleModel()
     
 
     // Relación Uno a Mucho entre product y category
@@ -158,6 +160,7 @@ export const Manager = () => {
         HistoryCardAccount:  new Model(HistoryCardAccount),
         CardAccount: new Model(CardAccount),
         ProfitEmployee: new Model(ProfitEmployee),
+        Role: new Model(Role),
     }
 }
 
