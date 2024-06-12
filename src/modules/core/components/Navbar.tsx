@@ -13,6 +13,7 @@ import UserAvatar from "../components/UserAvatar";
 import { usePathname } from "next/navigation";
 import { ReactElement, ReactNode } from "react";
 import React from "react";
+import Link from "next/link";
 
 const navbarItems = [
   {
@@ -71,27 +72,29 @@ type Props = {
 
 function NavbarLink({ text, href, icon, isActive }: Props) {
   return (
-    <Flex
-      as={"a"}
-      direction={"column"}
-      alignItems={"center"}
-      height={"full"}
-      cursor={"pointer"}
-      justifyContent={"space-between"}
-      padding={"10px"}
-      href={href}
-    >
-      <Center height={"25px"} color={isActive ? "cyan" : ""}>
-        {React.cloneElement(icon, { color: isActive ? "#0BC5EA" : "#718096" })}
-      </Center>
-      <Text
-        flexGrow={1}
-        color={isActive ? "cyan.400" : ""}
-        fontWeight={isActive ? "black" : ""}
+    <Link href={href}>
+      <Flex
+        direction={"column"}
+        alignItems={"center"}
+        height={"full"}
+        cursor={"pointer"}
+        justifyContent={"space-between"}
+        padding={"10px"}
       >
-        {text}
-      </Text>
-    </Flex>
+        <Center height={"25px"} color={isActive ? "cyan" : ""}>
+          {React.cloneElement(icon, {
+            color: isActive ? "#0BC5EA" : "#718096",
+          })}
+        </Center>
+        <Text
+          flexGrow={1}
+          color={isActive ? "cyan.400" : ""}
+          fontWeight={isActive ? "bold" : ""}
+        >
+          {text}
+        </Text>
+      </Flex>
+    </Link>
   );
 }
 

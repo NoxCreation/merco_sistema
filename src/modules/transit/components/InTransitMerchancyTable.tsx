@@ -13,12 +13,14 @@ import {
   Badge,
   Text,
   Box,
+  Select,
 } from "@chakra-ui/react";
 import {
   ColumnDef,
   flexRender,
   getCoreRowModel,
   getSortedRowModel,
+  isRowSelected,
   useReactTable,
 } from "@tanstack/react-table";
 
@@ -191,6 +193,13 @@ export default function InTransitMerchancyTable() {
   return (
     <ExportableTableContainer title="Mercancias en transito">
       <TableContainer>
+        <Flex width={"full"} justifyContent={"end"} position={"relative"} height={"45px"}>
+          <Select defaultValue={10} width={"fit-content"} colorScheme="cyan" position={"fixed"}>
+            {Array.from({ length: 4 }).map((_, index) => (
+              <option key={index}>{(index + 1) * 5}</option>
+            ))}
+          </Select>
+        </Flex>
         <Table variant="striped">
           <Thead>
             {getHeaderGroups().map((headerGroup) => (
@@ -200,7 +209,6 @@ export default function InTransitMerchancyTable() {
                     key={header.id}
                     justifyContent={"space-between"}
                     alignItems={"center"}
-                    onClick={() => header.column.toggleSorting()}
                     cursor={"pointer"}
                   >
                     <Flex width={"full"} justifyContent={"space-between"}>
@@ -211,7 +219,7 @@ export default function InTransitMerchancyTable() {
                         )}
                       </Text>
                       <Flex alignItems={"center"} gap={"2px"}>
-                        <Box>
+                        <Box onClick={() => header.column.toggleSorting()}>
                           <OrderByIcon />
                         </Box>
                         <Box>
@@ -226,14 +234,13 @@ export default function InTransitMerchancyTable() {
           </Thead>
           <Tbody>
             {getRowModel().rows.map((row) => (
-              <Tr key={row.id}>
+              <Tr
+                key={row.id}
+                borderColor={"red.400 !important"}
+                borderY={row.getIsSelected() ? "2px solid" : "none"}
+              >
                 {row.getVisibleCells().map((cell) => (
-                  <Td
-                    key={cell.id}
-                    backgroundColor={
-                      row.getIsSelected() ? "cyan.50  !important" : ""
-                    }
-                  >
+                  <Td key={cell.id}>
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </Td>
                 ))}
@@ -242,7 +249,7 @@ export default function InTransitMerchancyTable() {
           </Tbody>
         </Table>
       </TableContainer>
-      <Pagination pages={3} selectedPage={1}/>
+      <Pagination pages={3} selectedPage={1} />
     </ExportableTableContainer>
   );
 }

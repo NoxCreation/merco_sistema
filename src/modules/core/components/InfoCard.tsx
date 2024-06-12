@@ -43,22 +43,20 @@ export default function InfoCard({
         >
           {title}
         </Heading>
-        <Text fontSize={"25px"} fontWeight={"bold"}>{value}</Text>
+        <Text fontSize={"25px"} fontWeight={"bold"}>
+          {value}
+        </Text>
         <Flex alignItems={"center"} gap={"20px"}>
-          {badgeText && (
-            <Badge
-              variant={"outline"}
-              colorScheme="purple"
-              borderRadius={"full"}
-              paddingX={"12px"}
-            >
-              {badgeText}
-            </Badge>
-          )}
+          {badgeText && <Badge>{badgeText}</Badge>}
           <Text color={"gray.400"}>{description}</Text>
         </Flex>
       </Stack>
-      <Center width={"60px"} height={"60px"} backgroundColor={color} borderRadius={"full"}>
+      <Center
+        width={"60px"}
+        height={"60px"}
+        backgroundColor={color}
+        borderRadius={"full"}
+      >
         <Center width={"25px"} height={"25px"}>
           {icon}
         </Center>
