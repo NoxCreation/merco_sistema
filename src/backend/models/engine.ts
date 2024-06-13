@@ -30,6 +30,7 @@ import { MessagingDataModel } from "./MessagingData";
 import { OrderProductModel } from "./OrderProduct";
 import { OrderModel } from "./Order";
 import { StorePickUpDataModel } from "./StorePickUpData";
+import { DebtDataModel } from "./DebtData";
 
 export const sequelize = new Sequelize({
     dialect: 'sqlite',
@@ -73,6 +74,7 @@ export const Manager = () => {
     const OrderProduct = OrderProductModel(Product)
     const StorePickUpData = StorePickUpDataModel(Employee)
     const Order = OrderModel(MessagingData, StorePickUpData, Sale)
+    const DebtData = DebtDataModel()
 
     // Relación Uno a Mucho entre Product y Category
     relateOneToMany(
@@ -594,6 +596,7 @@ export const Manager = () => {
         StorePickUpData: new Model(StorePickUpData),
         OrderProduct: new Model(OrderProduct),
         Order: new Model(Order),
+        DebtData: new Model(DebtData),
     }
 }
 
