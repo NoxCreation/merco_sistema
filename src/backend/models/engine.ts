@@ -17,6 +17,7 @@ import { RoleModel } from "./Role";
 import { UserModel } from "./User";
 import { SaleModel } from "./SaleModel";
 import { OfferRuleModel } from "./OfferRule";
+import { SMSHistoryModel } from "./SMSHistory";
 
 export const sequelize = new Sequelize({
     dialect: 'sqlite',
@@ -47,6 +48,7 @@ export const Manager = () => {
     const User = UserModel(Role, Shop)
     const Sale = SaleModel(Coin, ValueCoin, Product, User, ProfitEmployee, CardAccount)// en el api modificar el post
     const OfferRule = OfferRuleModel()
+    const SMSHistory = SMSHistoryModel(Employee)
 
     // Relación Uno a Mucho entre Product y Category
     relateOneToMany(
@@ -255,6 +257,15 @@ export const Manager = () => {
         'cardId'
     )
 
+    // Relación Uno a Mucho entre SMSHistory y Employee
+    relateOneToMany(
+        SMSHistory,
+        Employee,
+        'smshistories',
+        'employee',
+        'targetId'
+    )
+
     sequelize.sync().then(() => console.log('Base de datos y tablas creadas!'));
 
     return {
@@ -275,7 +286,8 @@ export const Manager = () => {
         Role: new Model(Role),
         User: new Model(User),
         Sale: new Model(Sale),
-        OfferRule: new Model(OfferRule)
+        OfferRule: new Model(OfferRule),
+        SMSHistory: new Model(SMSHistory)
     }
 }
 
