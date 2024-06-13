@@ -24,6 +24,7 @@ import { ExpenseModel } from "./Expense";
 import { DailyDebtModel } from "./DailyDebt";
 import { DailyClosingModel } from "./DailyClosing";
 import { PayrollModel } from "./Payroll";
+import { BalanceModel } from "./Balance";
 
 export const sequelize = new Sequelize({
     dialect: 'sqlite',
@@ -61,6 +62,7 @@ export const Manager = () => {
     const DailyDebt = DailyDebtModel(ValueCoin)
     const DailyClosing = DailyClosingModel(Employee)
     const Payroll = PayrollModel(Employee)
+    const Balance = BalanceModel()
 
     // Relación Uno a Mucho entre Product y Category
     relateOneToMany(
@@ -422,6 +424,42 @@ export const Manager = () => {
         'PayrollSale',
     )
 
+    // Relación Mucho a Mucho entre Balance y Payroll
+    relateManyToMany(
+        Balance,
+        Payroll,
+        'balances',
+        'payrolls',
+        'BalancePayroll',
+    )
+
+    // Relación Mucho a Mucho entre Balance y ValueCoin
+    relateManyToMany(
+        Balance,
+        ValueCoin,
+        'balances1',
+        'investments',
+        'BalanceValueCoin',
+    )
+
+    // Relación Mucho a Mucho entre Balance y ValueCoin
+    relateManyToMany(
+        Balance,
+        ValueCoin,
+        'balances2',
+        'total_profit',
+        'BalanceValueCoin',
+    )
+
+    // Relación Mucho a Mucho entre Balance y ValueCoin
+    relateManyToMany(
+        Balance,
+        ValueCoin,
+        'balances3',
+        'total_expenses',
+        'BalanceValueCoin',
+    )
+
     sequelize.sync().then(() => console.log('Base de datos y tablas creadas!'));
 
     return {
@@ -449,7 +487,8 @@ export const Manager = () => {
         Expense: new Model(Expense),
         DailyDebt: new Model(DailyDebt),
         DailyClosing: new Model(DailyClosing),
-        Payroll: new Model(Payroll)
+        Payroll: new Model(Payroll),
+        Balance: new Model(Balance),
     }
 }
 
