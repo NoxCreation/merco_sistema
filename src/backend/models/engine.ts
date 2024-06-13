@@ -26,6 +26,7 @@ import { DailyClosingModel } from "./DailyClosing";
 import { PayrollModel } from "./Payroll";
 import { BalanceModel } from "./Balance";
 import { MessengerModel } from "./Messenger";
+import { MessagingDataModel } from "./MessagingData";
 
 export const sequelize = new Sequelize({
     dialect: 'sqlite',
@@ -65,6 +66,7 @@ export const Manager = () => {
     const Payroll = PayrollModel(Employee)
     const Balance = BalanceModel()
     const Messenger = MessengerModel()
+    const MessagingData = MessagingDataModel(Employee, Messenger)
 
     // Relación Uno a Mucho entre Product y Category
     relateOneToMany(
@@ -462,6 +464,24 @@ export const Manager = () => {
         'BalanceValueCoin',
     )
 
+    // Relación Uno a Mucho entre MessagingData y Employee
+    relateOneToMany(
+        MessagingData,
+        Employee,
+        'messagingdata1',
+        'sponsor',
+        'sponsorId'
+    )
+
+    // Relación Uno a Mucho entre MessagingData y Messenger
+    relateOneToMany(
+        MessagingData,
+        Messenger,
+        'messagingdata2',
+        'messenger',
+        'messengerId'
+    )
+
     sequelize.sync().then(() => console.log('Base de datos y tablas creadas!'));
 
     return {
@@ -491,7 +511,8 @@ export const Manager = () => {
         DailyClosing: new Model(DailyClosing),
         Payroll: new Model(Payroll),
         Balance: new Model(Balance),
-        Messenger: new Model(Messenger)
+        Messenger: new Model(Messenger),
+        MessagingData: new Model(MessagingData)
     }
 }
 
