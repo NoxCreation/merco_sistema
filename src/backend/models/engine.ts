@@ -19,6 +19,7 @@ import { SaleModel } from "./SaleModel";
 import { OfferRuleModel } from "./OfferRule";
 import { SMSHistoryModel } from "./SMSHistory";
 import { PaymentRuleModel } from "./PaymentRule";
+import { ConfigurationModel } from "./Configuration";
 
 export const sequelize = new Sequelize({
     dialect: 'sqlite',
@@ -51,6 +52,7 @@ export const Manager = () => {
     const OfferRule = OfferRuleModel()
     const SMSHistory = SMSHistoryModel(Employee)
     const PaymentRule = PaymentRuleModel(OfferRule)
+    const Configuration = ConfigurationModel()
 
     // Relación Uno a Mucho entre Product y Category
     relateOneToMany(
@@ -304,6 +306,42 @@ export const Manager = () => {
         'PaymentRuleOfferRule',
     )
 
+    // Relación Mucho a Mucho entre Configuration y Coin
+    relateManyToMany(
+        Configuration,
+        Coin,
+        'configurations',
+        'coins',
+        'ConfigurationCoin',
+    )
+
+    // Relación Mucho a Mucho entre Configuration y OfferRule
+    relateManyToMany(
+        Configuration,
+        OfferRule,
+        'configurations',
+        'offers_rules',
+        'ConfigurationOfferRule',
+    )
+
+    // Relación Uno a Mucho entre Configuration y PaymentRule
+    relateManyToMany(
+        Configuration,
+        PaymentRule,
+        'configurations',
+        'payment_rules',
+        'ConfigurationPaymentRule',
+    )
+
+    // Relación Uno a Mucho entre Configuration y SMSHistory
+    relateManyToMany(
+        Configuration,
+        SMSHistory,
+        'configurations',
+        'sms_history',
+        'ConfigurationSMSHistory',
+    )
+
     sequelize.sync().then(() => console.log('Base de datos y tablas creadas!'));
 
     return {
@@ -326,7 +364,8 @@ export const Manager = () => {
         Sale: new Model(Sale),
         OfferRule: new Model(OfferRule),
         SMSHistory: new Model(SMSHistory),
-        PaymentRule: new Model(PaymentRule)
+        PaymentRule: new Model(PaymentRule),
+        Configuration: new Model(Configuration)
     }
 }
 
