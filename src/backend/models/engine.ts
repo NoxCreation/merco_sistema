@@ -19,6 +19,11 @@ import { SaleModel } from "./SaleModel";
 import { OfferRuleModel } from "./OfferRule";
 import { SMSHistoryModel } from "./SMSHistory";
 import { PaymentRuleModel } from "./PaymentRule";
+import { ConfigurationModel } from "./Configuration";
+import { ExpenseModel } from "./Expense";
+import { DailyDebtModel } from "./DailyDebt";
+import { DailyClosingModel } from "./DailyClosing";
+import { PayrollModel } from "./Payroll";
 
 export const sequelize = new Sequelize({
     dialect: 'sqlite',
@@ -51,6 +56,11 @@ export const Manager = () => {
     const OfferRule = OfferRuleModel()
     const SMSHistory = SMSHistoryModel(Employee)
     const PaymentRule = PaymentRuleModel(OfferRule)
+    const Configuration = ConfigurationModel()
+    const Expense = ExpenseModel(ValueCoin)
+    const DailyDebt = DailyDebtModel(ValueCoin)
+    const DailyClosing = DailyClosingModel(Employee)
+    const Payroll = PayrollModel(Employee)
 
     // Relación Uno a Mucho entre Product y Category
     relateOneToMany(
@@ -304,6 +314,114 @@ export const Manager = () => {
         'PaymentRuleOfferRule',
     )
 
+    // Relación Mucho a Mucho entre Configuration y Coin
+    relateManyToMany(
+        Configuration,
+        Coin,
+        'configurations',
+        'coins',
+        'ConfigurationCoin',
+    )
+
+    // Relación Mucho a Mucho entre Configuration y OfferRule
+    relateManyToMany(
+        Configuration,
+        OfferRule,
+        'configurations',
+        'offers_rules',
+        'ConfigurationOfferRule',
+    )
+
+    // Relación Uno a Mucho entre Configuration y PaymentRule
+    relateManyToMany(
+        Configuration,
+        PaymentRule,
+        'configurations',
+        'payment_rules',
+        'ConfigurationPaymentRule',
+    )
+
+    // Relación Uno a Mucho entre Configuration y SMSHistory
+    relateManyToMany(
+        Configuration,
+        SMSHistory,
+        'configurations',
+        'sms_history',
+        'ConfigurationSMSHistory',
+    )
+
+    // Relación Uno a Mucho entre Expense y ValueCoin
+    relateOneToMany(
+        Expense,
+        ValueCoin,
+        'expenses',
+        'valuecoin',
+        'amountId'
+    )
+
+    // Relación Uno a Mucho entre DailyDebt y ValueCoin
+    relateOneToMany(
+        DailyDebt,
+        ValueCoin,
+        'dailydebts',
+        'valuecoin',
+        'amountId'
+    )
+
+    // Relación Uno a Mucho entre DailyClosing y Employee
+    relateOneToMany(
+        DailyClosing,
+        Employee,
+        'dailyclosings1',
+        'data_employee_seller',
+        'employee_seller_id'
+    )
+
+    // Relación Uno a Mucho entre DailyClosing y Employee
+    relateOneToMany(
+        DailyClosing,
+        Employee,
+        'dailyclosings2',
+        'data_employee_economic',
+        'employee_economic_id'
+    )
+
+    // Relación Mucho a Mucho entre DailyClosing y ValueCoin
+    relateManyToMany(
+        DailyClosing,
+        ValueCoin,
+        'dailyclosings',
+        'valuecoins',
+        'DailyClosingValueCoin',
+    )
+
+    // Relación Mucho a Mucho entre DailyClosing y DailyDebt
+    relateManyToMany(
+        DailyClosing,
+        DailyDebt,
+        'dailyclosings',
+        'dailydebts',
+        'DailyClosingDailyDebt',
+    )
+
+    // Relación Uno a Mucho entre Payroll y Employee
+    relateOneToMany(
+        Payroll,
+        Employee,
+        'payrolls',
+        'employee',
+        'employeeId'
+    )
+
+    // Relación Mucho a Mucho entre Payroll y Sale
+    relateManyToMany(
+        Payroll,
+        Sale,
+        'payrolls',
+        'sales',
+        'PayrollSale',
+    )
+
     sequelize.sync().then(() => console.log('Base de datos y tablas creadas!'));
 
     return {
@@ -326,7 +444,12 @@ export const Manager = () => {
         Sale: new Model(Sale),
         OfferRule: new Model(OfferRule),
         SMSHistory: new Model(SMSHistory),
-        PaymentRule: new Model(PaymentRule)
+        PaymentRule: new Model(PaymentRule),
+        Configuration: new Model(Configuration),
+        Expense: new Model(Expense),
+        DailyDebt: new Model(DailyDebt),
+        DailyClosing: new Model(DailyClosing),
+        Payroll: new Model(Payroll)
     }
 }
 
