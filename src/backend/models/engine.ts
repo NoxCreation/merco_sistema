@@ -24,6 +24,13 @@ import { ExpenseModel } from "./Expense";
 import { DailyDebtModel } from "./DailyDebt";
 import { DailyClosingModel } from "./DailyClosing";
 import { PayrollModel } from "./Payroll";
+import { BalanceModel } from "./Balance";
+import { MessengerModel } from "./Messenger";
+import { MessagingDataModel } from "./MessagingData";
+import { OrderProductModel } from "./OrderProduct";
+import { OrderModel } from "./Order";
+import { StorePickUpDataModel } from "./StorePickUpData";
+import { DebtDataModel } from "./DebtData";
 
 export const sequelize = new Sequelize({
     dialect: 'sqlite',
@@ -61,6 +68,13 @@ export const Manager = () => {
     const DailyDebt = DailyDebtModel(ValueCoin)
     const DailyClosing = DailyClosingModel(Employee)
     const Payroll = PayrollModel(Employee)
+    const Balance = BalanceModel()
+    const Messenger = MessengerModel()
+    const MessagingData = MessagingDataModel(Employee, Messenger)
+    const OrderProduct = OrderProductModel(Product)
+    const StorePickUpData = StorePickUpDataModel(Employee)
+    const Order = OrderModel(MessagingData, StorePickUpData, Sale)
+    const DebtData = DebtDataModel()
 
     // Relación Uno a Mucho entre Product y Category
     relateOneToMany(
@@ -422,6 +436,132 @@ export const Manager = () => {
         'PayrollSale',
     )
 
+    // Relación Mucho a Mucho entre Balance y Payroll
+    relateManyToMany(
+        Balance,
+        Payroll,
+        'balances',
+        'payrolls',
+        'BalancePayroll',
+    )
+
+    // Relación Mucho a Mucho entre Balance y ValueCoin
+    relateManyToMany(
+        Balance,
+        ValueCoin,
+        'balances1',
+        'investments',
+        'BalanceValueCoin',
+    )
+
+    // Relación Mucho a Mucho entre Balance y ValueCoin
+    relateManyToMany(
+        Balance,
+        ValueCoin,
+        'balances2',
+        'total_profit',
+        'BalanceValueCoin',
+    )
+
+    // Relación Mucho a Mucho entre Balance y ValueCoin
+    relateManyToMany(
+        Balance,
+        ValueCoin,
+        'balances3',
+        'total_expenses',
+        'BalanceValueCoin',
+    )
+
+    // Relación Uno a Mucho entre MessagingData y Employee
+    relateOneToMany(
+        MessagingData,
+        Employee,
+        'messagingdata1',
+        'sponsor',
+        'sponsorId'
+    )
+
+    // Relación Uno a Mucho entre MessagingData y Messenger
+    relateOneToMany(
+        MessagingData,
+        Messenger,
+        'messagingdata2',
+        'messenger',
+        'messengerId'
+    )
+
+    // Relación Uno a Mucho entre OrderProduct y Product
+    relateOneToMany(
+        OrderProduct,
+        Product,
+        'orderproduct',
+        'product',
+        'productId'
+    )
+
+    // Relación Mucho a Mucho entre OrderProduct y ValueCoin
+    relateManyToMany(
+        OrderProduct,
+        ValueCoin,
+        'orderproduct',
+        'prices',
+        'OrderProductValueCoin',
+    )
+
+    // Relación Uno a Mucho entre StorePickUpData y Employee
+    relateOneToMany(
+        StorePickUpData,
+        Employee,
+        'storepickudatas',
+        'employee',
+        'sponsorId'
+    )
+
+    // Relación Uno a Mucho entre Order y MessagingData
+    relateOneToMany(
+        Order,
+        MessagingData,
+        'order1',
+        'messaging_data',
+        'messaging_data_id'
+    )
+
+    // Relación Uno a Mucho entre Order y StorePickUpData
+    relateOneToMany(
+        Order,
+        StorePickUpData,
+        'order2',
+        'store_pickup_data',
+        'store_pickup_data_id'
+    )
+
+    // Relación Uno a Mucho entre Order y Sale
+    relateOneToMany(
+        Order,
+        Sale,
+        'order3',
+        'sales',
+        'saleId'
+    )
+
+    // Relación Mucho a Mucho entre Order y OrderProduct
+    relateManyToMany(
+        Order,
+        OrderProduct,
+        'order4',
+        'products',
+        'OrderOrderProduct',
+    )
+
+    // Relación Mucho a Mucho entre Order y ValueCoin
+    relateManyToMany(
+        Order,
+        ValueCoin,
+        'order5',
+        'amount',
+        'OrderValueCoin',
+    )
+
     sequelize.sync().then(() => console.log('Base de datos y tablas creadas!'));
 
     return {
@@ -449,7 +589,14 @@ export const Manager = () => {
         Expense: new Model(Expense),
         DailyDebt: new Model(DailyDebt),
         DailyClosing: new Model(DailyClosing),
-        Payroll: new Model(Payroll)
+        Payroll: new Model(Payroll),
+        Balance: new Model(Balance),
+        Messenger: new Model(Messenger),
+        MessagingData: new Model(MessagingData),
+        StorePickUpData: new Model(StorePickUpData),
+        OrderProduct: new Model(OrderProduct),
+        Order: new Model(Order),
+        DebtData: new Model(DebtData),
     }
 }
 
