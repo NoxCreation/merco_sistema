@@ -5,7 +5,7 @@ import InTransitMerchancyTable from "../components/InTransitMerchancyTable";
 
 export default function TransitScreen() {
   return (
-    <MainLayout>
+    <MainLayout screenTitle="Tránsito">
       <InTransitMerchancyTable />
       {/* <AddProductDialog /> */}
     </MainLayout>

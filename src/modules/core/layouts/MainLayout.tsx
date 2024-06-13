@@ -7,12 +7,14 @@ import {
 import React, { ReactNode } from "react";
 import Navbar from "../components/Navbar";
 import { usePathname } from "next/navigation";
+import Head from "next/head";
 
 type Props = {
   children: ReactNode | ReactNode[];
+  screenTitle: string;
 };
 
-export default function MainLayout({ children }: Props) {
+export default function MainLayout({ children, screenTitle }: Props) {
   const pathname = usePathname();
 
   return (
@@ -22,14 +24,10 @@ export default function MainLayout({ children }: Props) {
       paddingTop={"30px"}
       backgroundColor={"#F5F9FC"}
     >
+      <Head>
+        <title>{screenTitle}</title>
+      </Head>
       <Navbar />
-      <Breadcrumb marginTop={"20px"} padding={"10px"}>
-        {pathname.split("/").map((pathFragment, index) => (
-          <BreadcrumbItem key={index}>
-            <BreadcrumbLink>{pathFragment}</BreadcrumbLink>
-          </BreadcrumbItem>
-        ))}
-      </Breadcrumb>
       {children}
     </Box>
   );
