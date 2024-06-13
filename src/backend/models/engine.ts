@@ -16,6 +16,7 @@ import { ProfitEmployeeModel } from "./ProfitEmployee";
 import { RoleModel } from "./Role";
 import { UserModel } from "./User";
 import { SaleModel } from "./SaleModel";
+import { OfferRuleModel } from "./OfferRule";
 
 export const sequelize = new Sequelize({
     dialect: 'sqlite',
@@ -45,6 +46,7 @@ export const Manager = () => {
     const Role = RoleModel()//-
     const User = UserModel(Role, Shop)
     const Sale = SaleModel(Coin, ValueCoin, Product, User, ProfitEmployee, CardAccount)// en el api modificar el post
+    const OfferRule = OfferRuleModel()
 
     // Relación Uno a Mucho entre Product y Category
     relateOneToMany(
@@ -272,7 +274,8 @@ export const Manager = () => {
         ProfitEmployee: new Model(ProfitEmployee),
         Role: new Model(Role),
         User: new Model(User),
-        Sale: new Model(Sale)
+        Sale: new Model(Sale),
+        OfferRule: new Model(OfferRule)
     }
 }
 
