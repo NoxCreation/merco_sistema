@@ -31,6 +31,7 @@ import { OrderProductModel } from "./OrderProduct";
 import { OrderModel } from "./Order";
 import { StorePickUpDataModel } from "./StorePickUpData";
 import { DebtDataModel } from "./DebtData";
+import { TransitModel } from "./Transit";
 
 export const sequelize = new Sequelize({
     dialect: 'sqlite',
@@ -75,6 +76,7 @@ export const Manager = () => {
     const StorePickUpData = StorePickUpDataModel(Employee)
     const Order = OrderModel(MessagingData, StorePickUpData, Sale)
     const DebtData = DebtDataModel()
+    const Transit = TransitModel(MessagingData, DebtData, Sale, Order)
 
     // Relación Uno a Mucho entre Product y Category
     relateOneToMany(
@@ -562,6 +564,61 @@ export const Manager = () => {
         'OrderValueCoin',
     )
 
+    // Relación Uno a Mucho entre Transit y MessagingData
+    relateOneToMany(
+        Transit,
+        MessagingData,
+        'transit1',
+        'messaging_data',
+        'messaging_data_id'
+    )
+
+    // Relación Uno a Mucho entre Transit y Order
+    relateOneToMany(
+        Transit,
+        DebtData,
+        'transit2',
+        'debtdata',
+        'debt_data_id'
+    )
+
+    // Relación Uno a Mucho entre Transit y Order
+    relateOneToMany(
+        Transit,
+        Order,
+        'transit3',
+        'order',
+        'orderId'
+    )
+
+    // Relación Uno a Mucho entre Transit y Sale
+    relateOneToMany(
+        Transit,
+        Sale,
+        'transit4',
+        'sales',
+        'saleId'
+    )
+
+    // Relación Mucho a Mucho entre Transit y OrderProduct
+    relateManyToMany(
+        Transit,
+        OrderProduct,
+        'transit5',
+        'products',
+        'TransitOrderProduct',
+    )
+
+    // Relación Mucho a Mucho entre Transit y ValueCoin
+    relateManyToMany(
+        Transit,
+        ValueCoin,
+        'transit6',
+        'amount',
+        'TransitValueCoin',
+    )
+
+
     sequelize.sync().then(() => console.log('Base de datos y tablas creadas!'));
 
     return {
@@ -597,6 +654,7 @@ export const Manager = () => {
         OrderProduct: new Model(OrderProduct),
         Order: new Model(Order),
         DebtData: new Model(DebtData),
+        Transit: new Model(Transit)
     }
 }
 
