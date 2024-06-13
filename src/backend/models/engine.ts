@@ -28,6 +28,8 @@ import { BalanceModel } from "./Balance";
 import { MessengerModel } from "./Messenger";
 import { MessagingDataModel } from "./MessagingData";
 import { OrderProductModel } from "./OrderProduct";
+import { OrderModel } from "./Order";
+import { StorePickUpDataModel } from "./StorePickUpData";
 
 export const sequelize = new Sequelize({
     dialect: 'sqlite',
@@ -69,6 +71,8 @@ export const Manager = () => {
     const Messenger = MessengerModel()
     const MessagingData = MessagingDataModel(Employee, Messenger)
     const OrderProduct = OrderProductModel(Product)
+    const StorePickUpData = StorePickUpDataModel(Employee)
+    const Order = OrderModel(MessagingData, StorePickUpData, Sale)
 
     // Relación Uno a Mucho entre Product y Category
     relateOneToMany(
@@ -502,6 +506,60 @@ export const Manager = () => {
         'OrderProductValueCoin',
     )
 
+    // Relación Uno a Mucho entre StorePickUpData y Employee
+    relateOneToMany(
+        StorePickUpData,
+        Employee,
+        'storepickudatas',
+        'employee',
+        'sponsorId'
+    )
+
+    // Relación Uno a Mucho entre Order y MessagingData
+    relateOneToMany(
+        Order,
+        MessagingData,
+        'order1',
+        'messaging_data',
+        'messaging_data_id'
+    )
+
+    // Relación Uno a Mucho entre Order y StorePickUpData
+    relateOneToMany(
+        Order,
+        StorePickUpData,
+        'order2',
+        'store_pickup_data',
+        'store_pickup_data_id'
+    )
+
+    // Relación Uno a Mucho entre Order y Sale
+    relateOneToMany(
+        Order,
+        Sale,
+        'order3',
+        'sales',
+        'saleId'
+    )
+
+    // Relación Mucho a Mucho entre Order y OrderProduct
+    relateManyToMany(
+        Order,
+        OrderProduct,
+        'order4',
+        'products',
+        'OrderOrderProduct',
+    )
+
+    // Relación Mucho a Mucho entre Order y ValueCoin
+    relateManyToMany(
+        Order,
+        ValueCoin,
+        'order5',
+        'amount',
+        'OrderValueCoin',
+    )
+
     sequelize.sync().then(() => console.log('Base de datos y tablas creadas!'));
 
     return {
@@ -533,7 +591,9 @@ export const Manager = () => {
         Balance: new Model(Balance),
         Messenger: new Model(Messenger),
         MessagingData: new Model(MessagingData),
+        StorePickUpData: new Model(StorePickUpData),
         OrderProduct: new Model(OrderProduct),
+        Order: new Model(Order),
     }
 }
 
