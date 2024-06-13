@@ -18,6 +18,7 @@ import { UserModel } from "./User";
 import { SaleModel } from "./SaleModel";
 import { OfferRuleModel } from "./OfferRule";
 import { SMSHistoryModel } from "./SMSHistory";
+import { PaymentRuleModel } from "./PaymentRule";
 
 export const sequelize = new Sequelize({
     dialect: 'sqlite',
@@ -49,6 +50,7 @@ export const Manager = () => {
     const Sale = SaleModel(Coin, ValueCoin, Product, User, ProfitEmployee, CardAccount)// en el api modificar el post
     const OfferRule = OfferRuleModel()
     const SMSHistory = SMSHistoryModel(Employee)
+    const PaymentRule = PaymentRuleModel(OfferRule)
 
     // Relación Uno a Mucho entre Product y Category
     relateOneToMany(
@@ -266,6 +268,42 @@ export const Manager = () => {
         'targetId'
     )
 
+    // Relación Mucho a Mucho entre PaymentRule y OfferRule
+    relateManyToMany(
+        PaymentRule,
+        OfferRule,
+        'paymentrule1',
+        'data_by_quantity_sponser',
+        'PaymentRuleOfferRule',
+    )
+
+    // Relación Mucho a Mucho entre PaymentRule y OfferRule
+    relateManyToMany(
+        PaymentRule,
+        OfferRule,
+        'paymentrule2',
+        'data_by_quantity_seller',
+        'PaymentRuleOfferRule',
+    )
+
+    // Relación Mucho a Mucho entre PaymentRule y OfferRule
+    relateManyToMany(
+        PaymentRule,
+        OfferRule,
+        'paymentrule3',
+        'data_by_quantity_sponser_fixed_payment',
+        'PaymentRuleOfferRule',
+    )
+
+    // Relación Mucho a Mucho entre PaymentRule y OfferRule
+    relateManyToMany(
+        PaymentRule,
+        OfferRule,
+        'paymentrule4',
+        'data_by_quantity_seller_fixed_payment',
+        'PaymentRuleOfferRule',
+    )
+
     sequelize.sync().then(() => console.log('Base de datos y tablas creadas!'));
 
     return {
@@ -287,7 +325,8 @@ export const Manager = () => {
         User: new Model(User),
         Sale: new Model(Sale),
         OfferRule: new Model(OfferRule),
-        SMSHistory: new Model(SMSHistory)
+        SMSHistory: new Model(SMSHistory),
+        PaymentRule: new Model(PaymentRule)
     }
 }
 
