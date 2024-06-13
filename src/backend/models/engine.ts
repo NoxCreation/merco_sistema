@@ -25,6 +25,7 @@ import { DailyDebtModel } from "./DailyDebt";
 import { DailyClosingModel } from "./DailyClosing";
 import { PayrollModel } from "./Payroll";
 import { BalanceModel } from "./Balance";
+import { MessengerModel } from "./Messenger";
 
 export const sequelize = new Sequelize({
     dialect: 'sqlite',
@@ -63,6 +64,7 @@ export const Manager = () => {
     const DailyClosing = DailyClosingModel(Employee)
     const Payroll = PayrollModel(Employee)
     const Balance = BalanceModel()
+    const Messenger = MessengerModel()
 
     // Relación Uno a Mucho entre Product y Category
     relateOneToMany(
@@ -489,6 +491,7 @@ export const Manager = () => {
         DailyClosing: new Model(DailyClosing),
         Payroll: new Model(Payroll),
         Balance: new Model(Balance),
+        Messenger: new Model(Messenger)
     }
 }
 
