@@ -1,4 +1,4 @@
-import { Box, Center, Flex, Stack, Text } from "@chakra-ui/react";
+import { Box, Center, Flex, Text } from "@chakra-ui/react";
 import HomeIcon from "../icons/HomeIcon";
 import ShoppingBagIcon from "../icons/ShoppingBagIcon";
 import CarIcon from "../icons/CarIcon";
@@ -11,7 +11,7 @@ import ListIcon from "../icons/ListIcon";
 import Logo from "../components/Logo";
 import UserAvatar from "../components/UserAvatar";
 import { usePathname } from "next/navigation";
-import { ReactElement, ReactNode } from "react";
+import { ReactElement } from "react";
 import React from "react";
 import Link from "next/link";
 
@@ -19,47 +19,47 @@ const navbarItems = [
   {
     text: "Dashboard",
     icon: <HomeIcon />,
-    href: "/Dashboard",
+    href: "/dashboard",
   },
   {
     text: "Inventario",
     icon: <ShoppingBagIcon />,
-    href: "/Inventario",
+    href: "/inventario",
   },
   {
-    text: "Transito",
+    text: "Tránsito",
     icon: <CarIcon />,
-    href: "/Transito",
+    href: "/transito",
   },
   {
-    text: "Ordenes",
+    text: "Órdenes",
     icon: <DocumentIcon />,
-    href: "/Ordenes",
+    href: "/ordenes",
   },
   {
     text: "Finanzas",
     icon: <DollarIcon />,
-    href: "/Finanzas",
+    href: "/finances",
   },
   {
     text: "Ventas",
     icon: <ShoppingCartIcon />,
-    href: "/Ventas",
+    href: "/sales",
   },
   {
     text: "Caja",
     icon: <BoxIcon />,
-    href: "/Caja",
+    href: "/box",
   },
   {
     text: "Nomencladores",
     icon: <ListIcon />,
-    href: "/Nomencladores",
+    href: "/nomenclators",
   },
   {
-    text: "Configuracion",
+    text: "Configuración",
     icon: <SettingsIcon />,
-    href: "Configuracion",
+    href: "/configuration",
   },
 ];
 
@@ -83,13 +83,14 @@ function NavbarLink({ text, href, icon, isActive }: Props) {
       >
         <Center height={"25px"} color={isActive ? "cyan" : ""}>
           {React.cloneElement(icon, {
-            color: isActive ? "#0BC5EA" : "#718096",
+            color: isActive ? "#0BC5EA" : "#718096"
           })}
         </Center>
         <Text
           flexGrow={1}
           color={isActive ? "cyan.400" : ""}
           fontWeight={isActive ? "bold" : ""}
+          fontSize={'14px'}
         >
           {text}
         </Text>
@@ -128,7 +129,7 @@ export default function Navbar() {
         ))}
       </Flex>
       <Flex>
-        <UserAvatar photoUrl="https://www.shutterstock.com/image-photo/smiling-business-man-black-suit-260nw-531023809.jpg" />
+        <UserAvatar photoUrl="/avatar.png" />
       </Flex>
     </Flex>
   );

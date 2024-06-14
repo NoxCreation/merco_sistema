@@ -16,6 +16,7 @@ export default function InitialLayout({ children }: Props) {
     >
       <Head>
         <title>Configuración Inicial</title>
+        <link rel="icon" href="/favicon.ico" />
       </Head>
       {children}
     </Center>

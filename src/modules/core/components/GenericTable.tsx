@@ -21,18 +21,24 @@ import React from "react";
 import { SearchIcon } from "@chakra-ui/icons";
 import OrderByIcon from "../icons/OrderByIcon";
 import ExportableTableContainer from "./ExportableTableContainer";
-import Pagination from "./Pagination";
+import SearchIconButton from "./SearchIconButton";
+import { Pagination } from "./Pagination";
 
 interface Props<T> {
   title: string;
   columns: ColumnDef<T>[];
   data: T[];
+  pagination: {
+    count: number,
+    page: number,
+    pageSize: number
+  }
 }
 
 // IMPORTANTE: La columna de acciones debe tener como id: "actions"
 // para que no tenga header
 
-export default function GenericTable<T>({ data, title, columns }: Props<T>) {
+export default function GenericTable<T>({ data, title, columns, pagination }: Props<T>) {
   const { getRowModel, getHeaderGroups } = useReactTable({
     data: data,
     columns: columns,
@@ -44,8 +50,8 @@ export default function GenericTable<T>({ data, title, columns }: Props<T>) {
   return (
     <ExportableTableContainer title={title}>
       <TableContainer>
-        <Table variant="striped">
-          <Thead>
+        <Table >
+          <Thead position="sticky" top={0} bg={'white'}>
             {getHeaderGroups().map((headerGroup) => (
               <Tr key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
@@ -68,7 +74,7 @@ export default function GenericTable<T>({ data, title, columns }: Props<T>) {
                             <OrderByIcon />
                           </Box>
                           <Box>
-                            <SearchIcon />
+                            <SearchIconButton ButtonIcon={<SearchIcon />} />
                           </Box>
                         </Flex>
                       </Flex>
@@ -83,7 +89,7 @@ export default function GenericTable<T>({ data, title, columns }: Props<T>) {
               <Tr
                 key={row.id}
                 borderColor={"red.400 !important"}
-                borderY={row.getIsSelected() ? "2px solid" : "none"}
+                borderY={"none"} /* row.getIsSelected() ? "2px solid" :  */
               >
                 {row.getVisibleCells().map((cell) => (
                   <Td key={cell.id}>
@@ -95,7 +101,20 @@ export default function GenericTable<T>({ data, title, columns }: Props<T>) {
           </Tbody>
         </Table>
       </TableContainer>
-      <Pagination pages={3} selectedPage={1} />
+      <Pagination
+        count={5}
+        pageSize={10}
+        /* siblingCount={2} */
+        page={1}
+        onChange={(e) => {
+          //setPage(e.page)
+          window.scrollTo({
+            top: 0,
+            left: 0,
+            behavior: 'smooth'
+          });
+        }}
+      />
     </ExportableTableContainer>
   );
 }

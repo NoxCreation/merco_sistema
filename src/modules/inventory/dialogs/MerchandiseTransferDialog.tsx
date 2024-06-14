@@ -18,25 +18,31 @@ import {
   SliderThumb,
   SliderFilledTrack,
   Stack,
-  ModalProps,
 } from "@chakra-ui/react";
-import React, { useContext } from "react";
-import InventoryContextProvider, {
-  InventoryContext,
-  InventoryContextType,
-} from "../contexts/InventoryContext";
+import React from "react";
 
-export default function MerchandiseTransferDialog() {
-  const inventoryContext = useContext<InventoryContextType | undefined>(
-    InventoryContext
-  );
+interface Props {
+  isOpen: boolean
+  onClose: () => void
+}
+
+export default function MerchandiseTransferDialog({
+  isOpen,
+  onClose
+}: Props) {
+
 
   return (
     <Modal
-      isOpen={inventoryContext?.isOpenTransferMerchandiseModal || false}
-      onClose={() => inventoryContext?.setOpenTransferMerchandiseModal(false)}
+      isOpen={isOpen}
+      onClose={onClose}
+      isCentered
+      scrollBehavior="inside"
     >
-      <ModalOverlay />
+      <ModalOverlay
+        bg='#00000030'
+        backdropFilter='blur(10px)'
+      />
       <ModalContent>
         <ModalHeader>Traslado de mercancia</ModalHeader>
         <ModalCloseButton />

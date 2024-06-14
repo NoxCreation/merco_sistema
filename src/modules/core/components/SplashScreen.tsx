@@ -7,10 +7,19 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useEffect } from "react";
 import Logo from "./Logo";
+import { useRouter } from "next/router";
 
 export default function SplashScreen() {
+  const router = useRouter()
+
+  useEffect(()=>{
+    setTimeout(()=>{
+      router.push("/dashboard")
+    }, 5000)
+  },[])
+
   return (
     <Flex
       width={"770px"}

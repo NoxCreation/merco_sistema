@@ -4,29 +4,20 @@ import {
   AddIcon,
   DeleteIcon,
   MinusIcon,
-  Search2Icon,
-  SearchIcon,
 } from "@chakra-ui/icons";
 import {
-  Button,
   ButtonGroup,
   IconButton,
-  Input,
-  InputGroup,
-  InputLeftElement,
-  Popover,
-  PopoverArrow,
-  PopoverBody,
-  PopoverCloseButton,
-  PopoverContent,
-  PopoverHeader,
-  PopoverTrigger,
 } from "@chakra-ui/react";
-import React, { useContext } from "react";
-import { InventoryContext } from "../contexts/InventoryContext";
+import React from "react";
 
-export default function InventoryActionsButtonGroup() {
-  const context = useContext(InventoryContext);
+interface Props {
+  onTransferProducts: () => void
+}
+
+export default function InventoryActionsButtonGroup({
+  onTransferProducts
+}: Props) {
 
   return (
     <ButtonGroup size="sm" isAttached>
@@ -35,16 +26,16 @@ export default function InventoryActionsButtonGroup() {
         aria-label="Add to friends"
         icon={<BucketIcon />}
         colorScheme="green"
-        onClick={() => context?.setOpenTransferMerchandiseModal(true)}
+        onClick={() => onTransferProducts()}
       />
       <IconButton
         aria-label="Add to friends"
-        icon={<AddIcon />}
+        icon={<AddIcon w={'10px'} h={'10px'} />}
         colorScheme="green"
       />
       <IconButton
         aria-label="Add to friends"
-        icon={<MinusIcon />}
+        icon={<MinusIcon w={'10px'} h={'10px'} />}
         colorScheme="green"
       />
       <IconButton

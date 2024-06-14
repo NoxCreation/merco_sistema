@@ -7,8 +7,8 @@ type Props = {
 export default function ListIcon({ color = "#718096" }: Props) {
   return (
     <svg
-      width="16"
-      height="14"
+      width="15"
+      height="15"
       viewBox="0 0 16 14"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
