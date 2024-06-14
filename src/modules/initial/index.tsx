@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import InitialLayout from "./layouts/InitialLayout";
 import InitialConfigStepper from "./components/InitialConfigStepper";
 import {
@@ -22,6 +22,7 @@ export default function InitialConfigScreen() {
     index: 1,
     count: steps.length,
   });
+  const [shops, setShops] = useState(Array<any>)
 
   const onNext = () => {
     goToNext()
@@ -37,8 +38,8 @@ export default function InitialConfigScreen() {
         <InitialConfigStepper steps={steps} activeStep={activeStep} />
 
         {activeStep == 1 && (<WelcomeForm onNext={onNext} />)}
-        {activeStep == 2 && (<BussinessCodeForm onNext={onNext} onPreview={onPreview} />)}
-        {activeStep == 3 && (<UserForm onNext={onNext} onPreview={onPreview} />)}
+        {activeStep == 2 && (<BussinessCodeForm onNext={onNext} onPreview={onPreview} setShops={setShops}/>)}
+        {activeStep == 3 && (<UserForm onNext={onNext} onPreview={onPreview} shops={shops}/>)}
         {activeStep == 4 && (<EndForm />)}
       </Stack>
     </InitialLayout>

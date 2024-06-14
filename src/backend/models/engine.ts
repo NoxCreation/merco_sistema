@@ -53,7 +53,7 @@ export const Manager = () => {
     const Stock = StockModel()//-
     const Inventary = InventaryModel(Product, ValueCoin)
     const Shop = ShopModel()//-
-    const Business = BusinessModel(Shop)//-
+    const Business = BusinessModel()//-
     const ChargeEmployee = ChargeEmployeeModel()//-
     const Employee = EmployeeModel(Shop, ChargeEmployee)//-
     const HistoryCardAccount = HistoryCardAccountModel(ValueCoin)//-
@@ -622,7 +622,11 @@ export const Manager = () => {
     // Si no esta sincronizado, se sincroniza la primera vez nada mas.
     if (!sync) {
         sync = true
-        sequelize.sync().then(() => console.log('Base de datos y tablas creadas!'));
+        const sc = async () => {
+            await sequelize.sync()
+        }
+        sc()
+        console.log('Base de datos y tablas creadas!')
     }
 
     return {
@@ -726,5 +730,7 @@ class Model {
     }
 }
 
-
+export function sleep(ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
 

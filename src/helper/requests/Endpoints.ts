@@ -1,7 +1,10 @@
 import client from "../Client";
 
 export const ENDPOINTS = {
-    check_system: "/check-system"
+    check_system: "/check-system",
+    initilize_system: "/initialize-system",
+    bussiness: "/bussiness",
+    user: "/user"
 }
 
 type RequestMethod = 'POST' | 'PUT' | 'GET' | 'DELETE';

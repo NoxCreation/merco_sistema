@@ -1,4 +1,4 @@
-import { Manager } from "@/backend/models/engine";
+import { Manager, sequelize, sleep } from "@/backend/models/engine";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(
@@ -7,7 +7,8 @@ export default async function handler(
 ) {
     try {
         // Creando BD si no está creada
-        Manager()
+        await Manager()
+        await sleep(10000)
 
         // Accediendo a los usuarios
         const users = (await Manager().User.findAll()).toJSON()
@@ -18,6 +19,9 @@ export default async function handler(
         })
     }
     catch {
+        //const cl = await sequelize.close()
+        //console.log("close", cl)
+        console.log("end fin")
         res.status(200).json({
             isInit: false
         })

@@ -1,5 +1,6 @@
 import LoadSuspense from "@/modules/core/components/LoadSuspense";
 import InitialLayout from "@/modules/initial/layouts/InitialLayout";
+import SplashScreen from "@/modules/splash_screen";
 import { Center } from "@chakra-ui/react";
 import Head from "next/head";
 

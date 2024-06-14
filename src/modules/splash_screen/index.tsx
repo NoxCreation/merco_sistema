@@ -6,14 +6,17 @@ import {
   Image,
   Stack,
   Text,
+  useToast,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import Logo from "../core/components/Logo";
 import { useRouter } from "next/router";
 import { check_system } from "@/helper/requests/CheckSystem";
+import { initialize_system } from "@/helper/requests/InitilizeSystem";
 
 export default function SplashScreen() {
   const router = useRouter()
+  const toast = useToast()
   const [state, setState] = useState("Comprobando configuración del sistema")
 
   useEffect(() => {
@@ -28,10 +31,22 @@ export default function SplashScreen() {
             }, 2000)
           }, 2000)
         }
-        else
-          setTimeout(() => {
-            router.push("/initial-config")
-          }, 2000)
+        else {
+          setState("Sincronizando con el servidor")
+          initialize_system((status: number, data: any) => {
+            if (status == 200)
+              router.push("/initial-config")
+            else {
+              toast({
+                description: "Error al inicializar",
+                status: 'error',
+                duration: 9000,
+                isClosable: true,
+                variant: "error"
+              })
+            }
+          })
+        }
       }
     })
   }, [])

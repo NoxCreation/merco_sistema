@@ -1,3 +1,4 @@
+import { get_bussines_by_code } from "@/helper/requests/Shop";
 import { Loading } from "@/modules/core/components/Loading";
 import {
   Button,
@@ -18,9 +19,10 @@ import React, { useState } from "react";
 interface Props {
   onNext: () => void
   onPreview: () => void
+  setShops: (shops: Array<any>) => void
 }
 
-export default function BussinessCodeForm({ onNext, onPreview }: Props) {
+export default function BussinessCodeForm({ onNext, onPreview, setShops }: Props) {
   const [lodiang, setLoading] = useState(false)
   const [code, setCode] = useState("")
   const toast = useToast()
@@ -39,25 +41,29 @@ export default function BussinessCodeForm({ onNext, onPreview }: Props) {
       setLoading(true)
       setTimeout(() => {
         setLoading(false)
-        if (true) {
-          toast({
-            description: "Código de negocio correcto",
-            status: 'success',
-            duration: 9000,
-            isClosable: true,
-            variant: "success"
-          })
-          onNext()
-        }
-        else {
-          toast({
-            description: "Código no válido",
-            status: 'error',
-            duration: 9000,
-            isClosable: true,
-            variant: "error"
-          })
-        }
+
+        get_bussines_by_code(code, (status: number, data: any) => {
+          if (status == 200) {
+            setShops(data.shops)
+            toast({
+              description: "Código de negocio correcto",
+              status: 'success',
+              duration: 9000,
+              isClosable: true,
+              variant: "success"
+            })
+            onNext()
+          }
+          else {
+            toast({
+              description: "Código no válido",
+              status: 'error',
+              duration: 9000,
+              isClosable: true,
+              variant: "error"
+            })
+          }
+        })
       }, 1000)
     }
   }
