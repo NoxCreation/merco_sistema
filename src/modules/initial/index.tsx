@@ -33,7 +33,7 @@ export default function InitialConfigScreen() {
 
   return (
     <InitialLayout>
-      <Stack width={"780px"} spacing={"45px"} alignItems={"center"}>
+      <Stack width={"780px"} spacing={"45px"} alignItems={"center"} pt={10}>
         <InitialConfigStepper steps={steps} activeStep={activeStep} />
 
         {activeStep == 1 && (<WelcomeForm onNext={onNext} />)}

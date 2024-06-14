@@ -1,8 +1,8 @@
 import { Sequelize } from "sequelize";
 import { sequelize } from "./engine";
 
-export const InventoryModel = (Product?: any, ValueCoin?: any) => {
-    const Inventory = sequelize.define('Inventory', {
+export const InventaryModel = (Product?: any, ValueCoin?: any) => {
+    const Inventary = sequelize.define('Inventary', {
         productId: {
             type: (Sequelize as any).INTEGER,
             references: {
@@ -19,6 +19,6 @@ export const InventoryModel = (Product?: any, ValueCoin?: any) => {
         }
     }, {});
 
-    return Inventory
+    return Inventary
 }
 

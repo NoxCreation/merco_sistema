@@ -2,6 +2,7 @@ import { ThemeConfig, extendTheme } from "@chakra-ui/react";
 import InputStyle from "./InputStyle";
 import ButtonStyle from "./ButtonStyle";
 import BadgeStyle from "./BadgeStyle";
+import Alert from "./Alert";
 import FormLabelStyle from "./FormLabelStyle";
 
 const MercoSistemaTheme: ThemeConfig = extendTheme({
@@ -15,6 +16,7 @@ const MercoSistemaTheme: ThemeConfig = extendTheme({
     Button: ButtonStyle,
     FormLabel: FormLabelStyle,
     Badge: BadgeStyle,
+    Alert: Alert
   },
   styles: {
     global: {

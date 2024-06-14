@@ -5,7 +5,7 @@ import { UnitModel } from "./Unit";
 import { CoinModel } from "./Coin";
 import { ValueCoinModel } from "./ValueCoin";
 import { StockModel } from "./Stock";
-import { InventoryModel } from "./Inventory";
+import { InventaryModel } from "./Inventary";
 import { ShopModel } from "./Shop";
 import { BusinessModel } from "./Business";
 import { ChargeEmployeeModel } from "./ChargeEmployee";
@@ -41,6 +41,7 @@ export const sequelize = new Sequelize({
     },
 }) as Sequelize;
 
+let sync = false
 export const Manager = () => {
 
     // Creando modelos
@@ -49,8 +50,8 @@ export const Manager = () => {
     const Product = ProductModel(Category, Unit)//-
     const Coin = CoinModel()//-
     const ValueCoin = ValueCoinModel(Coin)//-
-    const Stock = StockModel(Product)//-
-    const Inventory = InventoryModel(Product, ValueCoin)//Tiene problema aun
+    const Stock = StockModel()//-
+    const Inventary = InventaryModel(Product, ValueCoin)
     const Shop = ShopModel()//-
     const Business = BusinessModel(Shop)//-
     const ChargeEmployee = ChargeEmployeeModel()//-
@@ -107,29 +108,29 @@ export const Manager = () => {
 
     // Relación Uno a Mucho entre Inventary y ValueCoin
     relateOneToMany(
-        Inventory,
+        Inventary,
         ValueCoin,
-        'inventaries',
+        'inventaries1',
         'valuecoin',
         'priceId'
     )
 
     // Relación Uno a Mucho entre Inventary y Product
     relateOneToMany(
-        Inventory,
+        Inventary,
         Product,
-        'inventaries',
+        'inventaries2',
         'product',
         'productId'
     )
 
     // Relación Mucho a Mucho entre Inventary y Stock
     relateManyToMany(
-        Inventory,
+        Inventary,
         Stock,
-        'inventaries',
+        'inventaries3',
         'stocks',
-        'InventoryStock',
+        'InventaryStock',
     )
 
     // Relación Mucho a Mucho entre Bussiness y Shop
@@ -573,7 +574,7 @@ export const Manager = () => {
         'messaging_data_id'
     )
 
-    // Relación Uno a Mucho entre Transit y Order
+    // Relación Uno a Mucho entre Transit y DebtData
     relateOneToMany(
         Transit,
         DebtData,
@@ -618,8 +619,11 @@ export const Manager = () => {
         'TransitValueCoin',
     )
 
-
-    sequelize.sync().then(() => console.log('Base de datos y tablas creadas!'));
+    // Si no esta sincronizado, se sincroniza la primera vez nada mas.
+    if (!sync) {
+        sync = true
+        sequelize.sync().then(() => console.log('Base de datos y tablas creadas!'));
+    }
 
     return {
         Product: new Model(Product),
@@ -628,7 +632,7 @@ export const Manager = () => {
         Coin: new Model(Coin),
         ValueCoin: new Model(ValueCoin),
         Stock: new Model(Stock),
-        Inventory: new Model(Inventory),
+        Inventary: new Model(Inventary),
         Shop: new Model(Shop),
         Business: new Model(Business),
         ChargeEmployee: new Model(ChargeEmployee),
