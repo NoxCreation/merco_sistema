@@ -10,11 +10,16 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 
-export default function BussinessCodeForm() {
+interface Props {
+  onNext: () => void
+  onPreview: () => void
+}
+
+export default function BussinessCodeForm({ onNext, onPreview }: Props) {
   return (
     <React.Fragment>
       <Heading as={"h3"} width={"full"} fontSize={"18px"}>
-        Codigo
+        Código
       </Heading>
       <Text color={"gray.600"} fontSize={"15px"}>
         Para comenzar a usar el sistema debe ponerse en contacto con la
@@ -23,12 +28,15 @@ export default function BussinessCodeForm() {
       </Text>
       <Center maxWidth={"300px"}>
         <FormControl>
-          <FormLabel color={"gray.500"}>Codigo de negocio</FormLabel>
+          <FormLabel color={"gray.500"}>Código de negocio</FormLabel>
           <Input placeholder="B-202401" />
         </FormControl>
       </Center>
-      <Flex width={"full"} justifyContent={"right"}>
-        <Button colorScheme="cyan" color={"white"}>
+      <Flex width={"full"} justifyContent={"right"} gap={5}>
+        <Button colorScheme="cyan" variant={'ghost'} onClick={onPreview}>
+          Retroceder
+        </Button>
+        <Button colorScheme="cyan" color={"white"} onClick={onNext}>
           Continuar
         </Button>
       </Flex>

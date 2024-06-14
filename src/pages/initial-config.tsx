@@ -1,6 +1,6 @@
-import InitialConfigScreen from "@/modules/initial/screens/InitialConfigScreen";
+import LoadSuspense from "@/modules/core/components/LoadSuspense";
 import React from "react";
 
 export default function InitialConfig() {
-  return <InitialConfigScreen />;
+  return <LoadSuspense load={() => import('@/modules/initial/')} />
 }

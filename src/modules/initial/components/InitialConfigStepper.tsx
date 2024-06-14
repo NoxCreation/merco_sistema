@@ -13,21 +13,19 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 
-const steps = [
-  { title: "Bienvenida", description: "Introduccion" },
-  { title: "Codigo", description: "Codigo de negocio" },
-  { title: "Usuario", description: "Creando usuario" },
-  { title: "Finalizando", description: "Comprobacion de datos" },
-];
+interface Props {
+  steps: Array<any>
+  activeStep: number
+}
 
-export default function InitialConfigStepper() {
-  const { activeStep } = useSteps({
-    index: 1,
-    count: steps.length,
-  });
+export default function InitialConfigStepper({
+  steps,
+  activeStep
+}: Props) {
+
 
   return (
-    <Stepper index={activeStep} colorScheme="cyan">
+    <Stepper index={activeStep} colorScheme="cyan" w={'100%'}>
       {steps.map((step, index) => (
         <Step key={index}>
           <StepIndicator>

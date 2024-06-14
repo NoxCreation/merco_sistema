@@ -50,7 +50,7 @@ export default function GenericTable<T>({ data, title, columns, pagination }: Pr
   return (
     <ExportableTableContainer title={title}>
       <TableContainer>
-        <Table >
+        <Table fontSize={'13px'}>
           <Thead position="sticky" top={0} bg={'white'}>
             {getHeaderGroups().map((headerGroup) => (
               <Tr key={headerGroup.id}>

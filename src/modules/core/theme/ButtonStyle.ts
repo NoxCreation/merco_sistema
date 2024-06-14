@@ -9,6 +9,7 @@ const ButtonStyle: ComponentStyleConfig = {
 
   defaultProps: {
     colorScheme: "cyan",
+    color: "white"
   },
 };
 

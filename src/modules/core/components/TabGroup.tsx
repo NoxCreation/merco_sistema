@@ -11,7 +11,7 @@ export default function TabGroup({ tabs, onChange }: Props) {
     <Tabs position="relative" variant="unstyled" defaultIndex={0} onChange={onChange}>
       <TabList>
         {tabs.map((tab, index) => (
-          <Tab key={index}>{tab}</Tab>
+          <Tab key={index} fontSize={'13px'}>{tab}</Tab>
         ))}
       </TabList>
       <TabIndicator
