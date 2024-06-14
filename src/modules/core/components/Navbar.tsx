@@ -90,7 +90,7 @@ function NavbarLink({ text, href, icon, isActive }: Props) {
           flexGrow={1}
           color={isActive ? "cyan.400" : ""}
           fontWeight={isActive ? "bold" : ""}
-          fontSize={'14px'}
+          fontSize={'13px'}
         >
           {text}
         </Text>

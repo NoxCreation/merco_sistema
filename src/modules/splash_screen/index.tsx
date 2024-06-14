@@ -8,7 +8,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import React, { useEffect } from "react";
-import Logo from "./Logo";
+import Logo from "../core/components/Logo";
 import { useRouter } from "next/router";
 
 export default function SplashScreen() {
@@ -16,7 +16,7 @@ export default function SplashScreen() {
 
   useEffect(()=>{
     setTimeout(()=>{
-      router.push("/dashboard")
+      router.push("/initial-config")
     }, 5000)
   },[])
 

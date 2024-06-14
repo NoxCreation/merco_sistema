@@ -1,9 +1,9 @@
 import LoadSuspense from "@/modules/core/components/LoadSuspense";
-import InitialLayout from "@/modules/initial/layouts/InitialLayout";
 import { Center } from "@chakra-ui/react";
 import Head from "next/head";
+import React from "react";
 
-export default function Home() {
+export default function InitialConfig() {
   return (
     <Center
       minHeight={"100vh"}
@@ -12,10 +12,10 @@ export default function Home() {
       borderRadius={"lg"}
     >
       <Head>
-        <title>Cargando ...</title>
+        <title>Autenticación</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <LoadSuspense load={() => import('@/modules/splash_screen')} />
+      <LoadSuspense load={() => import('@/modules/auth')} />
     </Center>
-  );
+  )
 }

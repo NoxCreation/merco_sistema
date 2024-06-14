@@ -1,5 +1,6 @@
 import MercoSistemaTheme from "@/modules/core/theme/Theme";
 import "@/styles/globals.css";
+import '../../public/fonts/fonts.css';
 import { ChakraProvider } from "@chakra-ui/react";
 import type { AppProps } from "next/app";
 

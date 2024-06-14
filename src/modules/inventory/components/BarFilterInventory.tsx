@@ -31,6 +31,7 @@ export const BarFilterInventory = ({
             <Flex gap={"10px"} alignItems={"center"}>
                 <TabGroup tabs={tabs} onChange={setActiveTabIndex} />
                 <Select
+                    fontSize={'13px'}
                     colorScheme="cyan"
                     minWidth={"210px"}
                     backgroundColor={"white"}

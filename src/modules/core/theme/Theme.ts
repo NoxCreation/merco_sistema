@@ -5,6 +5,10 @@ import BadgeStyle from "./BadgeStyle";
 import FormLabelStyle from "./FormLabelStyle";
 
 const MercoSistemaTheme: ThemeConfig = extendTheme({
+  fonts: {
+    body: "Lato, sans-serif",
+    heading: "Lato, sans-serif",
+  },
   components: {
     Input: InputStyle,
     Select: InputStyle,
