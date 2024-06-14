@@ -1,22 +1,16 @@
 import {
   Box,
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
 } from "@chakra-ui/react";
 import React, { ReactNode } from "react";
 import Navbar from "../components/Navbar";
-import { usePathname } from "next/navigation";
 import Head from "next/head";
 
 type Props = {
   children: ReactNode | ReactNode[];
-  screenTitle: string;
+  screenTitle?: string;
 };
 
 export default function MainLayout({ children, screenTitle }: Props) {
-  const pathname = usePathname();
-
   return (
     <Box
       minHeight={"100vh"}
@@ -25,7 +19,8 @@ export default function MainLayout({ children, screenTitle }: Props) {
       backgroundColor={"#F5F9FC"}
     >
       <Head>
-        <title>{screenTitle}</title>
+        <title>{screenTitle ? screenTitle : 'Merco Sistema'}</title>
+        <link rel="icon" href="/favicon.ico" />
       </Head>
       <Navbar />
       {children}

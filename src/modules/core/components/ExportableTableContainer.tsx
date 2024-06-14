@@ -17,6 +17,7 @@ export default function ExportableTableContainer({ title, children }: Props) {
       paddingX={"30px"}
       borderRadius={"md"}
       position={"relative"}
+      boxShadow={"0 4px 120px 0 rgba(115, 115, 155, 8%)"}
     >
       <Flex
         width={"full"}

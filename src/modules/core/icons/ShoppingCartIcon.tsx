@@ -7,8 +7,8 @@ type Props = {
 export default function ShoppingCartIcon({ color = "#718096" }: Props) {
   return (
     <svg
-      width="20"
-      height="17"
+      width="16"
+      height="16"
       viewBox="0 0 20 17"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

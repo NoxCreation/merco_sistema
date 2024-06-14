@@ -1,6 +1,11 @@
-import OrdersScreen from "@/modules/orders/screens/OrdersScreen";
+import LoadSuspense from "@/modules/core/components/LoadSuspense";
+import MainLayout from "@/modules/core/layouts/MainLayout";
 import React from "react";
 
 export default function orders() {
-  return <OrdersScreen />;
+  return (
+    <MainLayout>
+      <LoadSuspense load={() => import('@/modules/orders/')} />
+    </MainLayout>
+  )
 }
