@@ -8,7 +8,7 @@ export default async function handler(
 
     try {
         const { id } = req.query
-        const inventary = (await Manager().Inventory.findOneById(parseInt(id as string), {
+        const inventary = (await Manager().Inventary.findOneById(parseInt(id as string), {
             include: [
                 {
                     model: Manager().Product.model, as: 'product'

@@ -12,7 +12,7 @@ export const EndForm = () => {
         <Flex flexDir={'column'} gap={5}>
             <Alert status='success'>
                 <AlertIcon />
-                Se ha instalado el sistema satisfactoriamente!
+                Se ha configurado el sistema satisfactoriamente!
             </Alert>
             <Flex justifyContent={"right"} gap={5}>
                 <Button colorScheme="cyan" color={"white"} onClick={goAuth}>

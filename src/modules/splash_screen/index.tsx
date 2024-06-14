@@ -6,19 +6,50 @@ import {
   Image,
   Stack,
   Text,
+  useToast,
 } from "@chakra-ui/react";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Logo from "../core/components/Logo";
 import { useRouter } from "next/router";
+import { check_system } from "@/helper/requests/CheckSystem";
+import { initialize_system } from "@/helper/requests/InitilizeSystem";
 
 export default function SplashScreen() {
   const router = useRouter()
+  const toast = useToast()
+  const [state, setState] = useState("Comprobando configuración del sistema")
 
-  useEffect(()=>{
-    setTimeout(()=>{
-      router.push("/initial-config")
-    }, 5000)
-  },[])
+  useEffect(() => {
+    check_system((status: number, data: any) => {
+      if (status == 200) {
+        if (data.isInit == true) {
+          setState("Comprobando conexión a red.")
+          setTimeout(() => {
+            setState("Sincronizando con el servidor")
+            setTimeout(() => {
+              router.push("/auth")
+            }, 2000)
+          }, 2000)
+        }
+        else {
+          setState("Sincronizando con el servidor")
+          initialize_system((status: number, data: any) => {
+            if (status == 200)
+              router.push("/initial-config")
+            else {
+              toast({
+                description: "Error al inicializar",
+                status: 'error',
+                duration: 9000,
+                isClosable: true,
+                variant: "error"
+              })
+            }
+          })
+        }
+      }
+    })
+  }, [])
 
   return (
     <Flex
@@ -38,7 +69,7 @@ export default function SplashScreen() {
         zIndex={"50"}
         alignItems={"center"}
         justifyContent={"center"}
-        spacing={"30px"}
+        spacing={"50px"}
       >
         <Stack alignItems={"center"}>
           <Center width={"80px"}>
@@ -48,13 +79,13 @@ export default function SplashScreen() {
             Merco Sistema
           </Heading>
           <Heading as={"h2"} fontSize={"10px"}>
-            v1.0.0
+            v0.1.0
           </Heading>
         </Stack>
-        <Text>Comprobando conexion de red ...</Text>
+        <Text>{state}</Text>
         <Text textAlign={"center"}>
-          Sistema de gestion de inventario
-          <br />© 2024 Frio PLus. Creado por NOX Creation
+          Sistema de gestión de inventario
+          <br />© 2024 FrioPlus / MercoVenta / RefriShop <br /> Creado por NOX Creation
         </Text>
       </Stack>
       <Box

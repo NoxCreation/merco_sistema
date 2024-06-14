@@ -10,7 +10,7 @@ export default async function handler(
     return ApiRequestTemplate(
         req,
         res,
-        Manager().HistoryCardAccount
+        Manager().Stock
     )
 
 }

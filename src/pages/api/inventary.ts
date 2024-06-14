@@ -10,7 +10,7 @@ export default async function handler(
     return ApiRequestTemplate(
         req,
         res,
-        Manager().Inventory,
+        Manager().Inventary,
         [
             {
                 model: Manager().ValueCoin.model, as: 'valuecoin', include: [
@@ -18,16 +18,21 @@ export default async function handler(
                         model: Manager().Coin.model, as: 'coin'
                     }
                 ]
+            },
+            {
+                model: Manager().Product.model, as: 'product'
+            },
+            {
+                model: Manager().Stock.model, as: 'stocks'
             }
         ],
         async () => {
             try {
                 await sequelize.transaction(async (t) => {
-                    const inventary = (await Manager().Inventory.create({
+                    const inventary = (await Manager().Inventary.create({
                         productId: req.body.productId,
                         priceId: req.body.priceId,
                     }, { transaction: t })).query
-                    console.log(req.body.stocksId)
                     await inventary.setStocks(req.body.stocksId, { transaction: t });
                     res.status(200).json(inventary)
                 })

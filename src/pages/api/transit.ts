@@ -25,7 +25,11 @@ export default async function handler(
                 model: Manager().Sale.model, as: 'sales'
             },
             {
-                model: Manager().OrderProduct.model, as: 'products'
+                model: Manager().OrderProduct.model, as: 'products', include: [
+                    {
+                        model: Manager().Product.model, as: 'product'
+                    }
+                ]
             },
             {
                 model: Manager().ValueCoin.model, as: 'amount'
