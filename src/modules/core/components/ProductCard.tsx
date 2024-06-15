@@ -28,8 +28,7 @@ export default function ProductCard({
   return (
     <Stack
       cursor={"pointer"}
-      minWidth={"150px"}
-      width={"full"}
+      maxWidth={"150px"}
       backgroundColor={"white"}
       borderRadius={"lg"}
       border={isSelected ? "2px solid" : "nonde"}
@@ -37,7 +36,7 @@ export default function ProductCard({
       boxShadow={"0 4px 120px 0 rgba(115, 115, 155, 8%)"}
     >
       <Center
-        width={"150px"}
+        maxWidth={"150px"}
         height={"150px"}
         overflow={"hidden"}
         borderRadius={"lg"}
@@ -46,10 +45,11 @@ export default function ProductCard({
           alt={productName}
           height={"full"}
           objectFit={"contain"}
+          width={"150px"}
           src="https://gegshop.nl/162891-tm_large_default/Repsol-4t-olie-moto-off-road-10w40-olie-vol-synthetisch-4l.jpg"
         />
       </Center>
-      <Stack padding={"10px"} spacing={0}>
+      <Stack padding={"10px"} spacing={0} width={"full"}>
         <Heading as="h5" fontSize={"14px"} fontWeight={"semibold"}>
           {productName}
         </Heading>

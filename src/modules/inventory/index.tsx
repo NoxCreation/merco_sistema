@@ -1,25 +1,25 @@
 import React, { useState } from "react";
 import MerchandiseTransferDialog from "./dialogs/MerchandiseTransferDialog";
 import InventoryTable from "./components/InventoryTable";
-import {
-  Box,
-  useDisclosure,
-} from "@chakra-ui/react";
+import { Box, useDisclosure } from "@chakra-ui/react";
 import EditInventoryDialog from "./dialogs/EditInventoryDialog";
 import { BarFilterInventory } from "./components/BarFilterInventory";
+import HistoryTable from "./components/HistoryTable";
 
 export default function InventoryScreen() {
-
   const [activeTabIndex, setActiveTabIndex] = useState<number>(0);
-  const { isOpen: isOpenTransferDialog, onOpen: onOpenTransferDialog, onClose: onCloseTransferDialog } = useDisclosure()
+  const {
+    isOpen: isOpenTransferDialog,
+    onOpen: onOpenTransferDialog,
+    onClose: onCloseTransferDialog,
+  } = useDisclosure();
 
-  const onTransferProducts =()=>{
-    onOpenTransferDialog()
-  }
+  const onTransferProducts = () => {
+    onOpenTransferDialog();
+  };
 
   return (
     <Box>
-
       {/* Barra de Filteros */}
       <BarFilterInventory
         setActiveTabIndex={setActiveTabIndex}
@@ -29,11 +29,9 @@ export default function InventoryScreen() {
 
       {/* Tabla */}
       {activeTabIndex === 0 ? (
-        <InventoryTable 
-          onTransferProducts={onTransferProducts}
-        />
+        <InventoryTable onTransferProducts={onTransferProducts} />
       ) : (
-        <>historial</>
+        <HistoryTable />
       )}
       {/* Fin */}
 
