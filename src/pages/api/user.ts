@@ -7,7 +7,7 @@ export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse<any>,
 ) {
-    req.body.password_hash = generateHash(req.body.password_hash)
+    req.body.password_hash = await generateHash(req.body.password_hash)
 
     return ApiRequestTemplate(
         req,

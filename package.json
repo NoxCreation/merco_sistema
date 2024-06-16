@@ -26,10 +26,11 @@
       "node_modules/**/*",
       "package.json",
       "start.js",
-      "public/**/*"
+      "public/**/*",
+      ".env"
     ],
     "icon": "public/favicon.ico",
-    "copyright": "MercoVenta, FrioPlus, Refreshop",
+    "copyright": "MercoVenta, FrioPlus, RefriShop",
     "productName": "Merco Sistema"
   },
   "dependencies": {
@@ -40,8 +41,10 @@
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@tanstack/react-table": "^8.17.3",
+    "@types/bcrypt": "^5.0.2",
     "@types/jsonwebtoken": "^9.0.6",
     "axios": "^1.7.2",
+    "bcrypt": "^5.1.1",
     "esbuild": "^0.21.5",
     "express": "^4.19.2",
     "framer-motion": "^11.2.10",
