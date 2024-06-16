@@ -1,9 +1,12 @@
 import {
   Box,
 } from "@chakra-ui/react";
-import React, { ReactNode } from "react";
+import React, { ReactNode, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import Head from "next/head";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
+import { Loading } from "../components/Loading";
 
 type Props = {
   children: ReactNode | ReactNode[];
@@ -11,6 +14,15 @@ type Props = {
 };
 
 export default function MainLayout({ children, screenTitle }: Props) {
+  const session = useSession()
+  const { status, data } = session
+  const router = useRouter()
+  useEffect(() => {
+    if (status == "unauthenticated") {
+      router.push("/auth")
+    }
+  }, [session, status, data])
+
   return (
     <Box
       minHeight={"100vh"}
@@ -23,7 +35,8 @@ export default function MainLayout({ children, screenTitle }: Props) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Navbar />
-      {children}
+      {status == 'loading' && <Loading isLoading />}
+      {status == 'authenticated' && (children)}
     </Box>
   );
 }

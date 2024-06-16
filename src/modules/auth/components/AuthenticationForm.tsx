@@ -6,15 +6,42 @@ import {
   Flex,
   Button,
   Heading,
+  useToast,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useState } from "react";
+import { signIn } from 'next-auth/react'
 
 export default function AuthenticationForm() {
   const router = useRouter()
+  const [username, setUsername] = useState('' as string)
+  const [password, setPassword] = useState('' as string)
+  const [loading, setLoading] = useState(false)
+  const toast = useToast()
 
-  const onAuth=()=>{
-    router.push("/dashboard")
+  const onAuth = async () => {
+    //router.push("/dashboard")
+    await signIn('credentials', {
+      username,
+      password,
+      redirect: false,
+    }).then((e: any) => {
+      if (e.ok) {
+        router.push('/dashboard')
+      }
+      else {
+        toast({
+          description: "No se ha podido autenticar con estas credenciales",
+          status: 'error',
+          duration: 9000,
+          isClosable: true,
+          position: 'top-right',
+          variant: 'error'
+        })
+        setLoading(false)
+      }
+
+    })
   }
 
   return (
@@ -25,11 +52,11 @@ export default function AuthenticationForm() {
       <Stack paddingY={"40px"} width={"full"}>
         <FormControl>
           <FormLabel>Usuario</FormLabel>
-          <Input backgroundColor={"white"} placeholder="pepe"/>
+          <Input backgroundColor={"white"} placeholder="pepe" value={username} onChange={t => setUsername(t.target.value)} />
         </FormControl>
         <FormControl>
-          <FormLabel>Contrasenna</FormLabel>
-          <Input backgroundColor={"white"} placeholder="12345*" />
+          <FormLabel>Contraseña</FormLabel>
+          <Input backgroundColor={"white"} placeholder="12345*" type="password" value={password} onChange={t => setPassword(t.target.value)} />
         </FormControl>
       </Stack>
       <Flex width={"full"} justifyContent={"right"}>
