@@ -1,7 +1,7 @@
 import { Button, Flex, Heading, Text } from "@chakra-ui/react"
 import { useRouter } from "next/router"
 
-const error403 = () => {
+const Error403 = () => {
     const router = useRouter()
     return (
         <Flex backgroundColor={"#F3F7F9"} justifyContent={'center'} alignItems={'center'} w={'100%'} h={'100vh'} flexDir={'column'} gap={5}>
@@ -18,4 +18,4 @@ const error403 = () => {
     )
 }
 
-export default error403
+export default Error403
