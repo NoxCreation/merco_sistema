@@ -1,4 +1,4 @@
-import { Box, Center, Flex, Text } from "@chakra-ui/react";
+import { Box, Button, Center, Flex, Text } from "@chakra-ui/react";
 import HomeIcon from "../icons/HomeIcon";
 import ShoppingBagIcon from "../icons/ShoppingBagIcon";
 import CarIcon from "../icons/CarIcon";
