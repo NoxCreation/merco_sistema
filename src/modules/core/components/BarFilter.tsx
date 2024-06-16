@@ -1,11 +1,18 @@
 import { BreadcrumbMain } from "@/modules/core/components/BreadcrumbMain"
-import { Flex } from "@chakra-ui/react"
+import TabGroup from "@/modules/core/components/TabGroup"
+import { Flex, Select } from "@chakra-ui/react"
+import { ReactNode } from "react"
 
 interface Props {
+    breadcrumb: Array<any>
+    children?: ReactNode
 }
 
-export const BarFilterTransit = ({
+export const BarFilter = ({
+    breadcrumb,
+    children
 }: Props) => {
+    const tabs = ["Inventario", "Historial"];
 
     return (
         <Flex
@@ -14,15 +21,9 @@ export const BarFilterTransit = ({
             alignItems={"center"}
             justifyContent={"space-between"}
         >
-            <BreadcrumbMain items={[
-                {
-                    label: 'Tránsito',
-                    icon: undefined,
-                    link: '/transito'
-                }
-            ]} />
+            <BreadcrumbMain items={breadcrumb} />
             <Flex gap={"10px"} alignItems={"center"}>
-                options
+                {children}
             </Flex>
         </Flex>
     )

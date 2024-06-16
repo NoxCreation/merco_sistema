@@ -63,47 +63,47 @@ const navbarItems = [
       },
       {
         text: "Productos",
-        href: "/nomenclators/categorie",
+        href: "/nomenclators/products",
       },
       {
         text: "Usuarios",
-        href: "/nomenclators/categorie",
+        href: "/nomenclators/users",
       },
       {
         text: "Trabajadores",
-        href: "/nomenclators/categorie",
+        href: "/nomenclators/workers",
       },
       {
         text: "Tiendas",
-        href: "/nomenclators/categorie",
+        href: "/nomenclators/shops",
       },
       {
         text: "Negocios",
-        href: "/nomenclators/categorie",
+        href: "/nomenclators/business",
       },
       {
         text: "Mensajeros",
-        href: "/nomenclators/categorie",
+        href: "/nomenclators/messengers",
       },
       {
         text: "Gastos",
-        href: "/nomenclators/categorie",
+        href: "/nomenclators/expenses",
       },
       {
         text: "Roles",
-        href: "/nomenclators/categorie",
+        href: "/nomenclators/roles",
       },
       {
         text: "Unidades de medida",
-        href: "/nomenclators/categorie",
+        href: "/nomenclators/units",
       },
       {
         text: "Cargos",
-        href: "/nomenclators/categorie",
+        href: "/nomenclators/charges",
       },
       {
         text: "Cuentas",
-        href: "/nomenclators/categorie",
+        href: "/nomenclators/accounts",
       },
     ]
   },
@@ -124,6 +124,7 @@ type Props = {
 
 function NavbarLink({ text, href, icon, isActive, subitems }: Props) {
   const [contraction, setContraction] = useState(false)
+  const pathname = usePathname();
   return (
     <>
       {subitems ? (
@@ -159,7 +160,7 @@ function NavbarLink({ text, href, icon, isActive, subitems }: Props) {
           <MenuList>
             {subitems.map((si, index) => (
               <Link href={si.href}>
-                <MenuItem key={index}>{si.text}</MenuItem>
+                <MenuItem key={index} color={pathname === si.href ? "#0BC5EA" : "#718096"}>{si.text}</MenuItem>
               </Link>
             ))}
           </MenuList>
@@ -217,7 +218,7 @@ export default function Navbar() {
         {navbarItems.map((item) => (
           <NavbarLink
             key={item.href}
-            isActive={pathname === item.href}
+            isActive={pathname === item.href || (item.subitems ? (item.subitems.find(t => t.href === pathname) ? true : false) : false)}
             href={item.href}
             icon={item.icon}
             text={item.text}

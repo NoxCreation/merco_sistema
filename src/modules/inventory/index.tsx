@@ -1,13 +1,16 @@
 import React, { useState } from "react";
 import MerchandiseTransferDialog from "./dialogs/MerchandiseTransferDialog";
 import InventoryTable from "./components/InventoryTable";
-import { Box, useDisclosure } from "@chakra-ui/react";
+import { Box, Select, useDisclosure } from "@chakra-ui/react";
 import EditInventoryDialog from "./dialogs/EditInventoryDialog";
-import { BarFilterInventory } from "./components/BarFilterInventory";
 import HistoryTable from "./components/HistoryTable";
+import { BarFilter } from "../core/components/BarFilter";
+import TabGroup from "../core/components/TabGroup";
+import InventoryActionsButtonGroup from "./components/InventoryActionsButtonGroup";
 
 export default function InventoryScreen() {
   const [activeTabIndex, setActiveTabIndex] = useState<number>(0);
+  const tabs = ["Inventario", "Historial"];
   const {
     isOpen: isOpenTransferDialog,
     onOpen: onOpenTransferDialog,
@@ -21,10 +24,28 @@ export default function InventoryScreen() {
   return (
     <Box>
       {/* Barra de Filteros */}
-      <BarFilterInventory
-        setActiveTabIndex={setActiveTabIndex}
-        onTransferProducts={onTransferProducts}
-      />
+      <BarFilter
+        breadcrumb={[
+          {
+            label: 'Inventario',
+            icon: undefined,
+            link: '/inventario'
+          }
+        ]}
+      >
+        <TabGroup tabs={tabs} onChange={setActiveTabIndex} />
+        <Select
+          fontSize={'13px'}
+          colorScheme="cyan"
+          minWidth={"210px"}
+          backgroundColor={"white"}
+        >
+          <option>Almacen</option>
+        </Select>
+        <InventoryActionsButtonGroup
+          onTransferProducts={onTransferProducts}
+        />
+      </BarFilter>
       {/* Fin */}
 
       {/* Tabla */}
