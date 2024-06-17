@@ -1,72 +1,115 @@
-import {
-  Image,
-  Text,
-  Checkbox,
-} from "@chakra-ui/react";
-import {
-  ColumnDef,
-} from "@tanstack/react-table";
+import { Image, Text, Checkbox, Badge, Box, Flex } from "@chakra-ui/react";
+import { ColumnDef } from "@tanstack/react-table";
 import React from "react";
 import GenericTable from "@/frontend/core/components/GenericTable";
+import TransitActionsButtonGroup from "./TransitActionsButtonGroup";
+import { formatDate } from "@/frontend/core/utils/formatDate";
+import { ChevronDownIcon, ChevronRightIcon } from "@chakra-ui/icons";
 
-const mockData: InventoryItem[] = [
+const mockData: MerchancyItem[] = [
   {
-    code: "INV001",
-    image:
-      "https://th.bing.com/th/id/R.790c5d80aa7ebcd2f4648aba12afe84f?rik=x%2byWiTnZqv5UbA&riu=http%3a%2f%2fwww.solquimia.com%2ffr%2fwp-content%2fuploads%2fsites%2f5%2f2016%2f01%2faceite-refrigerante-repsol-32.jpg&ehk=Qa%2bV%2feD3pjB887Pbkn7ugz%2bTZJcL5HmPfD5u7eoMIYc%3d&risl=&pid=ImgRaw&r=0",
-    category: "Electronics",
-    product: "Aceite Refrigerante Universal",
-    inStock: 75,
-    cost: 750,
-    price: 999,
+    id: "001",
+    category: "Electrónica",
+    product: "Laptop Dell XPS 13",
+    deliveryDate: new Date("2024-07-15"),
+    paymentDate: new Date("2024-08-01"),
+    quantity: 1,
+    amount: "USD",
+    amortized: "Pagado",
+    type: "Compra",
   },
   {
-    code: "INV002",
-    image:
-      "https://th.bing.com/th/id/R.ab6dc5c65021cffdb521043fd9cddc54?rik=KUdqSwdrWzl7Xg&pid=ImgRaw&r=0",
-    category: "Refrigeración",
-    product: "Aflojalo Todo  WD40 591 ml",
-    inStock: 50,
-    cost: 45,
-    price: 59,
+    id: "002",
+    category: "Libros",
+    product: "El Principito",
+    deliveryDate: new Date("2024-06-20"),
+    quantity: 3,
+    amount: "USD",
+    amortized: "Pendiente",
+    type: "Venta",
+    subRows: [
+      {
+        id: "002a",
+        category: "Libros",
+        product: "El Principito - Edición Especial",
+        deliveryDate: new Date("2024-06-22"),
+        quantity: 1,
+        amount: "USD",
+        amortized: "Pendiente",
+        type: "Venta",
+      },
+    ],
   },
   {
-    code: "INV003",
-    image:
-      "https://http2.mlstatic.com/D_NQ_NP_831842-MLC42192808966_062020-F.jpg",
-    category: "Aceite /Bomba de Vacio 4Lt",
-    product: "Refrigeración",
-    inStock: 30,
-    cost: 120,
-    price: 150,
+    id: "003",
+    category: "Ropa",
+    product: "Camiseta Manga Larga",
+    deliveryDate: new Date("2024-07-10"),
+    paymentDate: new Date("2024-07-30"),
+    quantity: 5,
+    amount: "USD",
+    amortized: "Pagado",
+    type: "Compra",
+  },
+  {
+    id: "004",
+    category: "Herramientas",
+    product: "Martillo",
+    deliveryDate: new Date("2024-05-25"),
+    quantity: 2,
+    amount: "USD",
+    amortized: "Pendiente",
+    type: "Compra",
+  },
+  {
+    id: "005",
+    category: "Jardín",
+    product: "Regadera",
+    deliveryDate: new Date("2024-06-01"),
+    paymentDate: new Date("2024-06-15"),
+    quantity: 1,
+    amount: "USD",
+    amortized: "Pagado",
+    type: "Venta",
+    subRows: [
+      {
+        id: "005a",
+        category: "Jardín",
+        product: "Manguera",
+        deliveryDate: new Date("2024-06-03"),
+        quantity: 1,
+        amount: "USD",
+        amortized: "Pagado",
+        type: "Venta",
+      },
+    ],
   },
 ];
 
-
-
-type InventoryItem = {
-  code: string;
-  image: string;
+type MerchancyItem = {
+  id: string;
   category: string;
   product: string;
-  inStock: number;
-  cost: number;
-  price: number;
+  deliveryDate: Date;
+  paymentDate?: Date;
+  quantity: number;
+  amount: string;
+  amortized: "Pagado" | "Pendiente";
+  type: string;
+  subRows?: MerchancyItem[];
 };
 
-interface Props {
-  
-}
+interface Props {}
 
-export default function TransitTable({  }: Props) {
-  const page = 1
-  const pageSize = 10
+export default function TransitTable({}: Props) {
+  const page = 1;
+  const pageSize = 10;
 
-  const columns: ColumnDef<InventoryItem>[] = [
+  const columns: ColumnDef<MerchancyItem>[] = [
     {
       header: ({ table }) => (
         <Checkbox
-          size={'sm'}
+          size={"sm"}
           colorScheme="cyan"
           isChecked={table.getIsAllRowsSelected()}
           isIndeterminate={table.getIsSomeRowsSelected()}
@@ -74,20 +117,27 @@ export default function TransitTable({  }: Props) {
             table.toggleAllRowsSelected(event.target.checked);
           }}
         >
-          Código
+          Id
         </Checkbox>
       ),
       accessorKey: "code",
       cell: ({ row, getValue }) => (
-        <Checkbox
-          size={'sm'}
-          colorScheme="cyan"
-          type="checkbox"
-          isChecked={row.getIsSelected()}
-          onChange={(event) => row.toggleSelected(event.target.checked)}
-        >
-          {getValue<string>()}
-        </Checkbox>
+        <Flex alignItems={"center"} gap={"10px"}>
+          <Checkbox
+            size={"sm"}
+            colorScheme="cyan"
+            type="checkbox"
+            isChecked={row.getIsSelected()}
+            onChange={(event) => row.toggleSelected(event.target.checked)}
+          >
+            {getValue<string>()}
+          </Checkbox>
+          {row.getCanExpand() && (
+            <Box onClick={() => row.toggleExpanded()} cursor={"pointer"}>
+              {row.getIsExpanded() ? <ChevronDownIcon /> : <ChevronRightIcon />}
+            </Box>
+          )}
+        </Flex>
       ),
     },
     {
@@ -99,29 +149,46 @@ export default function TransitTable({  }: Props) {
       accessorKey: "product",
     },
     {
-      header: "En Stock",
-      accessorKey: "inStock",
-      cell: (inStock) => {
-        const inStockQuantity = inStock.getValue<number>();
-        const isEmptyStock = inStockQuantity === 0;
-        return (
-          <Text color={isEmptyStock ? "red" : ""}>
-            {isEmptyStock ? "Agotado" : inStockQuantity}
-          </Text>
-        );
-      },
+      header: "Fecha de entrega",
+      accessorKey: "deliveryDate",
+      cell: (date) => formatDate(date.getValue<Date>()),
     },
     {
-      header: "Costo",
-      accessorKey: "cost",
+      header: "Fecha Pago",
+      accessorKey: "paymentDate",
+      cell: (date) => formatDate(date.getValue<Date>()),
     },
     {
-      header: "Precio",
-      accessorKey: "price",
+      header: "Cantidad",
+      accessorKey: "quantity",
+    },
+    {
+      header: "Importe",
+      accessorKey: "amount",
+      cell: (amount) => <Badge>{amount.getValue<string>()}</Badge>,
+    },
+    {
+      header: "Amortizado",
+      accessorKey: "amortized",
+      cell: (amortized) => (
+        <Badge
+          boxShadow={"none"}
+          backgroundColor={
+            amortized.getValue<string>() === "Pagado" ? "green.500" : "red.500"
+          }
+          color={"white"}
+        >
+          {amortized.getValue<string>()}
+        </Badge>
+      ),
+    },
+    {
+      header: "Tipo",
+      accessorKey: "type",
     },
     {
       id: "actions",
-      cell: (props) => (<>options</>),
+      cell: (props) => <TransitActionsButtonGroup />,
     },
   ];
 
@@ -129,12 +196,12 @@ export default function TransitTable({  }: Props) {
     <GenericTable
       columns={columns}
       data={mockData}
-      title="Tránsito"
+      title="Mercancías en Tránsito"
       pagination={{
         count: 10,
         page,
-        pageSize
+        pageSize,
       }}
     />
-  )
+  );
 }
