@@ -3,7 +3,7 @@ import CredentialsProvider from 'next-auth/providers/credentials'
 import jwt from 'jsonwebtoken';
 import { Manager } from '@/backend/models/engine';
 import { UserType } from '@/backend/types/UserType';
-import { generateHash } from '@/helper/generateHash';
+import { checkPassword, generateHash } from '@/helper/generateHash';
 
 export const options: NextAuthOptions = {
   providers: [
@@ -13,15 +13,11 @@ export const options: NextAuthOptions = {
         password: { label: 'password', type: 'password', placeholder: 'password' },
         username: { label: 'username', type: 'text', placeholder: 'username' }
       },
-      // @ts-ignore
-      async authorize(credentials) {
-        // @ts-ignore
+      async authorize(credentials: any) {
         const { username, password } = credentials
-        const password_hash = generateHash(password)
         const user_data = (await Manager().User.findOne({
           where: {
             username: username,
-            password_hash
           }, include: [
             {
               model: Manager().Role.model, as: 'role'
@@ -30,7 +26,13 @@ export const options: NextAuthOptions = {
         })).toJSON() as UserType
 
         if (!user_data) {
-          throw new Error(user_data)
+          throw new Error("Nombre de usuario no existe")
+        }
+
+        const match = await checkPassword(password, user_data.password_hash)
+
+        if (!match) {
+          throw new Error("Contraseña no coincide")
         }
 
         const user = {

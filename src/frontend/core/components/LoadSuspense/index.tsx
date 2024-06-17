@@ -31,36 +31,39 @@ export default function LoadSuspense(params: any) {
                         view_transit
                     } = perms as any
 
+                    let redirect = false
                     switch (pathname) {
                         case "/dashboard":
-                            if (!view_dashboard) router.push("/403")
+                            if (!view_dashboard) { router.push("/403"); redirect = true }
                             break
                         case "/inventario":
-                            if (!view_inventory) router.push("/403")
+                            if (!view_inventory) { router.push("/403"); redirect = true }
                             break
                         case "/transito":
-                            if (!view_transit) router.push("/403")
+                            if (!view_transit) { router.push("/403"); redirect = true }
                             break
                         case "/ordenes":
-                            if (!view_orders) router.push("/403")
+                            if (!view_orders) { router.push("/403"); redirect = true }
                             break
                         case "/finances":
-                            if (!view_finance) router.push("/403")
+                            if (!view_finance) { router.push("/403"); redirect = true }
                             break
                         case "/sales":
-                            if (!view_sales) router.push("/403")
+                            if (!view_sales) { router.push("/403"); redirect = true }
                             break
                         case "/box":
-                            if (!view_box) router.push("/403")
+                            if (!view_box) { router.push("/403"); redirect = true }
                             break
                         /* case "/configuration":
                             if (!view_dashboard) router.push("/403")
                             break */
                     }
 
-                    // cargar modulo
-                    setModule(lazy(load))
-                    setLoading(false)
+                    if (!redirect) {
+                        // cargar modulo
+                        setModule(lazy(load))
+                        setLoading(false)
+                    }
                 }
             }
         }

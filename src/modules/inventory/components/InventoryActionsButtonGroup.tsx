@@ -1,5 +1,5 @@
-import SearchIconButton from "@/modules/core/components/SearchIconButton";
-import BucketIcon from "@/modules/core/icons/BucketIcon";
+import SearchIconButton from "@/frontend/core/components/SearchIconButton";
+import BucketIcon from "@/frontend/core/icons/BucketIcon";
 import {
   AddIcon,
   DeleteIcon,

@@ -7,7 +7,7 @@ import {
   ColumnDef,
 } from "@tanstack/react-table";
 import React from "react";
-import GenericTable from "@/modules/core/components/GenericTable";
+import GenericTable from "@/frontend/core/components/GenericTable";
 
 const mockData: InventoryItem[] = [
   {

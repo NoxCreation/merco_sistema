@@ -1,4 +1,4 @@
-import MercoSistemaTheme from "@/modules/core/theme/Theme";
+import MercoSistemaTheme from "@/frontend/core/theme/Theme";
 import "@/styles/globals.css";
 import '../../public/fonts/fonts.css';
 import { ChakraProvider } from "@chakra-ui/react";

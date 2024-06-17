@@ -11,6 +11,7 @@ import {
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { signIn } from 'next-auth/react'
+import { Loading } from "@/frontend/core/components/Loading";
 
 export default function AuthenticationForm() {
   const router = useRouter()
@@ -21,6 +22,7 @@ export default function AuthenticationForm() {
 
   const onAuth = async () => {
     //router.push("/dashboard")
+    setLoading(true)
     await signIn('credentials', {
       username,
       password,
@@ -40,12 +42,12 @@ export default function AuthenticationForm() {
         })
         setLoading(false)
       }
-
     })
   }
 
   return (
     <Stack as={"form"} maxWidth={"402px"} width={"full"} paddingX={"20px"}>
+      <Loading isLoading={loading} />
       <Heading as={"h3"} fontSize={"32px"} textAlign={'center'}>
         Autenticación
       </Heading>

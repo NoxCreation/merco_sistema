@@ -15,8 +15,8 @@ import {
   Select,
   Divider,
 } from "@chakra-ui/react";
-import ProductCard from "../core/components/ProductCard";
-import GenericContainer from "../core/components/GenericContainer";
+import ProductCard from "../../frontend/core/components/ProductCard";
+import GenericContainer from "../../frontend/core/components/GenericContainer";
 import InvoiceProductItem from "./components/InvoiceProductItem";
 
 export default function SalesScreen() {
