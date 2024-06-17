@@ -2,9 +2,10 @@ import { Image, Text, Checkbox, Badge, Box, Flex } from "@chakra-ui/react";
 import { ColumnDef } from "@tanstack/react-table";
 import React from "react";
 import GenericTable from "@/frontend/core/components/GenericTable";
-import TransitActionsButtonGroup from "./TransitActionsButtonGroup";
+import TransitActionsButtonGroup from "./TransitTableActions";
 import { formatDate } from "@/frontend/core/utils/formatDate";
 import { ChevronDownIcon, ChevronRightIcon } from "@chakra-ui/icons";
+import TransitTableActions from "./TransitTableActions";
 
 const mockData: MerchancyItem[] = [
   {
@@ -188,7 +189,7 @@ export default function TransitTable({}: Props) {
     },
     {
       id: "actions",
-      cell: (props) => <TransitActionsButtonGroup />,
+      cell: (props) => <TransitTableActions />,
     },
   ];
 

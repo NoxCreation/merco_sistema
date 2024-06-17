@@ -2,8 +2,10 @@ import { Box, Flex } from "@chakra-ui/react";
 import React from "react";
 import TransitTable from "./components/TransitTable";
 import { BarFilter } from "../../frontend/core/components/BarFilter";
-import TransitActionsButtonGroup from "./components/TransitActionsButtonGroup";
+import TransitActionsButtonGroup from "./components/TransitTableActions";
 import TabGroup from "@/frontend/core/components/TabGroup";
+import AddProductDialog from "./dialogs/AddProductDialog";
+import TransitDetailsDialog from "./dialogs/TransitDetailsDialog";
 
 export default function TransitScreen() {
   const tabs = ["Domicilio", "Deudas"];
@@ -28,6 +30,10 @@ export default function TransitScreen() {
       {/* Tabla */}
       <TransitTable />
       {/* Fin */}
+
+      {/* Dialogs */}
+      {/* <AddProductDialog /> */}
+      <TransitDetailsDialog />
     </Box>
   );
 }

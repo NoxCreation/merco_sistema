@@ -30,27 +30,36 @@ import {
 } from "@chakra-ui/icons";
 import React from "react";
 
-export default function MakeOrderDialog() {
-
-  const [ haveAddress, setHaveAddress ] = React.useState<boolean>(false);
+export default function TransitDetailsDialog() {
+  const [haveAddress, setHaveAddress] = React.useState<boolean>(false);
+  const [haveAmortization, setHaveAmortization] =
+    React.useState<boolean>(false);
 
   return (
-    <Modal isOpen={true} onClose={() => null}>
+    <Modal isOpen={true} onClose={() => null} scrollBehavior="inside">
       <ModalOverlay />
-      <ModalContent>
-        <ModalHeader>{"{Nombre de la orden}"}</ModalHeader>
+      <ModalContent maxWidth={"500px"}>
+        <ModalHeader>{"T-023023"}</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <Stack spacing={4}>
             <FormControl>
               <FormLabel>Tipo</FormLabel>
-              <Flex
-                width={"full"}
-                alignItems={"center"}
-                paddingX={"20px"}
-              >
-                <Checkbox width={"full"}>Tienda</Checkbox>
-                <Checkbox width={"full"}>Domicilio</Checkbox>
+              <Flex width={"full"} alignItems={"center"} paddingX={"20px"}>
+                <Checkbox
+                  width={"full"}
+                  checked={haveAddress}
+                  onChange={() => setHaveAddress(!haveAddress)}
+                >
+                  Domicilio
+                </Checkbox>
+                <Checkbox
+                  width={"full"}
+                  checked={haveAmortization}
+                  onChange={() => setHaveAmortization(!haveAmortization)}
+                >
+                  Deuda
+                </Checkbox>
               </Flex>
             </FormControl>
             <FormControl isRequired>
@@ -84,27 +93,25 @@ export default function MakeOrderDialog() {
                 </Flex>
               </Flex>
               <Stack>
-                <InputGroup size="sm">
-                  <Input placeholder="Aceite Refrigerante Universal" />
-                  <InputRightAddon
-                    cursor={"pointer"}
-                    _hover={{ filter: "brightness(0.94)" }}
-                    transition={"filter .2s ease"}
-                  >
-                    <DeleteIcon />
-                  </InputRightAddon>
-                </InputGroup>
-                <InputGroup size="sm">
-                  <Input placeholder="Aceite Refrigerante Universal" />
-                  <InputRightAddon
-                    cursor={"pointer"}
-                    _hover={{ filter: "brightness(0.94)" }}
-                    transition={"filter .2s ease"}
-                  >
-                    <DeleteIcon />
-                  </InputRightAddon>
-                </InputGroup>
-                <Button width={"full"} colorScheme="cyan">
+                <Flex
+                  width={"full"}
+                  alignItems={"center"}
+                  justifyContent={"space-between"}
+                  paddingY={"10px"}
+                >
+                  <Text>Aceite Refrigerante Universal</Text>
+                  <DeleteIcon cursor={"pointer"} />
+                </Flex>
+                <Flex
+                  width={"full"}
+                  alignItems={"center"}
+                  justifyContent={"space-between"}
+                  paddingY={"10px"}
+                >
+                  <Text>Aceite Refrigerante Universal</Text>
+                  <DeleteIcon cursor={"pointer"} />
+                </Flex>
+                <Button width={"full"} colorScheme="cyan" color={"white"}>
                   <Center gap={"20px"}>
                     <AddIcon />
                     <Text>Agregar</Text>
@@ -141,7 +148,7 @@ export default function MakeOrderDialog() {
             <FormControl isRequired>
               <FormLabel>Costo</FormLabel>
               <InputGroup size="sm">
-                <Input placeholder="24.458,65" />
+                <Input placeholder="24.458,65" colorScheme="cyan" />
                 <InputRightElement width={"fit-content"} paddingX={"10px"}>
                   <Badge
                     variant={"outline"}
@@ -159,47 +166,58 @@ export default function MakeOrderDialog() {
               <FormLabel>Telefono</FormLabel>
               <Input placeholder="+53 58477311" />
             </FormControl>
-            <Flex gap={"5px"}>
-              <FormControl isRequired>
+            <Flex gap={"5px"} alignItems={"end"}>
+              <FormControl isRequired colorScheme="cyan">
                 <FormLabel>Fecha Recogida</FormLabel>
-                <InputGroup size="sm">
-                  <Input placeholder="24.458,65" />
-                  <InputRightElement width={"fit-content"} paddingX={"10px"}>
-                    <CalendarIcon />
-                  </InputRightElement>
-                </InputGroup>
+                <Input placeholder="24.458,65" colorScheme="cyan" type="date" />
               </FormControl>
               <FormControl isRequired>
                 <FormLabel>Hora inicial</FormLabel>
-                <InputGroup size="sm">
-                  <Input placeholder="24.458,65" />
-                  <InputRightElement width={"fit-content"} paddingX={"10px"}>
-                    <RepeatClockIcon />
-                  </InputRightElement>
-                </InputGroup>
+                <Input placeholder="24.458,65" type="time" colorScheme="cyan" />
               </FormControl>
               <FormControl isRequired>
                 <FormLabel>Hora final</FormLabel>
+                <Input placeholder="24.458,65" type="time" colorScheme="cyan" />
+              </FormControl>
+            </Flex>
+            {haveAddress && (
+              <FormControl isRequired>
+                <FormLabel>Direccion</FormLabel>
+                <Input placeholder="Calle O e/ E y F #4587" />
+              </FormControl>
+            )}
+            {haveAmortization && (
+              <FormControl isRequired>
+                <FormLabel>Amortización</FormLabel>
                 <InputGroup size="sm">
-                  <Input placeholder="24.458,65" />
+                  <Input placeholder="24.458,65" colorScheme="cyan" />
                   <InputRightElement width={"fit-content"} paddingX={"10px"}>
-                    <RepeatClockIcon />
+                    <Badge
+                      variant={"outline"}
+                      colorScheme="purple"
+                      borderRadius={"full"}
+                      paddingX={"10px"}
+                      translateX={"-1000px"}
+                    >
+                      USD
+                    </Badge>
                   </InputRightElement>
                 </InputGroup>
               </FormControl>
-            </Flex>
-            <FormControl isRequired>
-              <FormLabel>Direccion</FormLabel>
-              <Input placeholder="Calle O e/ E y F #4587" />
-            </FormControl>
+            )}
           </Stack>
         </ModalBody>
 
         <ModalFooter>
-          <Button colorScheme="cyan" mr={3} onClick={() => null}>
+          <Button
+            colorScheme="cyan"
+            mr={3}
+            onClick={() => null}
+            color={"white"}
+          >
             Guardar
           </Button>
-          <Button>Cancelar</Button>
+          <Button color={"white"}>Cancelar</Button>
         </ModalFooter>
       </ModalContent>
     </Modal>

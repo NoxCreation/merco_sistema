@@ -2,13 +2,19 @@ import React from "react";
 
 type Props = {
   color?: string;
+  width?: string;
+  heigth?: string;
 };
 
-export default function DollarIcon({ color = "#718096" }: Props) {
+export default function DollarIcon({
+  color = "#718096",
+  width = "20px",
+  heigth = "20px",
+}: Props) {
   return (
     <svg
-      width="20"
-      height="20"
+      width={width}
+      height={heigth}
       viewBox="0 0 25 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
