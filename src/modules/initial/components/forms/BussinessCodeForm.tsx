@@ -1,5 +1,5 @@
-import { get_bussines_by_code } from "@/helper/requests/Shop";
 import { Loading } from "@/frontend/core/components/Loading";
+import { get_bussines_by_code } from "@/helper/requests/Bussiness";
 import {
   Button,
   Center,

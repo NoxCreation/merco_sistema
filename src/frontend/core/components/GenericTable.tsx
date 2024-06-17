@@ -34,7 +34,9 @@ interface Props<T> {
     count: number;
     page: number;
     pageSize: number;
+    onChange?: (e: number) => void
   };
+  onChangeFilterCount?: (e: number) => void
 }
 
 // IMPORTANTE: La columna de acciones debe tener como id: "actions"
@@ -49,6 +51,7 @@ export default function GenericTable<T>({
   title,
   columns,
   pagination,
+  onChangeFilterCount
 }: Props<T>) {
   const { getRowModel, getHeaderGroups } = useReactTable({
     data: data,
@@ -61,11 +64,8 @@ export default function GenericTable<T>({
     enableRowSelection: true,
   });
 
-  console.log(getRowModel().rows[0].subRows);
-  console.log(getRowModel().rows[0].getIsExpanded());
-
   return (
-    <ExportableTableContainer title={title}>
+    <ExportableTableContainer title={title} onChangeFilterCount={onChangeFilterCount}>
       <TableContainer>
         <Table fontSize={"13px"}>
           <Thead position="sticky" top={0} bg={"white"}>
@@ -143,17 +143,19 @@ export default function GenericTable<T>({
         </Table>
       </TableContainer>
       <Pagination
-        count={5}
-        pageSize={10}
+        count={pagination.count}
+        pageSize={pagination.pageSize}
         /* siblingCount={2} */
-        page={1}
+        page={pagination.page}
         onChange={(e) => {
-          //setPage(e.page)
-          window.scrollTo({
-            top: 0,
-            left: 0,
-            behavior: "smooth",
-          });
+          if (pagination.onChange) {
+            pagination.onChange(e.page)
+            window.scrollTo({
+              top: 0,
+              left: 0,
+              behavior: "smooth",
+            });
+          }
         }}
       />
     </ExportableTableContainer>

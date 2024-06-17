@@ -17,6 +17,9 @@ export default async function handler(
             {
                 model: Manager().Unit.model, as: 'unit'
             },
+            {
+                model: Manager().Shop.model, as: 'shop'
+            },
         ]
     )
 }

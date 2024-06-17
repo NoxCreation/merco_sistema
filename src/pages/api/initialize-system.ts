@@ -13,13 +13,20 @@ export default async function handler(
             // Este proceso es para simular datos que se deben obtener de la sincronizacion
             let shop1 = null as any
             let shop2 = null as any
+            let shop3 = null as any
             await sequelize.transaction(async (t) => {
                 // Creando tienda
                 shop1 = (await Manager().Shop.create({
-                    name: "Frio Plus SHOP Lisa"
+                    name: "Almacen",
+                    description: "Almacen del negocio"
                 }, { transaction: t })).query
                 shop2 = (await Manager().Shop.create({
-                    name: "Frio Plus SHOP Marianao"
+                    name: "Frio Plus SHOP Lisa",
+                    description: "Tienda ubicada en la Lisa"
+                }, { transaction: t })).query
+                shop3 = (await Manager().Shop.create({
+                    name: "Frio Plus SHOP Marianao",
+                    description: "Tienda ubicada en Marianao"
                 }, { transaction: t })).query
 
                 // Creando negocio
@@ -27,7 +34,7 @@ export default async function handler(
                     name: "Frio Plus",
                     code: "4545"
                 }, { transaction: t })).query
-                await business.setShops([shop1.dataValues.id, shop2.dataValues.id], { transaction: t });
+                await business.setShops([shop1.dataValues.id, shop2.dataValues.id, shop3.dataValues.id], { transaction: t });
 
                 // Creando role admin
                 const role = (await Manager().Role.create({

@@ -1,5 +1,5 @@
 import { PAGESIZE } from "@/backend/models/VARS";
-import { Manager, sequelize } from "@/backend/models/engine";
+import { sequelize } from "@/backend/models/engine";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export const ApiRequestTemplate = async (
@@ -12,7 +12,10 @@ export const ApiRequestTemplate = async (
     if (req.method == "GET") {
         let _page = 1
         let _pageSize = PAGESIZE
-        const { page, pageSize } = req.query;
+        let _filter = {}
+        let count = 0
+        const { page, pageSize, filter } = req.query;
+        _filter = filter ? JSON.parse(filter as string) : _filter
         if (page != undefined)
             _page = parseInt(page as string)
         if (pageSize != undefined)
@@ -20,12 +23,17 @@ export const ApiRequestTemplate = async (
         const data = (await manager.findAll({
             limit: _pageSize,
             offset: (_page - 1) * _pageSize,
-            include
+            include,
+            where: {
+                ..._filter
+            }
         })).toJSON()
+        count = (await (await manager.findAll({})).count())
 
         return res.status(200).json({
             page: _page,
             pageSize: _pageSize,
+            count,
             data
         })
     }

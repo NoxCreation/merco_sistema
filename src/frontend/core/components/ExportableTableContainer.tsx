@@ -5,10 +5,11 @@ import ExcelIcon from "../icons/ExcelIcon";
 type Props = {
   title: string;
   children: ReactNode | ReactNode[];
-  onExportToExcel?: () => {};
+  onExportToExcel?: () => void;
+  onChangeFilterCount?: (e: number) => void
 };
 
-export default function ExportableTableContainer({ title, children }: Props) {
+export default function ExportableTableContainer({ title, children, onChangeFilterCount }: Props) {
   return (
     <Stack
       spacing={5}
@@ -56,8 +57,9 @@ export default function ExportableTableContainer({ title, children }: Props) {
           width={"fit-content"}
           colorScheme="cyan"
           position={"sticky"}
+          onChange={e => onChangeFilterCount && onChangeFilterCount(parseInt(e.target.value))}
         >
-          {Array.from({ length: 4 }).map((_, index) => (
+          {Array.from({ length: 10 }).map((_, index) => (
             <option key={index}>{(index + 1) * 5}</option>
           ))}
         </Select>

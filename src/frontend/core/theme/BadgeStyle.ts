@@ -1,4 +1,4 @@
-import { ComponentStyleConfig, color } from "@chakra-ui/react";
+import { ComponentStyleConfig, StyleFunctionProps, color } from "@chakra-ui/react";
 
 const BadgeStyle: ComponentStyleConfig = {
   baseStyle: {
@@ -9,7 +9,8 @@ const BadgeStyle: ComponentStyleConfig = {
 
   sizes: {},
 
-  variants: {},
+  variants: {
+  },
 
   defaultProps: {
     variant: "outline",
