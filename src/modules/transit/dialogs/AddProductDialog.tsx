@@ -1,4 +1,4 @@
-import ProductCard from "@/modules/core/components/ProductCard";
+import ProductCard from "@/frontend/core/components/ProductCard";
 import { SearchIcon } from "@chakra-ui/icons";
 import {
   Modal,

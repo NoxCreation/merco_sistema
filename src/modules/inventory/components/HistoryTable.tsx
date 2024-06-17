@@ -1,9 +1,9 @@
 import React from "react";
 import { Image, Checkbox, IconButton, Box, Flex } from "@chakra-ui/react";
 import { ColumnDef } from "@tanstack/react-table";
-import GenericTable from "@/modules/core/components/GenericTable";
-import { formatDate } from "@/modules/core/utils/formatDate";
-import DocumentIcon from "@/modules/core/icons/DocumentIcon";
+import GenericTable from "@/frontend/core/components/GenericTable";
+import { formatDate } from "@/frontend/core/utils/formatDate";
+import DocumentIcon from "@/frontend/core/icons/DocumentIcon";
 import {
   ChevronRightIcon,
   ChevronDownIcon,

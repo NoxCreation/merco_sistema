@@ -1,6 +1,6 @@
 import React from "react";
 import { Box } from "@chakra-ui/react";
-import { BarFilter } from "@/modules/core/components/BarFilter";
+import { BarFilter } from "@/frontend/core/components/BarFilter";
 
 export default function NomenclatorsWorkersScreen() {
     return (
@@ -20,6 +20,7 @@ export default function NomenclatorsWorkersScreen() {
                     },
                 ]}
             >
+                options
             </BarFilter>
             {/* Fin */}
 

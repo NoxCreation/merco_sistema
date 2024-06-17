@@ -1,5 +1,5 @@
-import { BreadcrumbMain } from "@/modules/core/components/BreadcrumbMain"
-import TabGroup from "@/modules/core/components/TabGroup"
+import { BreadcrumbMain } from "@/frontend/core/components/BreadcrumbMain"
+import TabGroup from "@/frontend/core/components/TabGroup"
 import { Flex, Select } from "@chakra-ui/react"
 import { ReactNode } from "react"
 

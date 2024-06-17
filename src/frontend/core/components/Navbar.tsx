@@ -8,8 +8,8 @@ import ShoppingCartIcon from "../icons/ShoppingCartIcon";
 import BoxIcon from "../icons/BoxIcon";
 import SettingsIcon from "../icons/SettingsIcon";
 import ListIcon from "../icons/ListIcon";
-import Logo from "../components/Logo";
-import UserAvatar from "../components/UserAvatar";
+import Logo from "./Logo";
+import UserAvatar from "./UserAvatar";
 import { usePathname } from "next/navigation";
 import { ReactElement, useState } from "react";
 import React from "react";
@@ -159,8 +159,8 @@ function NavbarLink({ text, href, icon, isActive, subitems }: Props) {
           </MenuButton>
           <MenuList>
             {subitems.map((si, index) => (
-              <Link href={si.href}>
-                <MenuItem key={index} color={pathname === si.href ? "#0BC5EA" : "#718096"}>{si.text}</MenuItem>
+              <Link href={si.href} key={index}>
+                <MenuItem color={pathname === si.href ? "#0BC5EA" : "#718096"}>{si.text}</MenuItem>
               </Link>
             ))}
           </MenuList>

@@ -1,4 +1,4 @@
-import LoadSuspense from "@/modules/core/components/LoadSuspense";
+import LoadSuspense from "@/frontend/core/components/LoadSuspense";
 import React from "react";
 
 export default function InitialConfig() {

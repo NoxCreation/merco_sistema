@@ -1,5 +1,5 @@
 import { create_user } from "@/helper/requests/User"
-import { Loading } from "@/modules/core/components/Loading"
+import { Loading } from "@/frontend/core/components/Loading"
 import { Alert, AlertIcon, Button, Flex, FormControl, FormHelperText, FormLabel, Input, Heading, Select, Textarea } from "@chakra-ui/react"
 import { useState } from "react"
 

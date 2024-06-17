@@ -1,6 +1,6 @@
 import { ComponentStyleConfig, StyleFunctionProps } from '@chakra-ui/react'
 
-const Alert: ComponentStyleConfig = {
+const AlertStyle: ComponentStyleConfig = {
   baseStyle: ({ isDisabled, colorMode }) => ({}),
 
   variants: {
@@ -96,4 +96,4 @@ const Alert: ComponentStyleConfig = {
   },
 }
 
-export default Alert
+export default AlertStyle

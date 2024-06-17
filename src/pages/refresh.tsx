@@ -1,4 +1,4 @@
-import { Loading } from "@/modules/core/components/Loading"
+import { Loading } from "@/frontend/core/components/Loading"
 import { signOut } from "next-auth/react"
 import { useRouter } from "next/router"
 import { useEffect } from "react"

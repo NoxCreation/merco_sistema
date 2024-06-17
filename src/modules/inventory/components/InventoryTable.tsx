@@ -8,7 +8,7 @@ import {
 } from "@tanstack/react-table";
 import React from "react";
 import InventoryActionsButtonGroup from "./InventoryActionsButtonGroup";
-import GenericTable from "@/modules/core/components/GenericTable";
+import GenericTable from "@/frontend/core/components/GenericTable";
 
 const mockData: InventoryItem[] = [
   {

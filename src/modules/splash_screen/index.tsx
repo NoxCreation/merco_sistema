@@ -9,7 +9,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
-import Logo from "../core/components/Logo";
+import Logo from "../../frontend/core/components/Logo";
 import { useRouter } from "next/router";
 import { check_system } from "@/helper/requests/CheckSystem";
 import { initialize_system } from "@/helper/requests/InitilizeSystem";

@@ -1,7 +1,7 @@
 import { Box, Flex } from "@chakra-ui/react";
 import React from "react";
 import TransitTable from "./components/TransitTable";
-import { BarFilter } from "../core/components/BarFilter";
+import { BarFilter } from "../../frontend/core/components/BarFilter";
 
 export default function TransitScreen() {
   return (

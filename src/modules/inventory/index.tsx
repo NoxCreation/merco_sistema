@@ -4,8 +4,8 @@ import InventoryTable from "./components/InventoryTable";
 import { Box, Select, useDisclosure } from "@chakra-ui/react";
 import EditInventoryDialog from "./dialogs/EditInventoryDialog";
 import HistoryTable from "./components/HistoryTable";
-import { BarFilter } from "../core/components/BarFilter";
-import TabGroup from "../core/components/TabGroup";
+import { BarFilter } from "../../frontend/core/components/BarFilter";
+import TabGroup from "../../frontend/core/components/TabGroup";
 import InventoryActionsButtonGroup from "./components/InventoryActionsButtonGroup";
 
 export default function InventoryScreen() {

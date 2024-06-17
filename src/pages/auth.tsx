@@ -1,4 +1,4 @@
-import LoadSuspense from "@/modules/core/components/LoadSuspense";
+import LoadSuspense from "@/frontend/core/components/LoadSuspense";
 import { Center } from "@chakra-ui/react";
 import Head from "next/head";
 import React from "react";
