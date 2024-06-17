@@ -12,8 +12,6 @@ export const BarFilter = ({
     breadcrumb,
     children
 }: Props) => {
-    const tabs = ["Inventario", "Historial"];
-
     return (
         <Flex
             paddingY={"20px"}

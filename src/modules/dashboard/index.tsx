@@ -1,6 +1,5 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Badge, Flex } from "@chakra-ui/react";
-import { useSession } from "next-auth/react";
 import { MiniCard } from "./components/MiniCard";
 import GraphicGrowingIcon from "@/frontend/core/icons/GraphicGrowingIcon";
 
