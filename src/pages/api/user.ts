@@ -7,12 +7,22 @@ export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse<any>,
 ) {
-    req.body.password_hash = await generateHash(req.body.password_hash)
+    if (req.method == "POST")
+        req.body.password_hash = await generateHash(req.body.password_hash)
 
     return ApiRequestTemplate(
         req,
         res,
-        Manager().User
+        Manager().User,
+        [
+            {
+                model: Manager().Shop.model, as: 'shop', include: [
+                    {
+                        model: Manager().Business.model, as: 'businesses'
+                    },
+                ]
+            },
+        ]
     )
 
 }

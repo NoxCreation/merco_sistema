@@ -10,7 +10,23 @@ declare module 'next-auth' {
       role: string
       email: string
       accessToken?: string
-      permissions: any
+      permissions: any,
+      shop: {
+        id: number,
+        name: string,
+        description: string,
+        createdAt: string,
+        updatedAt: string,
+        businesses: [
+          {
+            id: number,
+            name: string,
+            code: string,
+            createdAt: string,
+            updatedAt: string
+          }
+        ]
+      }
     } & DefaultSession
   }
 
@@ -22,7 +38,23 @@ declare module 'next-auth' {
       role: string
       email: string
       accessToken?: string
-      permissions: any
+      permissions: any,
+      shop: {
+        id: number,
+        name: string,
+        description: string,
+        createdAt: string,
+        updatedAt: string,
+        businesses: [
+          {
+            id: number,
+            name: string,
+            code: string,
+            createdAt: string,
+            updatedAt: string
+          }
+        ]
+      }
     }
   }
 }
@@ -36,7 +68,23 @@ declare module 'next-auth/jwt' {
       role: string
       email: string
       accessToken?: string
-      permissions: any
+      permissions: any,
+      shop: {
+        id: number,
+        name: string,
+        description: string,
+        createdAt: string,
+        updatedAt: string
+        businesses: [
+          {
+            id: number,
+            name: string,
+            code: string,
+            createdAt: string,
+            updatedAt: string
+          }
+        ]
+      }
     }
   }
 }

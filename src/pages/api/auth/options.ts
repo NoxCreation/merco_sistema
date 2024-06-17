@@ -21,9 +21,17 @@ export const options: NextAuthOptions = {
           }, include: [
             {
               model: Manager().Role.model, as: 'role'
+            },
+            {
+              model: Manager().Shop.model, as: 'shop', include: [
+                {
+                  model: Manager().Business.model, as: 'businesses'
+                },
+              ]
             }
           ]
         })).toJSON() as UserType
+        console.log("user_data", user_data)
 
         if (!user_data) {
           throw new Error("Nombre de usuario no existe")
@@ -35,17 +43,31 @@ export const options: NextAuthOptions = {
           throw new Error("Contraseña no coincide")
         }
 
+        console.log("user_data", user_data)
+
         const user = {
           id: user_data.id,
           first_name: user_data.first_name,
           last_name: user_data.last_name,
           role: user_data.role.name,
           email: user_data.email,
+          shop: {
+            id: user_data.shop.id,
+            name: user_data.shop.name,
+            description: user_data.shop.description,
+            businesses: [
+              {
+                id: user_data.shop.businesses[0].id,
+                name: user_data.shop.businesses[0].name,
+                code: user_data.shop.businesses[0].code,
+              }
+            ]
+          },
           permissions: user_data.role
         } as any
 
         // Generar el token JWT
-        const secretKey = process.env.SECRET_KEY as string; 
+        const secretKey = process.env.SECRET_KEY as string;
         const accessToken = jwt.sign(user, secretKey, { expiresIn: '7d' });
 
         if (!accessToken) {

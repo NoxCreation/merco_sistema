@@ -47,12 +47,12 @@ export const Manager = () => {
     // Creando modelos
     const Category = CategoryModel()//-
     const Unit = UnitModel()//-
-    const Product = ProductModel(Category, Unit)//-
     const Coin = CoinModel()//-
     const ValueCoin = ValueCoinModel(Coin)//-
     const Stock = StockModel()//-
-    const Inventary = InventaryModel(Product, ValueCoin)
     const Shop = ShopModel()//-
+    const Product = ProductModel(Category, Unit, Shop)//-
+    const Inventary = InventaryModel(Product, ValueCoin)
     const Business = BusinessModel()//-
     const ChargeEmployee = ChargeEmployeeModel()//-
     const Employee = EmployeeModel(Shop, ChargeEmployee)//-
@@ -95,6 +95,15 @@ export const Manager = () => {
         'products',
         'unit',
         'unitId'
+    )
+
+    // Relación Uno a Mucho entre Product y Shop
+    relateOneToMany(
+        Product,
+        Shop,
+        'products',
+        'shop',
+        'shopId'
     )
 
     // Relación Uno a Mucho entre ValueCoin y Coin
@@ -203,6 +212,15 @@ export const Manager = () => {
         'users',
         'role',
         'roleId'
+    )
+
+    // Relación Uno a Mucho entre User y Shop
+    relateOneToMany(
+        User,
+        Shop,
+        'users',
+        'shop',
+        'shopId'
     )
 
     // Relación Uno a Mucho entre Sale y Coin
@@ -624,9 +642,9 @@ export const Manager = () => {
         sync = true
         const sc = async () => {
             await sequelize.sync()
+            console.log('Base de datos y tablas creadas!')
         }
         sc()
-        console.log('Base de datos y tablas creadas!')
     }
 
     return {

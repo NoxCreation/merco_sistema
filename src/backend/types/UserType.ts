@@ -30,5 +30,68 @@ export interface UserType {
         perms_box: string,
         createdAt: string,
         updatedAt: string
+    },
+    shop: {
+        id: number,
+        name: string,
+        description: string,
+        createdAt: string,
+        updatedAt: string,
+        businesses: [
+            {
+                id: number,
+                name: string,
+                code: string,
+                createdAt: string,
+                updatedAt: string
+            }
+        ]
     }
 }
+
+export type Product = {
+    id: number,
+    image: string,
+    code: string,
+    name: string,
+    categoryId: number,
+    coste_usd: number,
+    price_usd: number,
+    count_unit: number,
+    unitId: number,
+    gain_rate: boolean,
+    rate_seller: number,
+    rate_sponsor: number,
+    barcode: string,
+    createdAt: string,
+    updatedAt: string,
+    category: {
+        id: number,
+        name: string,
+        description: string,
+        createdAt: string,
+        updatedAt: string
+    },
+    unit: {
+        id: number,
+        name: string,
+        symbol: string,
+        createdAt: string,
+        updatedAt: string
+    }
+};
+
+export type Shop = {
+    id: number,
+    name: string,
+    description: string,
+    createdAt: string,
+    updatedAt: string,
+}
+
+export type Bussines = {
+    id: number,
+    name: string,
+    code: string,
+    shops: Array<Shop>
+};

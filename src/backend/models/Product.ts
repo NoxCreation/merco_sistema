@@ -1,7 +1,7 @@
 import { Sequelize } from "sequelize";
 import { sequelize } from "./engine";
 
-export const ProductModel = (Category?: any, Unit?: any) => {
+export const ProductModel = (Category?: any, Unit?: any, Shop?: any) => {
     const Product = sequelize.define('Product', {
         image: {
             type: (Sequelize as any).STRING
@@ -46,6 +46,13 @@ export const ProductModel = (Category?: any, Unit?: any) => {
         },
         barcode: {
             type: (Sequelize as any).TEXT
+        },
+        shopId: {
+            type: (Sequelize as any).INTEGER,
+            references: {
+                model: Shop, // 'Users' would also work
+                key: 'id'
+            }
         }
     }, {});
 
