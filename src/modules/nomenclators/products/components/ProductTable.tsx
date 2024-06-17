@@ -18,10 +18,10 @@ import { Loading } from "@/frontend/core/components/Loading";
 import { useSession } from "next-auth/react";
 
 interface Props {
-  shopSelect: number
+  onEdit: (produc: Product) => void
 }
 
-export default function CRUDTable({ shopSelect }: Props) {
+export default function CRUDTable({ onEdit }: Props) {
   const [loading, setLoading] = useState(true)
   const [products, setProducts] = useState([] as Array<Product>)
   const [page, setPage] = useState(1 as number)
@@ -31,8 +31,11 @@ export default function CRUDTable({ shopSelect }: Props) {
 
   const Load = async (npage?: number, npageSize?: number) => {
     setLoading(true)
+    // Por convención personal, todos los poroductos estarán asociados al alamacen
+    // De un negocio, el 0 simpre sera el id del alamcen
+    const warehouse_id = data?.user.shop.businesses[0].id
     const filter = {
-      shopId: shopSelect
+      shopId: warehouse_id
     }
     await get_products({ page: npage ? npage : page, pageSize: npageSize ? npageSize : pageSize, filter }, (status: number, data: any) => {
       if (status == 200) {
@@ -45,7 +48,7 @@ export default function CRUDTable({ shopSelect }: Props) {
 
   useEffect(() => {
     Load()
-  }, [shopSelect])
+  }, [])
 
   const columns: ColumnDef<Product>[] = [
     {
@@ -132,7 +135,9 @@ export default function CRUDTable({ shopSelect }: Props) {
     },
     {
       id: "actions",
-      cell: (props) => <CRUDActionsButtonGroup inTable />,
+      cell: (props) => <CRUDActionsButtonGroup inTable onCreateEdit={()=>{
+        onEdit(products[props.row.index])
+      }} />,
     },
   ];
 

@@ -12,11 +12,13 @@ import {
 import React from "react";
 
 interface Props {
+  onCreateEdit: () => void
   inTable?: boolean
 }
 
 export default function CRUDActionsButtonGroup({
-  inTable
+  inTable,
+  onCreateEdit
 }: Props) {
 
   return (
@@ -29,6 +31,7 @@ export default function CRUDActionsButtonGroup({
               aria-label="Add to friends"
               icon={<AddIcon w={'10px'} h={'10px'} />}
               colorScheme="green"
+              onClick={onCreateEdit}
             />
           </Tooltip>
         </>
@@ -38,6 +41,7 @@ export default function CRUDActionsButtonGroup({
             aria-label="Add to friends"
             icon={<EditIcon w={'10px'} h={'10px'} color={'white'} />}
             colorScheme="cyan"
+            onClick={onCreateEdit}
           />
         </Tooltip>
       )}
