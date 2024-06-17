@@ -40,7 +40,7 @@ export const MiniCard = ({
                 <Box w={'100%'}>
                     <Text
                         fontWeight={'700'}
-                        fontSize={'25px'}
+                        fontSize={'20px'}
                     >
                         {value}
                     </Text>
