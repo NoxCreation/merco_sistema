@@ -25,8 +25,6 @@ import {
   AddIcon,
   DeleteIcon,
   ExternalLinkIcon,
-  CalendarIcon,
-  RepeatClockIcon,
 } from "@chakra-ui/icons";
 import React from "react";
 
