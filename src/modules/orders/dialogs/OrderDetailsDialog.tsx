@@ -30,9 +30,10 @@ import {
 } from "@chakra-ui/icons";
 import React from "react";
 
-export default function TransitDetailsDialog() {
+export default function OrderDetailsDialog() {
   const [haveAddress, setHaveAddress] = React.useState<boolean>(false);
-  const [haveAmortization, setHaveAmortization] =
+  const [haveShop, setHaveShop] = React.useState<boolean>(false);
+  const [isInConfirmationState, setConfirmationState] =
     React.useState<boolean>(false);
 
   return (
@@ -42,23 +43,28 @@ export default function TransitDetailsDialog() {
         <ModalHeader>{"T-023023"}</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
+          {isInConfirmationState && (
+            <Text>
+              ¿Está seguro que se realizó el pago de la siguiente orden?
+            </Text>
+          )}
           <Stack spacing={4}>
             <FormControl>
               <FormLabel>Tipo</FormLabel>
               <Flex width={"full"} alignItems={"center"} paddingX={"20px"}>
                 <Checkbox
                   width={"full"}
+                  checked={haveShop}
+                  onChange={() => setHaveShop(!haveShop)}
+                >
+                  Tienda
+                </Checkbox>
+                <Checkbox
+                  width={"full"}
                   checked={haveAddress}
                   onChange={() => setHaveAddress(!haveAddress)}
                 >
                   Domicilio
-                </Checkbox>
-                <Checkbox
-                  width={"full"}
-                  checked={haveAmortization}
-                  onChange={() => setHaveAmortization(!haveAmortization)}
-                >
-                  Deuda
                 </Checkbox>
               </Flex>
             </FormControl>
@@ -192,37 +198,29 @@ export default function TransitDetailsDialog() {
                 <Input placeholder="Calle O e/ E y F #4587" />
               </FormControl>
             )}
-            {haveAmortization && (
-              <FormControl isRequired>
-                <FormLabel>Amortización</FormLabel>
-                <InputGroup size="sm">
-                  <Input placeholder="24.458,65" colorScheme="cyan" />
-                  <InputRightElement width={"fit-content"} paddingX={"10px"}>
-                    <Badge
-                      variant={"outline"}
-                      colorScheme="purple"
-                      borderRadius={"full"}
-                      paddingX={"10px"}
-                      translateX={"-1000px"}
-                    >
-                      USD
-                    </Badge>
-                  </InputRightElement>
-                </InputGroup>
-              </FormControl>
-            )}
           </Stack>
         </ModalBody>
 
         <ModalFooter>
-          <Button
-            colorScheme="cyan"
-            mr={3}
-            onClick={() => null}
-            color={"white"}
-          >
-            Guardar
-          </Button>
+          {isInConfirmationState ? (
+            <Button
+              colorScheme="green"
+              mr={3}
+              onClick={() => null}
+              color={"white"}
+            >
+              Pagado
+            </Button>
+          ) : (
+            <Button
+              colorScheme="cyan"
+              mr={3}
+              onClick={() => null}
+              color={"white"}
+            >
+              Guardar
+            </Button>
+          )}
           <Button color={"white"}>Cancelar</Button>
         </ModalFooter>
       </ModalContent>

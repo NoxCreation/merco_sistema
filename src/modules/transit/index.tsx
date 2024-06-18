@@ -6,6 +6,7 @@ import TransitActionsButtonGroup from "./components/TransitTableActions";
 import TabGroup from "@/frontend/core/components/TabGroup";
 import AddProductDialog from "./dialogs/AddProductDialog";
 import TransitDetailsDialog from "./dialogs/TransitDetailsDialog";
+import AddProductQuantityDialog from "./dialogs/AddProductQuantityDialog";
 
 export default function TransitScreen() {
   const tabs = ["Domicilio", "Deudas"];
@@ -33,7 +34,8 @@ export default function TransitScreen() {
 
       {/* Dialogs */}
       {/* <AddProductDialog /> */}
-      <TransitDetailsDialog />
+      {/* <TransitDetailsDialog /> */}
+      <AddProductQuantityDialog />
     </Box>
   );
 }
