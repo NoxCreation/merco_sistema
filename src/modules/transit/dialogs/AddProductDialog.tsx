@@ -19,7 +19,7 @@ import React from "react";
 
 export default function AddProductDialog() {
   return (
-    <Modal isOpen={true} onClose={() => null} size={"xl"} scrollBehavior="inside">
+    <Modal isOpen={true} onClose={() => null} size={"xl"} scrollBehavior="inside" isCentered>
       <ModalOverlay />
       <ModalContent backgroundColor={""}>
         <ModalHeader>Agregar</ModalHeader>

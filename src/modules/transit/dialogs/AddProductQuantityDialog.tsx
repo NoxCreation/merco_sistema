@@ -24,6 +24,7 @@ import React from "react";
 export default function AddProductQuantityDialog() {
   return (
     <Modal
+      isCentered
       isOpen={true}
       onClose={() => null}
       scrollBehavior="inside"
@@ -53,7 +54,12 @@ export default function AddProductQuantityDialog() {
 
         <ModalFooter gap={"10px"}>
           <Button colorScheme="gray">Cancelar</Button>
-          <Button colorScheme="cyan" mr={3} onClick={() => null} color={"white"}>
+          <Button
+            colorScheme="cyan"
+            mr={3}
+            onClick={() => null}
+            color={"white"}
+          >
             Aceptar
           </Button>
         </ModalFooter>

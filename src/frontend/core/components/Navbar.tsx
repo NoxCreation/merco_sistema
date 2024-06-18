@@ -25,17 +25,17 @@ const navbarItems = [
   {
     text: "Inventario",
     icon: <ShoppingBagIcon />,
-    href: "/inventario",
+    href: "/inventory",
   },
   {
     text: "Tránsito",
     icon: <CarIcon />,
-    href: "/transito",
+    href: "/transit",
   },
   {
     text: "Órdenes",
     icon: <DocumentIcon />,
-    href: "/ordenes",
+    href: "/orders",
   },
   {
     text: "Finanzas",

@@ -36,7 +36,7 @@ export default function TransitDetailsDialog() {
     React.useState<boolean>(false);
 
   return (
-    <Modal isOpen={true} onClose={() => null} scrollBehavior="inside">
+    <Modal isOpen={true} onClose={() => null} scrollBehavior="inside" isCentered>
       <ModalOverlay />
       <ModalContent maxWidth={"500px"}>
         <ModalHeader>{"T-023023"}</ModalHeader>

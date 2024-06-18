@@ -22,7 +22,7 @@ import React from "react";
 
 export default function EditInventoryDialog() {
   return (
-    <Modal isOpen={false} onClose={() => null}>
+    <Modal isOpen={false} onClose={() => null} isCentered>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>{"{nombre del producto a editar}"}</ModalHeader>

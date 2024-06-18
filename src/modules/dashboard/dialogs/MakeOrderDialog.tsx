@@ -32,7 +32,7 @@ import React from "react";
 
 export default function MakeOrderDialog() {
   return (
-    <Modal isOpen={true} onClose={() => null}>
+    <Modal isOpen={true} onClose={() => null} isCentered>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>{"{Nombre de la orden}"}</ModalHeader>
