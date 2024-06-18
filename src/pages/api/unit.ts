@@ -9,16 +9,7 @@ export default async function handler(
     return ApiRequestTemplate(
         req,
         res,
-        Manager().Unit,
-        [
-            {
-                model: Manager().ValueCoin.model, as: 'valuecoin', include: [
-                    {
-                        model: Manager().Coin.model, as: 'coin'
-                    }
-                ]
-            }
-        ]
+        Manager().Unit
     )
 
 }

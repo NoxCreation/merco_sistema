@@ -9,7 +9,12 @@ export default async function handler(
     return ApiRequestTemplate(
         req,
         res,
-        Manager().Category
+        Manager().Category,
+        [
+            {
+                model: Manager().Business.model, as: 'business'
+            }
+        ]
     )
 
 }

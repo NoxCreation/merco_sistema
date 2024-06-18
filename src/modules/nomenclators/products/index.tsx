@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, useDisclosure } from "@chakra-ui/react";
 import { BarFilter } from "@/frontend/core/components/BarFilter";
 import CRUDActionsButtonGroup from "./components/CRUDActionsButtonGroup";
@@ -17,7 +17,7 @@ export default function NomenclatorsProductsScreen() {
 
     return (
         <Box>
-            {/* Barra de Filteros */}
+            {/* Barra de Filtros */}
             <BarFilter
                 breadcrumb={[
                     {
@@ -32,7 +32,6 @@ export default function NomenclatorsProductsScreen() {
                     },
                 ]}
             >
-
                 <CRUDActionsButtonGroup
                     onCreateEdit={()=>{
                         setProductsSelects([])
@@ -45,6 +44,7 @@ export default function NomenclatorsProductsScreen() {
 
             {/* Tabla */}
             <CRUDTable
+                refresh={isOpen}
                 onEdit={(product: Product)=>{
                     setProductsSelects([product])
                     setAction("edit")

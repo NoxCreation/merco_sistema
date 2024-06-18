@@ -45,15 +45,15 @@ let sync = false
 export const Manager = () => {
 
     // Creando modelos
-    const Category = CategoryModel()//-
-    const Unit = UnitModel()//-
+    const Business = BusinessModel()//-
+    const Category = CategoryModel(Business)//-
+    const Unit = UnitModel(Business)//-
     const Coin = CoinModel()//-
     const ValueCoin = ValueCoinModel(Coin)//-
     const Stock = StockModel()//-
     const Shop = ShopModel()//-
-    const Product = ProductModel(Category, Unit, Shop)//-
+    const Product = ProductModel(Category, Unit, Shop, Business)//-
     const Inventary = InventaryModel(Product, ValueCoin)
-    const Business = BusinessModel()//-
     const ChargeEmployee = ChargeEmployeeModel()//-
     const Employee = EmployeeModel(Shop, ChargeEmployee)//-
     const HistoryCardAccount = HistoryCardAccountModel(ValueCoin)//-
@@ -97,13 +97,31 @@ export const Manager = () => {
         'unitId'
     )
 
-    // Relación Uno a Mucho entre Product y Shop
+    // Relación Uno a Mucho entre Product y Business
     relateOneToMany(
         Product,
-        Shop,
+        Business,
         'products',
-        'shop',
-        'shopId'
+        'business',
+        'businessId'
+    )
+
+    // Relación Uno a Mucho entre Product y Business
+    relateOneToMany(
+        Category,
+        Business,
+        'categories',
+        'business',
+        'businessId'
+    )
+
+    // Relación Uno a Mucho entre Unit y Business
+    relateOneToMany(
+        Unit,
+        Business,
+        'units',
+        'business',
+        'businessId'
     )
 
     // Relación Uno a Mucho entre ValueCoin y Coin

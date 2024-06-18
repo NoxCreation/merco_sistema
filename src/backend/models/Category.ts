@@ -1,7 +1,7 @@
 import { Sequelize } from "sequelize";
 import { sequelize } from "./engine";
 
-export const CategoryModel = () => {
+export const CategoryModel = (Business?: any) => {
     const Category = sequelize.define('Category', {
         name: {
             type: (Sequelize as any).STRING
@@ -9,6 +9,13 @@ export const CategoryModel = () => {
         description: {
             type: (Sequelize as any).STRING
         },
+        businessId: {
+            type: (Sequelize as any).INTEGER,
+            references: {
+                model: Business,
+                key: 'id'
+            }
+        }
     }, {});
 
     return Category

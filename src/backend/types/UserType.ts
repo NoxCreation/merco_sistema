@@ -78,6 +78,13 @@ export type Product = {
         symbol: string,
         createdAt: string,
         updatedAt: string
+    },
+    business: {
+        id: number,
+        name: string,
+        code: string,
+        createdAt: string,
+        updatedAt: string
     }
 };
 
@@ -94,4 +101,21 @@ export type Bussines = {
     name: string,
     code: string,
     shops: Array<Shop>
+};
+
+export type Category = {
+    id: number,
+    name: string,
+    description: string,
+    businessId: number,
+    createdAt: string,
+    updatedAt: string,
+};
+
+export type Unit = {
+    id: number,
+    name: string,
+    symbol: string,
+    createdAt: string,
+    updatedAt: string,
 };

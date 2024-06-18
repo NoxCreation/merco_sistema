@@ -7,26 +7,26 @@ import { Product } from "@/backend/types/UserType";
 import { get_products } from "@/helper/requests/Products";
 import { Loading } from "@/frontend/core/components/Loading";
 import { useSession } from "next-auth/react";
+import { useGetBussiness } from "@/helper/hooks/useGetBussiness";
 
 interface Props {
   onEdit: (produc: Product) => void;
+  refresh: boolean
 }
 
-export default function CRUDTable({ onEdit }: Props) {
+export default function CRUDTable({ onEdit, refresh }: Props) {
   const [loading, setLoading] = useState(true)
   const [products, setProducts] = useState([] as Array<Product>)
   const [page, setPage] = useState(1 as number)
   const [pageSize, setPageSize] = useState(10 as number)
   const [count, setCount] = useState(3 as number)
-  const { data } = useSession()
+  const businesses = useGetBussiness()
 
   const Load = async (npage?: number, npageSize?: number) => {
     setLoading(true);
-    // Por convención personal, todos los poroductos estarán asociados al alamacen
-    // De un negocio, el 0 simpre sera el id del alamcen
-    const warehouse_id = data?.user.shop.businesses[0].id
+    // Filtrar por el id del negocio
     const filter = {
-      shopId: warehouse_id
+      businessId: businesses?.id
     }
     await get_products({ page: npage ? npage : page, pageSize: npageSize ? npageSize : pageSize, filter }, (status: number, data: any) => {
       if (status == 200) {
@@ -39,7 +39,7 @@ export default function CRUDTable({ onEdit }: Props) {
 
   useEffect(() => {
     Load()
-  }, []);
+  }, [refresh]);
 
   const columns: ColumnDef<Product>[] = [
     {

@@ -1,4 +1,4 @@
-import { Product } from "@/backend/types/UserType";
+import { Category, Product, Unit } from "@/backend/types/UserType";
 import {
   Button,
   FormControl,
@@ -25,9 +25,21 @@ import {
   RadioGroup,
   InputGroup,
   InputRightElement,
-  Badge
+  Badge,
+  Image,
+  IconButton,
+  useToast,
+  FormHelperText
 } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { FiTrash } from "react-icons/fi";
+import { ImageLoadButton } from "../components/ImageLoadButton";
+import { create_product, edit_product } from "@/helper/requests/Products";
+import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
+import { get_categorie } from "@/helper/requests/Category";
+import { useGetBussiness } from "@/helper/hooks/useGetBussiness";
+import { get_unit } from "@/helper/requests/Unit";
 
 interface Props {
   action: string
@@ -42,17 +54,23 @@ export default function CreateEditProductDialog({
   onClose,
   product
 }: Props) {
+  const toast = useToast()
+  const [categories, setCategories] = useState([] as Array<Category>)
+  const [units, setUnits] = useState([] as Array<Unit>)
 
+  const [image, setImage] = useState(undefined as string | undefined)
   const [code, setCode] = useState("" as string)
   const [name, setName] = useState("" as string)
-  const [categoryId, setCategoryId] = useState(0 as number)
+  const [categoryId, setCategoryId] = useState(1 as number)
   const [coste_usd, setCoste_usd] = useState(0 as number)
   const [price_usd, setPrice_usd] = useState(0 as number)
   const [count_unit, setCount_unit] = useState(0 as number)
-  const [unitId, setUnitId] = useState(0 as number)
+  const [unitId, setUnitId] = useState(1 as number)
   const [gain_rate, setGain_rate] = useState(true as boolean)
   const [rate_seller, setRate_seller] = useState(0 as number)
   const [rate_sponsor, setRate_sponsor] = useState(0 as number)
+  const [file, setFile] = useState(null);
+  const businesses = useGetBussiness()
 
   useEffect(() => {
     if (isOpen) {
@@ -67,11 +85,13 @@ export default function CreateEditProductDialog({
         setGain_rate(product?.gain_rate as boolean)
         setRate_seller(product?.rate_seller as number)
         setRate_sponsor(product?.rate_sponsor as number)
+        setImage(product?.image as string)
+        setFile(null)
       }
       else {
         setCode("")
         setName("")
-        setCategoryId(0)
+        setCategoryId(1)
         setCoste_usd(0)
         setPrice_usd(0)
         setCount_unit(1)
@@ -79,7 +99,112 @@ export default function CreateEditProductDialog({
         setGain_rate(false)
         setRate_seller(0)
         setRate_sponsor(0)
+        setFile(null)
+        setImage(undefined)
       }
+    }
+  }, [isOpen])
+
+  const isValid = () => {
+    let valid = true
+    if (
+      code == "" ||
+      name == "" ||
+      coste_usd == 0 ||
+      coste_usd == null ||
+      price_usd == 0 ||
+      price_usd == null ||
+      count_unit == 0 ||
+      count_unit == null
+    ) {
+      valid = false
+    }
+
+    if(action == 'create' && file == null)
+      valid = false
+
+    if (gain_rate) {
+      if (
+        rate_seller == 0 ||
+        rate_seller == null ||
+        rate_sponsor == 0 ||
+        rate_sponsor == null
+      ) {
+        valid = false
+      }
+    }
+
+    return valid
+  }
+
+  const onCreateEdit = async () => {
+    if (isValid()) {
+      const data = {
+        image,
+        code,
+        name,
+        categoryId,
+        unitId,
+        coste_usd,
+        price_usd,
+        count_unit,
+        gain_rate,
+        rate_seller,
+        rate_sponsor,
+        barcode: "",
+        businessId: businesses?.id
+      }
+      console.log(action)
+      if (action == 'create')
+        await create_product(file, data, (status: number, data: any) => {
+          if (status == 200) {
+            onClose()
+          }
+        })
+      else
+        await edit_product(product?.id as number, file, data, (status: number, data: any) => {
+          if (status == 200) {
+            onClose()
+          }
+        })
+    }
+    else {
+      toast({
+        description: "Hay campos sin llenar o con valores no válidos.",
+        status: 'error',
+        duration: 9000,
+        isClosable: true,
+        variant: "error"
+      })
+    }
+
+  }
+
+  useEffect(() => {
+    if (isOpen) {
+      // Filtrar por el id del negocio
+      const filter = {
+        businessId: businesses?.id
+      }
+      get_categorie({
+        page: 1,
+        pageSize: 1000,
+        filter
+      }, (status: number, data: any) => {
+        if (status == 200) {
+          setCategories(data.data as Array<Category>)
+        }
+      })
+
+      get_unit({
+        page: 1,
+        pageSize: 1000,
+        filter
+      }, (status: number, data: any) => {
+        if (status == 200) {
+          setUnits(data.data as Array<Unit>)
+        }
+      })
     }
   }, [isOpen])
 
@@ -99,18 +224,23 @@ export default function CreateEditProductDialog({
         <ModalCloseButton />
         <ModalBody>
           <Stack spacing={3}>
-            <FormControl>
-              <FormLabel><Box as="span" color={"red"}>*</Box> Código</FormLabel>
-              <Input type="text" value={code} onChange={t => setCode(t.target.value)} />
-            </FormControl>
+            <Flex gap={5}>
+              <ImageLoadButton file={file} setFile={setFile} image={image} />
+              <FormControl>
+                <FormLabel><Box as="span" color={"red"}>*</Box> Código</FormLabel>
+                <Input type="text" value={code} onChange={t => setCode(t.target.value)} />
+              </FormControl>
+            </Flex>
             <FormControl>
               <FormLabel><Box as="span" color={"red"}>*</Box> Nombre</FormLabel>
-              <Input type="text" value={name} onChange={t => setCode(t.target.value)} />
+              <Input type="text" value={name} onChange={t => setName(t.target.value)} />
             </FormControl>
             <FormControl>
               <FormLabel><Box as="span" color={"red"}>*</Box> Categoría</FormLabel>
               <Select value={categoryId} onChange={t => setCategoryId(parseInt(t.target.value))}>
-                <option value="1">Tecnologia</option>
+                {categories.map((c, i) => (
+                  <option value={c.id} key={i}>{c.name}</option>
+                ))}
               </Select>
             </FormControl>
             <FormControl>
@@ -121,6 +251,7 @@ export default function CreateEditProductDialog({
                   <Badge>USD</Badge>
                 </InputRightElement>
               </InputGroup>
+              <FormHelperText>Debe ser mayor a cero</FormHelperText>
             </FormControl>
             <FormControl>
               <FormLabel><Box as="span" color={"red"}>*</Box> Precio</FormLabel>
@@ -130,11 +261,23 @@ export default function CreateEditProductDialog({
                   <Badge>USD</Badge>
                 </InputRightElement>
               </InputGroup>
+              <FormHelperText>Debe ser mayor a cero</FormHelperText>
             </FormControl>
-            <FormControl>
-              <FormLabel><Box as="span" color={"red"}>*</Box> Cantidad</FormLabel>
-              <Input type="text" value={count_unit} onChange={t => setCount_unit(parseFloat(t.target.value))} />
-            </FormControl>
+            <Flex gap={5}>
+              <FormControl>
+                <FormLabel><Box as="span" color={"red"}>*</Box> Cantidad</FormLabel>
+                <Input type="text" value={count_unit} onChange={t => setCount_unit(parseFloat(t.target.value))} />
+                <FormHelperText>Debe ser mayor a cero</FormHelperText>
+              </FormControl>
+              <FormControl>
+                <FormLabel><Box as="span" color={"red"}>*</Box> Unidad</FormLabel>
+                <Select value={unitId} onChange={t => setUnitId(parseInt(t.target.value))}>
+                  {units.map((c, i) => (
+                    <option value={c.id} key={i}>{c.symbol} | {c.name}</option>
+                  ))}
+                </Select>
+              </FormControl>
+            </Flex>
             <FormControl>
               <RadioGroup >
                 <Flex>
@@ -153,6 +296,7 @@ export default function CreateEditProductDialog({
                       <Badge>USD</Badge>
                     </InputRightElement>
                   </InputGroup>
+                  <FormHelperText>Debe ser mayor a cero</FormHelperText>
                 </FormControl>
                 <FormControl>
                   <FormLabel><Box as="span" color={"red"}>*</Box> Ganancia Promotor</FormLabel>
@@ -162,6 +306,7 @@ export default function CreateEditProductDialog({
                       <Badge>USD</Badge>
                     </InputRightElement>
                   </InputGroup>
+                  <FormHelperText>Debe ser mayor a cero</FormHelperText>
                 </FormControl>
               </>
             )}
@@ -171,7 +316,7 @@ export default function CreateEditProductDialog({
 
         <ModalFooter gap={5} display={'flex'}>
           <Button variant={'ghost'} onClick={onClose}>Cancelar</Button>
-          <Button onClick={() => null} color={"white"}>
+          <Button onClick={onCreateEdit} color={"white"}>
             Guardar
           </Button>
         </ModalFooter>

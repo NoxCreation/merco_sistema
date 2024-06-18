@@ -5,7 +5,9 @@ export const ENDPOINTS = {
     initilize_system: "/initialize-system",
     bussiness: "/bussiness",
     user: "/user",
-    product: "/product"
+    product: "/product",
+    category: "/category",
+    unit: "/unit"
 }
 
 type RequestMethod = 'POST' | 'PUT' | 'GET' | 'DELETE';
