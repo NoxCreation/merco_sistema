@@ -3,7 +3,6 @@ import DollarIcon from "@/frontend/core/icons/DollarIcon";
 import GraphicGrowingIcon from "@/frontend/core/icons/GraphicGrowingIcon";
 import { Flex, Stack } from "@chakra-ui/react";
 import React from "react";
-import DailyCloseTable from "./components/DailyCloseTable";
 import WorkedTable from "./components/WorkedTable";
 import CurvedArrowIcon from "@/frontend/core/icons/CurvedArrowIcon";
 

@@ -21,23 +21,29 @@ import {
   Select,
   InputRightElement,
 } from "@chakra-ui/react";
-import {
-  AddIcon,
-  DeleteIcon,
-  ExternalLinkIcon,
-} from "@chakra-ui/icons";
+import { AddIcon, DeleteIcon, ExternalLinkIcon } from "@chakra-ui/icons";
 import React from "react";
 
-export default function TransitDetailsDialog() {
+type Props = {
+  isOpen: boolean;
+  onClose: () => void;
+};
+
+export default function TransitDetailsDialog({ isOpen, onClose }: Props) {
   const [haveAddress, setHaveAddress] = React.useState<boolean>(false);
   const [haveAmortization, setHaveAmortization] =
     React.useState<boolean>(false);
 
   return (
-    <Modal isOpen={true} onClose={() => null} scrollBehavior="inside" isCentered>
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      scrollBehavior="inside"
+      isCentered
+    >
       <ModalOverlay />
       <ModalContent maxWidth={"500px"}>
-        <ModalHeader>{"T-023023"}</ModalHeader>
+        <ModalHeader>T-023023</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <Stack spacing={4}>
