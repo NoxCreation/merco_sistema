@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import { Box, useDisclosure } from "@chakra-ui/react";
 import { BarFilter } from "@/frontend/core/components/BarFilter";
 import CRUDActionsButtonGroup from "./components/CRUDActionsButtonGroup";
-import CRUDTable from "./components/ProductTable";
+import CRUDTable from "./components/CRUDTable";
 import CreateEditProductDialog from "./dialog/CreateEditProductDialog";
-import { Product } from "@/backend/types/UserType";
+import { Product } from "@/backend/types";
 
 export default function NomenclatorsProductsScreen() {
     const [action, setAction] = useState("" as string)
@@ -33,10 +33,13 @@ export default function NomenclatorsProductsScreen() {
                 ]}
             >
                 <CRUDActionsButtonGroup
-                    onCreateEdit={()=>{
+                    onCreateEdit={() => {
                         setProductsSelects([])
                         setAction("create")
                         onOpen()
+                    }}
+                    onRemove={()=>{
+
                     }}
                 />
             </BarFilter>
@@ -45,7 +48,7 @@ export default function NomenclatorsProductsScreen() {
             {/* Tabla */}
             <CRUDTable
                 refresh={isOpen}
-                onEdit={(product: Product)=>{
+                onEdit={(product: Product) => {
                     setProductsSelects([product])
                     setAction("edit")
                     onOpen()
@@ -54,7 +57,7 @@ export default function NomenclatorsProductsScreen() {
             {/* Fin */}
 
             {/* Ventanas modales */}
-            <CreateEditProductDialog 
+            <CreateEditProductDialog
                 action={action}
                 isOpen={isOpen}
                 onClose={onClose}

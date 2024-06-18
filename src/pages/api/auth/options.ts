@@ -2,7 +2,7 @@ import type { NextAuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import jwt from 'jsonwebtoken';
 import { Manager } from '@/backend/models/engine';
-import { UserType } from '@/backend/types/UserType';
+import { UserType } from '@/backend/types';
 import { checkPassword, generateHash } from '@/helper/generateHash';
 
 export const options: NextAuthOptions = {

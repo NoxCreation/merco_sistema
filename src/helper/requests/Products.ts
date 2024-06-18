@@ -7,7 +7,7 @@ export const get_products = async (pagination: { page: number, pageSize: number,
     onSend(response.status, response.data)
 }
 
-export const create_product = async (file: any, data: any, onSend: (status: number, data: any) => void) => {
+export const create_edit_product = async (action: string, id: number | undefined, file: any, data: any, onSend: (status: number, data: any) => void) => {
     const formData = new FormData();
     formData.append('file', file);
 
@@ -17,34 +17,26 @@ export const create_product = async (file: any, data: any, onSend: (status: numb
     }
 
     try {
-        const response = await client.post(`${ENDPOINTS.product}`, formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-        });
+        let response = undefined as any
+        if (action == 'create')
+            response = await client.post(`${ENDPOINTS.product}`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+        else if (action == 'edit')
+            response = await client.put(`${ENDPOINTS.product}?id=${id}`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
         onSend(response.status, response.data)
     } catch (error) {
         console.error('Error al subir el archivo:', error);
     }
 }
 
-export const edit_product = async (id: number, file: any, data: any, onSend: (status: number, data: any) => void) => {
-    const formData = new FormData();
-    formData.append('file', file);
-
-    // Añade los datos al objeto FormData
-    for (const key in data) {
-        formData.append(key, data[key]);
-    }
-
-    try {
-        const response = await client.put(`${ENDPOINTS.product}?id=${id}`, formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-        });
-        onSend(response.status, response.data)
-    } catch (error) {
-        console.error('Error al subir el archivo:', error);
-    }
+export const remove_product = async (id: number, onSend: (status: number, data: any) => void) => {
+    const response = await model_request("DELETE", `${ENDPOINTS.product}?id=${id}`) as any
+    onSend(response.status, response.data)
 }

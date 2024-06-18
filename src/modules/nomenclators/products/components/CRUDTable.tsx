@@ -3,11 +3,11 @@ import { ColumnDef } from "@tanstack/react-table";
 import React, { useEffect, useState } from "react";
 import GenericTable from "@/frontend/core/components/GenericTable";
 import CRUDActionsButtonGroup from "./CRUDActionsButtonGroup";
-import { Product } from "@/backend/types/UserType";
-import { get_products } from "@/helper/requests/Products";
+import { Product } from "@/backend/types";
+import { get_products, remove_product } from "@/helper/requests/Products";
 import { Loading } from "@/frontend/core/components/Loading";
-import { useSession } from "next-auth/react";
 import { useGetBussiness } from "@/helper/hooks/useGetBussiness";
+import swal from 'sweetalert';
 
 interface Props {
   onEdit: (produc: Product) => void;
@@ -35,6 +35,27 @@ export default function CRUDTable({ onEdit, refresh }: Props) {
       }
       setLoading(false)
     })
+  }
+
+  const onRemove = async (produc: Product) => {
+    swal({
+      title: "¿Está seguro?",
+      text: "Si elimina el registro no podrá recuperarlo, ¿está seguro de querer continuar?",
+      icon: "warning",
+      buttons: ["Cancelar", "Eliminar"],
+      dangerMode: true,
+    })
+      .then((willDelete) => {
+        if (willDelete) {
+          remove_product(produc.id, (status: number, data: any) => {
+            console.log(status, data)
+            Load()
+          })
+          swal("¡Se ha eliminado satisfactoriamente!", {
+            icon: "success",
+          });
+        }
+      });
   }
 
   useEffect(() => {
@@ -74,11 +95,14 @@ export default function CRUDTable({ onEdit, refresh }: Props) {
       header: "Imagen",
       accessorKey: "image",
       cell: (image) => (
-        <Image
-          src={image.getValue<string>()}
-          alt="Product Image"
-          width={"60px"}
-        ></Image>
+        <>
+          <Image
+            src={`http://127.0.0.1:3000${image.getValue<string>()}`}
+            alt="Product Image"
+            width={"60px"}
+          ></Image>
+          {image.getValue<string>()}
+        </>
       ),
     },
     {
@@ -126,8 +150,10 @@ export default function CRUDTable({ onEdit, refresh }: Props) {
     },
     {
       id: "actions",
-      cell: (props) => <CRUDActionsButtonGroup inTable onCreateEdit={()=>{
+      cell: (props) => <CRUDActionsButtonGroup inTable onCreateEdit={() => {
         onEdit(products[props.row.index])
+      }} onRemove={() => {
+        onRemove(products[props.row.index])
       }} />,
     },
   ];

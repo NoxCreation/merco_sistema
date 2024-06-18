@@ -1,4 +1,3 @@
-import { Category, Product, Unit } from "@/backend/types/UserType";
 import {
   Button,
   FormControl,
@@ -11,13 +10,7 @@ import {
   ModalHeader,
   ModalOverlay,
   Select,
-  Slider,
   Flex,
-  Text,
-  Textarea,
-  SliderTrack,
-  SliderThumb,
-  SliderFilledTrack,
   Stack,
   Box,
   Input,
@@ -26,20 +19,16 @@ import {
   InputGroup,
   InputRightElement,
   Badge,
-  Image,
-  IconButton,
   useToast,
   FormHelperText
 } from "@chakra-ui/react";
-import React, { useEffect, useRef, useState } from "react";
-import { FiTrash } from "react-icons/fi";
+import React, { useEffect, useState } from "react";
 import { ImageLoadButton } from "../components/ImageLoadButton";
-import { create_product, edit_product } from "@/helper/requests/Products";
-import { useRouter } from "next/router";
-import { useSession } from "next-auth/react";
+import { create_edit_product } from "@/helper/requests/Products";
 import { get_categorie } from "@/helper/requests/Category";
 import { useGetBussiness } from "@/helper/hooks/useGetBussiness";
 import { get_unit } from "@/helper/requests/Unit";
+import { Category, Product, Unit } from "@/backend/types";
 
 interface Props {
   action: string
@@ -154,19 +143,11 @@ export default function CreateEditProductDialog({
         barcode: "",
         businessId: businesses?.id
       }
-      console.log(action)
-      if (action == 'create')
-        await create_product(file, data, (status: number, data: any) => {
-          if (status == 200) {
-            onClose()
-          }
-        })
-      else
-        await edit_product(product?.id as number, file, data, (status: number, data: any) => {
-          if (status == 200) {
-            onClose()
-          }
-        })
+      await create_edit_product(action, product?.id as number, file, data, (status: number, data: any) => {
+        if (status == 200) {
+          onClose()
+        }
+      })
     }
     else {
       toast({

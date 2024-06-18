@@ -1,6 +1,6 @@
-import { Box, IconButton, Input, Image } from "@chakra-ui/react"
+import { Box, IconButton, Input, Image, Flex } from "@chakra-ui/react"
 import { useEffect, useRef, useState } from "react";
-import { FiTrash } from "react-icons/fi";
+import { FiBox, FiTrash } from "react-icons/fi";
 
 interface Props {
     setFile: (image: any) => void
@@ -64,7 +64,7 @@ export const ImageLoadButton = ({ setFile, file, image }: Props) => {
                     }}
                 />
             )}
-            <Box
+            <Flex
                 onClick={handleClick}
                 w={'80px'}
                 h={'80px'}
@@ -72,9 +72,12 @@ export const ImageLoadButton = ({ setFile, file, image }: Props) => {
                 border={'1px solid'}
                 borderColor={'gray.200'}
                 cursor={'pointer'}
+                justifyContent={'center'}
+                alignItems={'center'}
             >
                 <Image src={imagePrev} />
-            </Box>
+                {!file && (<FiBox size={'50px'} color="silver"/>)}
+            </Flex>
         </Box>
     )
 }

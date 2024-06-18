@@ -29,33 +29,23 @@ export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse<any>,
 ) {
-    if (req.method == "GET" || req.method == "DELETE") {
-        return ApiRequestTemplate(
-            req,
-            res,
-            Manager().Product,
-            [
-                {
-                    model: Manager().Category.model, as: 'category'
-                },
-                {
-                    model: Manager().Unit.model, as: 'unit'
-                },
-                {
-                    model: Manager().Business.model, as: 'business'
-                },
-            ]
-        )
+    if (req.method == "DELETE") {
+        //const filePath = resolve(process.cwd(), 'public', req.body.image.split("/")[1], req.body.image.split("/")[2]);
+        const { id } = req.query
+        const image_path = (await Manager().Product.findOneById(parseInt(id as any))).query.image
+        const filePath = resolve(process.cwd(), 'public', image_path.split("/")[1], image_path.split("/")[2]);
+        fs.unlink(filePath, (err) => {
+            if (err) {
+                console.error('Error al eliminar el archivo:', err);
+            }
+        });
     }
     else if (req.method == "POST" || req.method == "PUT") {
-        console.log("ee")
         return upload(req as any, res as any, function (err: any) {
             if (req.method == "POST") {
                 if (err instanceof multer.MulterError) {
-                    console.log("A")
                     return res.status(500).json({ error: err.message });
                 } else if (err) {
-                    console.log("B", err)
                     return res.status(500).json({ error: err.message });
                 }
                 req.body.image = `/products/${(req as any).file.filename}`
@@ -92,5 +82,22 @@ export default async function handler(
             )
         });
     }
+
+    return ApiRequestTemplate(
+        req,
+        res,
+        Manager().Product,
+        [
+            {
+                model: Manager().Category.model, as: 'category'
+            },
+            {
+                model: Manager().Unit.model, as: 'unit'
+            },
+            {
+                model: Manager().Business.model, as: 'business'
+            },
+        ]
+    )
 
 }

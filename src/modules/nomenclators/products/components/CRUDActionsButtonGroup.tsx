@@ -13,12 +13,14 @@ import React from "react";
 
 interface Props {
   onCreateEdit: () => void
+  onRemove: () => void
   inTable?: boolean
 }
 
 export default function CRUDActionsButtonGroup({
   inTable,
-  onCreateEdit
+  onCreateEdit,
+  onRemove
 }: Props) {
 
   return (
@@ -51,6 +53,7 @@ export default function CRUDActionsButtonGroup({
           aria-label="Add to friends"
           icon={<DeleteIcon w={'10px'} h={'10px'} />}
           colorScheme="red"
+          onClick={onRemove}
         />
       </Tooltip>
 
