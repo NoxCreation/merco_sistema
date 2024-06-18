@@ -7,7 +7,7 @@ import { usePermissions } from '@/helper/hooks/usePermissions'
 
 export default function LoadSuspense(params: any) {
     const { load } = params
-    //const initialize = lazy(load)
+    // const initialize = lazy(load)
     const [loading, setLoading] = useState(true)
     const [MModule, setModule] = useState({} as any)
     const { status, data } = useSession()

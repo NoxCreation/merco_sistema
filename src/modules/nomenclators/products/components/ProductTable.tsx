@@ -1,14 +1,5 @@
-import {
-  Image,
-  Text,
-  Checkbox,
-  Badge,
-  Flex,
-  Box,
-} from "@chakra-ui/react";
-import {
-  ColumnDef,
-} from "@tanstack/react-table";
+import { Image, Text, Checkbox, Badge, Flex, Box } from "@chakra-ui/react";
+import { ColumnDef } from "@tanstack/react-table";
 import React, { useEffect, useState } from "react";
 import GenericTable from "@/frontend/core/components/GenericTable";
 import CRUDActionsButtonGroup from "./CRUDActionsButtonGroup";
@@ -18,7 +9,7 @@ import { Loading } from "@/frontend/core/components/Loading";
 import { useSession } from "next-auth/react";
 
 interface Props {
-  onEdit: (produc: Product) => void
+  onEdit: (produc: Product) => void;
 }
 
 export default function CRUDTable({ onEdit }: Props) {
@@ -30,7 +21,7 @@ export default function CRUDTable({ onEdit }: Props) {
   const { data } = useSession()
 
   const Load = async (npage?: number, npageSize?: number) => {
-    setLoading(true)
+    setLoading(true);
     // Por convención personal, todos los poroductos estarán asociados al alamacen
     // De un negocio, el 0 simpre sera el id del alamcen
     const warehouse_id = data?.user.shop.businesses[0].id
@@ -48,7 +39,7 @@ export default function CRUDTable({ onEdit }: Props) {
 
   useEffect(() => {
     Load()
-  }, [])
+  }, []);
 
   const columns: ColumnDef<Product>[] = [
     {
@@ -153,15 +144,15 @@ export default function CRUDTable({ onEdit }: Props) {
           page,
           pageSize,
           onChange: (e: number) => {
-            setPage(e)
-            Load(e)
-          }
+            setPage(e);
+            Load(e);
+          },
         }}
         onChangeFilterCount={(e: number) => {
-          setPageSize(e)
-          Load(page, e)
+          setPageSize(e);
+          Load(page, e);
         }}
       />
     </>
-  )
+  );
 }

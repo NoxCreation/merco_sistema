@@ -18,9 +18,10 @@ export default async function handler(
             isInit: users.length > 0
         })
     }
-    catch {
+    catch(err) {
         //const cl = await sequelize.close()
         //console.log("close", cl)
+        console.log("Error!!!!", err)
         console.log("end fin")
         res.status(200).json({
             isInit: false
