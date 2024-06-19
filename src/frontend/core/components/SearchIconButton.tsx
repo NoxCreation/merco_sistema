@@ -1,16 +1,37 @@
-import React from "react";
-import { Popover, PopoverTrigger, PopoverContent, PopoverArrow, PopoverCloseButton, IconButton, Input, InputGroup, InputLeftElement, PopoverBody, PopoverHeader, Tooltip, Box, } from "@chakra-ui/react";
-import { SearchIcon, Search2Icon } from "@chakra-ui/icons";
+import React, { useState } from "react";
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverArrow,
+  PopoverCloseButton,
+  IconButton,
+  Input,
+  InputGroup,
+  InputLeftElement,
+  InputRightElement,
+  PopoverBody,
+  PopoverHeader,
+  Tooltip,
+  Box
+} from "@chakra-ui/react";
+import { SearchIcon, Search2Icon, CloseIcon } from "@chakra-ui/icons";
 
 interface Props {
   ButtonIcon?: any
+  column_name?: string
+  onFind?: (column: string, value: string) => void
 }
 
 export default function SearchIconButton({
+  onFind,
+  column_name,
   ButtonIcon
 }: Props) {
+  const [value, setValue] = useState("")
+
   return (
-    <Popover>
+    <Popover placement='right' >
       <PopoverTrigger>
         {ButtonIcon ? ButtonIcon : (
           <Box as="button" className="chakra-button css-ired1u">
@@ -25,16 +46,28 @@ export default function SearchIconButton({
           </Box>
         )}
       </PopoverTrigger>
-      <PopoverContent>
+      <PopoverContent >
         <PopoverArrow />
         <PopoverCloseButton />
         <PopoverHeader>Buscar elemento</PopoverHeader>
-        <PopoverBody>
+        <PopoverBody bg={'white'}>
           <InputGroup>
-            <Input />
-            <InputLeftElement>
-              <Search2Icon />
+            <InputLeftElement onClick={() => onFind(column_name, value)}>
+              <Search2Icon _hover={{
+                color: 'silver'
+              }} />
             </InputLeftElement>
+            <Input value={value} onChange={t => setValue(t.target.value)} onKeyDown={(event) => {
+              if (event.key === 'Enter') {
+                onFind(column_name, value)
+              }
+            }} />
+            <InputRightElement>
+              <CloseIcon h={'12px'} onClick={()=>{
+                setValue("")
+                onFind(column_name, "")
+              }}/>
+            </InputRightElement>
           </InputGroup>
         </PopoverBody>
       </PopoverContent>

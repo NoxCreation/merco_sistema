@@ -1,6 +1,7 @@
 import { PAGESIZE } from "@/backend/models/VARS";
 import { sequelize } from "@/backend/models/engine";
 import { NextApiRequest, NextApiResponse } from "next";
+import { Op } from "sequelize";
 
 export const ApiRequestTemplate = async (
     req: NextApiRequest,
@@ -12,10 +13,19 @@ export const ApiRequestTemplate = async (
     if (req.method == "GET") {
         let _page = 1
         let _pageSize = PAGESIZE
-        let _filter = {}
+        let _filter = {} as any
         let count = 0
         const { page, pageSize, filter } = req.query;
         _filter = filter ? JSON.parse(filter as string) : _filter
+        // Recorre cada clave en el objeto filter
+        for (let key in _filter) {
+            if (key != 'relations') {
+                _filter = cleanFilter(_filter, key)
+            }
+            else {
+                delete _filter[key]
+            }
+        }
         if (page != undefined)
             _page = parseInt(page as string)
         if (pageSize != undefined)
@@ -83,4 +93,13 @@ export const ApiRequestTemplate = async (
             'details': "Método no permitido"
         })
     }
+}
+
+export const cleanFilter = (_filter: any, key: string) => {
+    // Si el valor de la clave es un objeto y tiene una clave LIKE
+    if (typeof _filter[key] === 'object' && _filter[key].hasOwnProperty('LIKE')) {
+        // Reemplaza la clave LIKE con [Op.like]
+        _filter[key] = { [Op.like]: _filter[key].LIKE };
+    }
+    return _filter
 }
