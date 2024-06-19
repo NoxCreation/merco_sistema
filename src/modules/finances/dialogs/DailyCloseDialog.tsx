@@ -25,12 +25,19 @@ import {
 import React from "react";
 import DollarIcon from "@/frontend/core/icons/DollarIcon";
 
-export default function DailyCloseDialog() {
+type Props = {
+  isOpen: boolean;
+  onClose: () => void;
+  onGenerateDebt: () => void;
+};
 
-  
-
+export default function DailyCloseDialog({
+  isOpen,
+  onClose,
+  onGenerateDebt,
+}: Props) {
   return (
-    <Modal isOpen={true} onClose={() => null} scrollBehavior="inside" isCentered>
+    <Modal isOpen={isOpen} onClose={onClose} scrollBehavior="inside" isCentered>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>{"Cierre Diario"}</ModalHeader>
@@ -75,7 +82,10 @@ export default function DailyCloseDialog() {
                   type="number"
                 />
                 <Tooltip label={"Generar Deuda"} hasArrow placement="top-end">
-                  <InputRightAddon backgroundColor={"green.400"}>
+                  <InputRightAddon
+                    backgroundColor={"green.400"}
+                    onClick={onGenerateDebt}
+                  >
                     <DollarIcon color="#fff" />
                   </InputRightAddon>
                 </Tooltip>
@@ -90,7 +100,10 @@ export default function DailyCloseDialog() {
                   type="number"
                 />
                 <Tooltip label={"Generar Deuda"} hasArrow placement="top-end">
-                  <InputRightAddon backgroundColor={"red.300"}>
+                  <InputRightAddon
+                    backgroundColor={"red.300"}
+                    onClick={onGenerateDebt}
+                  >
                     <DollarIcon color="#fff" />
                   </InputRightAddon>
                 </Tooltip>
@@ -103,7 +116,7 @@ export default function DailyCloseDialog() {
           <Button colorScheme="gray" mr={3}>
             Cancelar
           </Button>
-          <Button colorScheme="cyan" onClick={() => null} color={"white"}>
+          <Button colorScheme="cyan" onClick={onClose} color={"white"}>
             Crear Cierre
           </Button>
         </ModalFooter>

@@ -16,6 +16,9 @@ import React, { useState } from "react";
 import { DateRangePicker, RangeKeyDict } from "react-date-range";
 import { formatDate } from "../utils/formatDate";
 
+import "react-date-range/dist/styles.css"; // main style file
+import "react-date-range/dist/theme/default.css"; // theme css file
+
 type DateRange = {
   startDate: Date;
   endDate: Date;

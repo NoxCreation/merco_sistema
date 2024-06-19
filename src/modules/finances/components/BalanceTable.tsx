@@ -1,6 +1,7 @@
 import GenericTable from "@/frontend/core/components/GenericTable";
+import DocumentIcon from "@/frontend/core/icons/DocumentIcon";
 import { formatDate } from "@/frontend/core/utils/formatDate";
-import { Checkbox, Flex, Badge, Text } from "@chakra-ui/react";
+import { Checkbox, Flex, Badge, Text, IconButton } from "@chakra-ui/react";
 import { ColumnDef } from "@tanstack/react-table";
 import React from "react";
 
@@ -13,6 +14,7 @@ const mockData: BalanceItem[] = [
     tExpenses: 20000,
     fixedSalaries: 30000,
     earnings: 25000,
+    generalPhysic: 230.22,
   },
   {
     openDate: new Date("2024-02-01"),
@@ -22,6 +24,7 @@ const mockData: BalanceItem[] = [
     tExpenses: 22000,
     fixedSalaries: 32000,
     earnings: 27000,
+    generalPhysic: 230.22,
   },
   {
     openDate: new Date("2024-03-01"),
@@ -31,6 +34,7 @@ const mockData: BalanceItem[] = [
     tExpenses: 21000,
     fixedSalaries: 33000,
     earnings: 26000,
+    generalPhysic: 230.22,
   },
   {
     openDate: new Date("2024-04-01"),
@@ -40,6 +44,7 @@ const mockData: BalanceItem[] = [
     tExpenses: 23000,
     fixedSalaries: 34000,
     earnings: 28000,
+    generalPhysic: 230.22,
   },
   {
     openDate: new Date("2024-05-01"),
@@ -49,6 +54,7 @@ const mockData: BalanceItem[] = [
     tExpenses: 24000,
     fixedSalaries: 35000,
     earnings: 29000,
+    generalPhysic: 230.22,
   },
 ];
 
@@ -60,9 +66,14 @@ type BalanceItem = {
   tExpenses: number;
   fixedSalaries: number;
   earnings: number;
+  generalPhysic: number;
 };
 
-export default function BalanceTable() {
+type Props = {
+  onViewDetails: () => void;
+};
+
+export default function BalanceTable({ onViewDetails }: Props) {
   const page = 1;
   const pageSize = 10;
 
@@ -166,12 +177,34 @@ export default function BalanceTable() {
           </Flex>
         ),
       },
+      {
+        header: "Fisico General",
+        accessorKey: "generalPhysic",
+        cell: ({ getValue }) => (
+          <Flex alignItems={"center"} gap={"10px"}>
+            <Text>{getValue<number>() * 0.3}</Text>
+            <Badge>USD</Badge>
+          </Flex>
+        ),
+      },
+      {
+        id: "actions",
+        cell: ({ getValue }) => (
+          <IconButton
+            onClick={onViewDetails}
+            aria-label="Icon Button"
+            icon={<DocumentIcon color="#fff" />}
+            colorScheme="cyan"
+          />
+        ),
+      },
     ],
     []
   );
 
   return (
     <GenericTable
+      onFind={() => {}}
       columns={columns}
       data={mockData}
       title="Balance"
