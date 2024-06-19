@@ -19,6 +19,8 @@ import { get_products, remove_product } from "@/helper/requests/Products";
 import { ColumnDef } from "@tanstack/react-table";
 import { useGetBussiness } from "@/helper/hooks/useGetBussiness";
 import { Loading } from "@/frontend/core/components/Loading";
+import { download_excel } from "@/helper/requests/Endpoints";
+import { MapData } from "@/helper/maps";
 
 export default function NomenclatorsProductsScreen() {
     const [action, setAction] = useState("" as string)
@@ -137,6 +139,20 @@ export default function NomenclatorsProductsScreen() {
         }
         else
             onLoad(1, pagination.pageSize)
+    }
+
+    const onDownloadExcel = () => {
+        let columns = {
+            "image": "Imagen",
+            "code": "Código",
+            "name": "Nombre",
+            "category.name": "Nombre Categoría",
+            "price_usd": "Precio USD",
+            "coste_usd": "Costo USD",
+            "barcode": "Código de Barra",
+        };
+        let row = MapData(productsSelects.length > 0 ? productsSelects : products, columns)
+        download_excel(columns, row)
     }
 
     const columns: ColumnDef<Product>[] = [
@@ -286,6 +302,7 @@ export default function NomenclatorsProductsScreen() {
                 pagination={pagination}
                 setPagination={setPagination}
                 onFind={onFind}
+                onDownloadExcel={onDownloadExcel}
             />
             {/* Fin */}
 

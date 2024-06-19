@@ -37,7 +37,8 @@ interface Props<T> {
   };
   onChangeFilterCount?: (e: number) => void
   onSelectItems?: (items: Array<any>) => void
-  onFind: (column: string, value: string) => void
+  onFind?: (column: string, value: string) => void
+  onDownloadExcel?: () => void
 }
 
 // IMPORTANTE: La columna de acciones debe tener como id: "actions"
@@ -54,9 +55,10 @@ export default function GenericTable<T>({
   pagination,
   onChangeFilterCount,
   onSelectItems,
-  onFind
+  onFind,
+  onDownloadExcel,
 }: Props<T>) {
-  const { getRowModel, getHeaderGroups, getSelectedRowModel, getColumn } = useReactTable({
+  const { getRowModel, getHeaderGroups, getSelectedRowModel } = useReactTable({
     data: data,
     columns: columns,
     getCoreRowModel: getCoreRowModel(),
@@ -73,7 +75,7 @@ export default function GenericTable<T>({
   }, [getSelectedRowModel()])
 
   return (
-    <ExportableTableContainer title={title} onChangeFilterCount={onChangeFilterCount}>
+    <ExportableTableContainer title={title} onChangeFilterCount={onChangeFilterCount} onDownloadExcel={onDownloadExcel}>
       <TableContainer>
         <Table fontSize={"13px"} minH={'100px'}>
           <Thead position="sticky" top={0} bg={"white"}>

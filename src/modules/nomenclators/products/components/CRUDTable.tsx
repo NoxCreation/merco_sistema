@@ -19,6 +19,7 @@ interface Props {
     pageSize: number,
     count: number
   }) => void
+  onDownloadExcel?: () => void
 }
 
 export default function CRUDTable({
@@ -30,6 +31,7 @@ export default function CRUDTable({
   rows,
   pagination,
   setPagination,
+  onDownloadExcel
 }: Props) {
 
   return (
@@ -56,6 +58,7 @@ export default function CRUDTable({
       }}
       onSelectItems={onSelectItems}
       onFind={onFind}
+      onDownloadExcel={onDownloadExcel}
     />
   );
 }

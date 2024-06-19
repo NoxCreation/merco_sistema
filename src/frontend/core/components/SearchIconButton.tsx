@@ -52,20 +52,20 @@ export default function SearchIconButton({
         <PopoverHeader>Buscar elemento</PopoverHeader>
         <PopoverBody bg={'white'}>
           <InputGroup>
-            <InputLeftElement onClick={() => onFind(column_name, value)}>
+            <InputLeftElement onClick={() => onFind && onFind(column_name as string, value)}>
               <Search2Icon _hover={{
                 color: 'silver'
               }} />
             </InputLeftElement>
             <Input value={value} onChange={t => setValue(t.target.value)} onKeyDown={(event) => {
               if (event.key === 'Enter') {
-                onFind(column_name, value)
+                onFind && onFind(column_name as string, value)
               }
             }} />
             <InputRightElement>
               <CloseIcon h={'12px'} onClick={()=>{
                 setValue("")
-                onFind(column_name, "")
+                onFind && onFind(column_name as string, "")
               }}/>
             </InputRightElement>
           </InputGroup>
