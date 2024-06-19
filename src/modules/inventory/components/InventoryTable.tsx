@@ -1,11 +1,5 @@
-import {
-  Image,
-  Text,
-  Checkbox,
-} from "@chakra-ui/react";
-import {
-  ColumnDef,
-} from "@tanstack/react-table";
+import { Image, Text, Checkbox } from "@chakra-ui/react";
+import { ColumnDef } from "@tanstack/react-table";
 import React from "react";
 import InventoryActionsButtonGroup from "./InventoryActionsButtonGroup";
 import GenericTable from "@/frontend/core/components/GenericTable";
@@ -43,8 +37,6 @@ const mockData: InventoryItem[] = [
   },
 ];
 
-
-
 type InventoryItem = {
   code: string;
   image: string;
@@ -56,98 +48,105 @@ type InventoryItem = {
 };
 
 interface Props {
-  onTransferProducts: () => void
+  onTransferProducts: () => void;
 }
 
 export default function InventoryTable({ onTransferProducts }: Props) {
-  const page = 1
-  const pageSize = 10
+  const page = 1;
+  const pageSize = 10;
 
-  const columns: ColumnDef<InventoryItem>[] = [
-    {
-      header: ({ table }) => (
-        <Checkbox
-          size={'sm'}
-          colorScheme="cyan"
-          isChecked={table.getIsAllRowsSelected()}
-          isIndeterminate={table.getIsSomeRowsSelected()}
-          onChange={(event) => {
-            table.toggleAllRowsSelected(event.target.checked);
-          }}
-        >
-          Código
-        </Checkbox>
-      ),
-      accessorKey: "code",
-      cell: ({ row, getValue }) => (
-        <Checkbox
-          size={'sm'}
-          colorScheme="cyan"
-          type="checkbox"
-          isChecked={row.getIsSelected()}
-          onChange={(event) => row.toggleSelected(event.target.checked)}
-        >
-          {getValue<string>()}
-        </Checkbox>
-      ),
-    },
-    {
-      header: "Imagen",
-      accessorKey: "image",
-      cell: (imageUrl) => (
-        <Image
-          src={imageUrl.getValue<string>()}
-          alt="Product Image"
-          width={"60px"}
-        ></Image>
-      ),
-    },
-    {
-      header: "Categoria",
-      accessorKey: "category",
-    },
-    {
-      header: "Producto",
-      accessorKey: "product",
-    },
-    {
-      header: "En Stock",
-      accessorKey: "inStock",
-      cell: (inStock) => {
-        const inStockQuantity = inStock.getValue<number>();
-        const isEmptyStock = inStockQuantity === 0;
-        return (
-          <Text color={isEmptyStock ? "red" : ""}>
-            {isEmptyStock ? "Agotado" : inStockQuantity}
-          </Text>
-        );
+  const columns: ColumnDef<InventoryItem>[] = React.useMemo(
+    () => [
+      {
+        header: ({ table }) => (
+          <Checkbox
+            size={"sm"}
+            colorScheme="cyan"
+            isChecked={table.getIsAllRowsSelected()}
+            isIndeterminate={table.getIsSomeRowsSelected()}
+            onChange={(event) => {
+              table.toggleAllRowsSelected(event.target.checked);
+            }}
+          >
+            Código
+          </Checkbox>
+        ),
+        accessorKey: "code",
+        cell: ({ row, getValue }) => (
+          <Checkbox
+            size={"sm"}
+            colorScheme="cyan"
+            type="checkbox"
+            isChecked={row.getIsSelected()}
+            onChange={(event) => row.toggleSelected(event.target.checked)}
+          >
+            {getValue<string>()}
+          </Checkbox>
+        ),
       },
-    },
-    {
-      header: "Costo",
-      accessorKey: "cost",
-    },
-    {
-      header: "Precio",
-      accessorKey: "price",
-    },
-    {
-      header: "200/USD",
-      accessorKey: "price",
-    },
-    {
-      header: "500/USD",
-      accessorKey: "price",
-    },
-    {
-      header: "1000/USD",
-      accessorKey: "price",
-    },
-    {
-      id: "actions",
-      cell: (props) => <InventoryActionsButtonGroup onTransferProducts={onTransferProducts}/>,
-    },
-  ];
+      {
+        header: "Imagen",
+        accessorKey: "image",
+        cell: (imageUrl) => (
+          <Image
+            src={imageUrl.getValue<string>()}
+            alt="Product Image"
+            width={"60px"}
+          ></Image>
+        ),
+      },
+      {
+        header: "Categoria",
+        accessorKey: "category",
+      },
+      {
+        header: "Producto",
+        accessorKey: "product",
+      },
+      {
+        header: "En Stock",
+        accessorKey: "inStock",
+        cell: (inStock) => {
+          const inStockQuantity = inStock.getValue<number>();
+          const isEmptyStock = inStockQuantity === 0;
+          return (
+            <Text color={isEmptyStock ? "red" : ""}>
+              {isEmptyStock ? "Agotado" : inStockQuantity}
+            </Text>
+          );
+        },
+      },
+      {
+        header: "Costo",
+        accessorKey: "cost",
+      },
+      {
+        header: "Precio",
+        accessorKey: "price",
+      },
+      {
+        header: "200/USD",
+        accessorKey: "price",
+      },
+      {
+        header: "500/USD",
+        accessorKey: "price",
+      },
+      {
+        header: "1000/USD",
+        accessorKey: "price",
+      },
+      {
+        id: "actions",
+        cell: (props) => (
+          <InventoryActionsButtonGroup
+            onTransferProducts={onTransferProducts}
+          />
+        ),
+      },
+    ],
+    []
+  );
 
   return (
     <GenericTable
@@ -157,8 +156,8 @@ export default function InventoryTable({ onTransferProducts }: Props) {
       pagination={{
         count: 10,
         page,
-        pageSize
+        pageSize,
       }}
     />
-  )
+  );
 }

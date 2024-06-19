@@ -26,7 +26,6 @@ export default function FinancesScreen() {
   const tabs = ["Balance", "Cierres Diarios", "Trabajados"];
   const [activeTabIndex, setActiveTabIndex] = useState<number>(0);
 
-  
   return (
     <Box>
       {/* Barra de Filteros */}
@@ -59,9 +58,17 @@ export default function FinancesScreen() {
         </React.Fragment>
       )}
 
-      {/* {activeTabIndex === 0 && <BalanceTable />}
-      {activeTabIndex === 1 && <DailyCloseTable />}
-      {activeTabIndex === 2 && <WorkedTable />} */}
+      {activeTabIndex === 1 && (
+        <React.Fragment>
+          <Flex justifyContent={"end"} my={"20px"} gap={"10px"}>
+            <Input type="date" maxWidth={"200px"} background={"white"}/>
+            <Button colorScheme="cyan" color={"white"}>
+              Realizar Balance
+            </Button>
+          </Flex>
+          <WorkedTable />
+        </React.Fragment>
+      )}
 
       {/* <DailyCloseDialog /> */}
       {/* <DebtDeclarationDialog /> */}
