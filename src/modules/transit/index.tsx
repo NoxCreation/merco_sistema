@@ -35,7 +35,7 @@ export default function TransitScreen() {
       {/* Dialogs */}
       {/* <AddProductDialog /> */}
       {/* <TransitDetailsDialog /> */}
-      <AddProductQuantityDialog />
+      {/* <AddProductQuantityDialog /> */}
     </Box>
   );
 }

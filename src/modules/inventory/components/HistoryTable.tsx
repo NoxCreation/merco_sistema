@@ -4,10 +4,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import GenericTable from "@/frontend/core/components/GenericTable";
 import { formatDate } from "@/frontend/core/utils/formatDate";
 import DocumentIcon from "@/frontend/core/icons/DocumentIcon";
-import {
-  ChevronRightIcon,
-  ChevronDownIcon,
-} from "@chakra-ui/icons";
+import { ChevronRightIcon, ChevronDownIcon } from "@chakra-ui/icons";
 
 type ProductItem = {
   id: string;
@@ -138,11 +135,6 @@ const columns: ColumnDef<ProductItem>[] = [
     accessorKey: "id",
     cell: ({ row, getValue }) => (
       <Flex alignItems={"center"} gap={"10px"}>
-        {row.getCanExpand() && (
-          <Box onClick={() => row.toggleExpanded()}>
-            {row.getIsExpanded() ? <ChevronDownIcon /> : <ChevronRightIcon />}
-          </Box>
-        )}
         <Checkbox
           size={"sm"}
           colorScheme="cyan"
@@ -152,6 +144,11 @@ const columns: ColumnDef<ProductItem>[] = [
         >
           {getValue<string>()}
         </Checkbox>
+        {row.getCanExpand() && (
+          <Box onClick={() => row.toggleExpanded()}>
+            {row.getIsExpanded() ? <ChevronDownIcon /> : <ChevronRightIcon />}
+          </Box>
+        )}
       </Flex>
     ),
   },

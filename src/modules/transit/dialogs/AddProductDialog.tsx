@@ -18,8 +18,15 @@ import {
 import React from "react";
 
 export default function AddProductDialog() {
+
   return (
-    <Modal isOpen={true} onClose={() => null} size={"xl"} scrollBehavior="inside">
+    <Modal
+      isOpen={true}
+      onClose={() => null}
+      size={"xl"}
+      scrollBehavior="inside"
+      isCentered
+    >
       <ModalOverlay />
       <ModalContent backgroundColor={""}>
         <ModalHeader>Agregar</ModalHeader>
@@ -32,7 +39,14 @@ export default function AddProductDialog() {
                 <SearchIcon color={"gray.400"} />
               </InputRightElement>
             </InputGroup>
-            <SimpleGrid columns={3} height={"450px"} spacing={"10px"} padding={"10px"} overflowY={"scroll"} overflowX={"hidden"}>
+            <SimpleGrid
+              columns={3}
+              height={"450px"}
+              spacing={"10px"}
+              padding={"10px"}
+              overflowY={"scroll"}
+              overflowX={"hidden"}
+            >
               {Array.from({ length: 10 }).map((product, index) => (
                 <ProductCard
                   key={index}

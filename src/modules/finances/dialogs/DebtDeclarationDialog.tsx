@@ -27,7 +27,7 @@ import DollarIcon from "@/frontend/core/icons/DollarIcon";
 
 export default function DebtDeclarationDialog() {
   return (
-    <Modal isOpen={true} onClose={() => null} scrollBehavior="inside">
+    <Modal isOpen={true} onClose={() => null} scrollBehavior="inside" isCentered>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>{"Cierre Diario"}</ModalHeader>

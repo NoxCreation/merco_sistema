@@ -137,7 +137,7 @@ const columns: ColumnDef<DailyCloseItem>[] = [
   },
 ];
 
-export default function WorkedTable() {
+export default function DailyCloseTable() {
   const page = 1;
   const pageSize = 10;
 

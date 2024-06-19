@@ -30,7 +30,7 @@ export default function InvoiceProductItem({
 }: Props) {
   return (
     <Card variant={"outline"} padding={"5px"}>
-      <Flex alignItems={"center"}>
+      <Flex alignItems={"center"} width={"full"}>
         <Box width={"100px"} height={"full"}>
           <Image
             src="https://th.bing.com/th/id/OIP.eQxdgKp-vNL0ZIq6Eq_oTwHaE8?w=269&h=180&c=7&r=0&o=5&dpr=1.5&pid=1.7"
@@ -38,10 +38,10 @@ export default function InvoiceProductItem({
             objectFit={"contain"}
           />
         </Box>
-        <Stack spacing={"10px"}>
+        <Stack spacing={"10px"} flex={1}>
           <Text fontSize={"14"}>{productName}</Text>
           <Flex alignItems={"center"} gap={"5px"} >
-            <NumberInput size={"sm"} width={"70px"}>
+            <NumberInput size={"sm"} width={"full"}>
               <NumberInputField
                 fontSize={"16px"}
               ></NumberInputField>
@@ -50,7 +50,7 @@ export default function InvoiceProductItem({
                 <NumberDecrementStepper />
               </NumberInputStepper>
             </NumberInput>
-            <Select isDisabled size={"sm"} width={"70px"}>
+            <Select isDisabled size={"sm"} width={"full"}>
               <option>ml</option>
               <option>unidad</option>
             </Select>

@@ -1,13 +1,26 @@
 import React, { useState } from "react";
-import { Box } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Flex,
+  Input,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+  PopoverCloseButton,
+  PopoverBody,
+  PopoverHeader,
+} from "@chakra-ui/react";
 import { BarFilter } from "@/frontend/core/components/BarFilter";
 import TabGroup from "@/frontend/core/components/TabGroup";
-import BalanceTable from "./components/BalanceTable";
-import DailyCloseTable from "./components/DailyCloseTable";
 import WorkedTable from "./components/WorkedTable";
-import DailyCloseDialog from "./dialogs/DailyCloseDialog";
-import DebtDeclarationDialog from "./dialogs/DebtDeclarationDialog";
 import FinanceDetails from "./FinanceDetails";
+import { es } from "date-fns/locale";
+
+import "react-date-range/dist/styles.css"; // main style file
+import "react-date-range/dist/theme/default.css"; // theme css file
+import { DateRangePicker, RangeKeyDict } from "react-date-range";
+import DateRangeSelector from "@/frontend/core/components/DateRangeSelector";
 
 export default function FinancesScreen() {
   const tabs = ["Balance", "Cierres Diarios", "Trabajados"];
@@ -33,9 +46,29 @@ export default function FinancesScreen() {
         <TabGroup tabs={tabs} onChange={setActiveTabIndex} />
       </BarFilter>
 
-      {/* {activeTabIndex === 0 && <BalanceTable />}
-      {activeTabIndex === 1 && <DailyCloseTable />}
-      {activeTabIndex === 2 && <WorkedTable />} */}
+      {activeTabIndex == 2 && (
+        <React.Fragment>
+          <Flex justifyContent={"end"} my={"20px"} gap={"10px"}>
+            <DateRangeSelector />
+            <Button colorScheme="cyan" color={"white"}>
+              Realizar Balance
+            </Button>
+          </Flex>
+          <WorkedTable />
+        </React.Fragment>
+      )}
+
+      {activeTabIndex === 1 && (
+        <React.Fragment>
+          <Flex justifyContent={"end"} my={"20px"} gap={"10px"}>
+            <Input type="date" maxWidth={"200px"} background={"white"}/>
+            <Button colorScheme="cyan" color={"white"}>
+              Realizar Balance
+            </Button>
+          </Flex>
+          <WorkedTable />
+        </React.Fragment>
+      )}
 
       {/* <DailyCloseDialog /> */}
       {/* <DebtDeclarationDialog /> */}
