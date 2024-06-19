@@ -33,7 +33,7 @@ import React from "react";
 export default function MakeOrderDialog() {
   return (
     <Modal isOpen={true} onClose={() => null} isCentered>
-      <ModalOverlay />
+      <ModalOverlay bg="#00000030" backdropFilter="blur(10px)" />
       <ModalContent>
         <ModalHeader>{"{Nombre de la orden}"}</ModalHeader>
         <ModalCloseButton />
