@@ -26,6 +26,7 @@ export const ImageLoadButton = ({ setFile, file, image }: Props) => {
     };
 
     useEffect(() => {
+        console.log(image)
         if (image)
             setImagePrev(image)
         else
@@ -75,8 +76,8 @@ export const ImageLoadButton = ({ setFile, file, image }: Props) => {
                 justifyContent={'center'}
                 alignItems={'center'}
             >
-                <Image src={imagePrev} />
-                {!file && (<FiBox size={'50px'} color="silver"/>)}
+                <Image src={imagePrev && (imagePrev.includes("base64") ? imagePrev : `/api/statics${imagePrev}`)} />
+                {!file && (<FiBox size={'50px'} color="silver" />)}
             </Flex>
         </Box>
     )

@@ -18,13 +18,12 @@ import {
   Thead,
   Tr,
 } from "@chakra-ui/react";
-import React from "react";
-import { ArrowDownIcon, ArrowRightIcon, SearchIcon } from "@chakra-ui/icons";
+import React, { useEffect } from "react";
+import { SearchIcon } from "@chakra-ui/icons";
 import OrderByIcon from "../icons/OrderByIcon";
 import ExportableTableContainer from "./ExportableTableContainer";
 import SearchIconButton from "./SearchIconButton";
 import { Pagination } from "./Pagination";
-import { table } from "console";
 
 interface Props<T> {
   title: string;
@@ -37,6 +36,8 @@ interface Props<T> {
     onChange?: (e: number) => void
   };
   onChangeFilterCount?: (e: number) => void
+  onSelectItems?: (items: Array<any>) => void
+  onFind: (column: string, value: string) => void
 }
 
 // IMPORTANTE: La columna de acciones debe tener como id: "actions"
@@ -51,9 +52,11 @@ export default function GenericTable<T>({
   title,
   columns,
   pagination,
-  onChangeFilterCount
+  onChangeFilterCount,
+  onSelectItems,
+  onFind
 }: Props<T>) {
-  const { getRowModel, getHeaderGroups } = useReactTable({
+  const { getRowModel, getHeaderGroups, getSelectedRowModel, getColumn } = useReactTable({
     data: data,
     columns: columns,
     getCoreRowModel: getCoreRowModel(),
@@ -64,14 +67,19 @@ export default function GenericTable<T>({
     enableRowSelection: true,
   });
 
+  useEffect(() => {
+    if (onSelectItems)
+      onSelectItems(getSelectedRowModel().rows.map(t => t.original))
+  }, [getSelectedRowModel()])
+
   return (
     <ExportableTableContainer title={title} onChangeFilterCount={onChangeFilterCount}>
       <TableContainer>
-        <Table fontSize={"13px"}>
+        <Table fontSize={"13px"} minH={'100px'}>
           <Thead position="sticky" top={0} bg={"white"}>
             {getHeaderGroups().map((headerGroup) => (
               <Tr key={headerGroup.id}>
-                {headerGroup.headers.map((header) => (
+                {headerGroup.headers.map((header, i) => (
                   <Th
                     key={header.id}
                     justifyContent={"space-between"}
@@ -86,14 +94,16 @@ export default function GenericTable<T>({
                             header.getContext()
                           )}
                         </Text>
-                        <Flex alignItems={"center"} gap={"2px"}>
-                          <Box onClick={() => header.column.toggleSorting()}>
-                            <OrderByIcon />
-                          </Box>
-                          <Box>
-                            <SearchIconButton ButtonIcon={<SearchIcon />} />
-                          </Box>
-                        </Flex>
+                        {columns[i].id && (
+                          <Flex alignItems={"center"} gap={"2px"}>
+                            <Box onClick={() => header.column.toggleSorting()}>
+                              <OrderByIcon />
+                            </Box>
+                            <Box>
+                              <SearchIconButton ButtonIcon={<SearchIcon />} onFind={onFind} column_name={columns[i].id as string} />
+                            </Box>
+                          </Flex>
+                        )}
                       </Flex>
                     )}
                   </Th>
@@ -101,7 +111,7 @@ export default function GenericTable<T>({
               </Tr>
             ))}
           </Thead>
-          <Tbody>
+          <Tbody >
             {getRowModel().rows.map((row) => (
               <React.Fragment key={row.id}>
                 <Tr
@@ -142,22 +152,24 @@ export default function GenericTable<T>({
           </Tbody>
         </Table>
       </TableContainer>
-      <Pagination
-        count={pagination.count}
-        pageSize={pagination.pageSize}
-        /* siblingCount={2} */
-        page={pagination.page}
-        onChange={(e) => {
-          if (pagination.onChange) {
-            pagination.onChange(e.page)
-            window.scrollTo({
-              top: 0,
-              left: 0,
-              behavior: "smooth",
-            });
-          }
-        }}
-      />
+      {data.length > 0 && (
+        <Pagination
+          count={pagination.count}
+          pageSize={pagination.pageSize}
+          /* siblingCount={2} */
+          page={pagination.page}
+          onChange={(e) => {
+            if (pagination.onChange) {
+              pagination.onChange(e.page)
+              window.scrollTo({
+                top: 0,
+                left: 0,
+                behavior: "smooth",
+              });
+            }
+          }}
+        />
+      )}
     </ExportableTableContainer>
   );
 }

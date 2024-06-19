@@ -1,0 +1,1 @@
+Esta API es para servir las imágenes que se guardan en public y que no se tiene acceso en producción.

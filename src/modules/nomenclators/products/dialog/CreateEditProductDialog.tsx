@@ -74,7 +74,7 @@ export default function CreateEditProductDialog({
         setGain_rate(product?.gain_rate as boolean)
         setRate_seller(product?.rate_seller as number)
         setRate_sponsor(product?.rate_sponsor as number)
-        setImage(product?.image as string)
+        setImage(`${product?.image}`)
         setFile(null)
       }
       else {
@@ -144,7 +144,8 @@ export default function CreateEditProductDialog({
         businessId: businesses?.id
       }
       await create_edit_product(action, product?.id as number, file, data, (status: number, data: any) => {
-        if (status == 200) {
+        console.log("data", data[0])
+        if (status == 200 && (data[0] == undefined || data[0] == 1)) {
           onClose()
         }
       })

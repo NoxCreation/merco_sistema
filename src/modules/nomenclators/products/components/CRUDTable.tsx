@@ -1,184 +1,61 @@
-import { Image, Text, Checkbox, Badge, Flex, Box } from "@chakra-ui/react";
 import { ColumnDef } from "@tanstack/react-table";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import GenericTable from "@/frontend/core/components/GenericTable";
-import CRUDActionsButtonGroup from "./CRUDActionsButtonGroup";
-import { Product } from "@/backend/types";
-import { get_products, remove_product } from "@/helper/requests/Products";
-import { Loading } from "@/frontend/core/components/Loading";
-import { useGetBussiness } from "@/helper/hooks/useGetBussiness";
-import swal from 'sweetalert';
 
 interface Props {
-  onEdit: (produc: Product) => void;
-  refresh: boolean
+  onSelectItems?: (items: Array<any>) => void
+  onFilter: (page?: number, pageSize?: number) => void
+  onFind: (column: string, value: string) => void
+  title: string
+  columns: ColumnDef<any>[]
+  rows: Array<any>
+  pagination: {
+    page: number,
+    pageSize: number,
+    count: number
+  }
+  setPagination: (pagination: {
+    page: number,
+    pageSize: number,
+    count: number
+  }) => void
 }
 
-export default function CRUDTable({ onEdit, refresh }: Props) {
-  const [loading, setLoading] = useState(true)
-  const [products, setProducts] = useState([] as Array<Product>)
-  const [page, setPage] = useState(1 as number)
-  const [pageSize, setPageSize] = useState(10 as number)
-  const [count, setCount] = useState(3 as number)
-  const businesses = useGetBussiness()
-
-  const Load = async (npage?: number, npageSize?: number) => {
-    setLoading(true);
-    // Filtrar por el id del negocio
-    const filter = {
-      businessId: businesses?.id
-    }
-    await get_products({ page: npage ? npage : page, pageSize: npageSize ? npageSize : pageSize, filter }, (status: number, data: any) => {
-      if (status == 200) {
-        setProducts(data.data)
-        setCount(data.count)
-      }
-      setLoading(false)
-    })
-  }
-
-  const onRemove = async (produc: Product) => {
-    swal({
-      title: "¿Está seguro?",
-      text: "Si elimina el registro no podrá recuperarlo, ¿está seguro de querer continuar?",
-      icon: "warning",
-      buttons: ["Cancelar", "Eliminar"],
-      dangerMode: true,
-    })
-      .then((willDelete) => {
-        if (willDelete) {
-          remove_product(produc.id, (status: number, data: any) => {
-            console.log(status, data)
-            Load()
-          })
-          swal("¡Se ha eliminado satisfactoriamente!", {
-            icon: "success",
-          });
-        }
-      });
-  }
-
-  useEffect(() => {
-    Load()
-  }, [refresh]);
-
-  const columns: ColumnDef<Product>[] = [
-    {
-      header: ({ table }) => (
-        <Checkbox
-          size={'sm'}
-          colorScheme="cyan"
-          isChecked={table.getIsAllRowsSelected()}
-          isIndeterminate={table.getIsSomeRowsSelected()}
-          onChange={(event) => {
-            table.toggleAllRowsSelected(event.target.checked);
-          }}
-        >
-          <Text fontSize={'12px'}>Código</Text>
-        </Checkbox>
-      ),
-      accessorKey: "code",
-      cell: ({ row, getValue }) => (
-        <Checkbox
-          size={'sm'}
-          colorScheme="cyan"
-          type="checkbox"
-          isChecked={row.getIsSelected()}
-          onChange={(event) => row.toggleSelected(event.target.checked)}
-          fontSize={'0.75rem'}
-        >
-          {getValue<string>()}
-        </Checkbox>
-      ),
-    },
-    {
-      header: "Imagen",
-      accessorKey: "image",
-      cell: (image) => (
-        <>
-          <Image
-            src={`http://127.0.0.1:3000${image.getValue<string>()}`}
-            alt="Product Image"
-            width={"60px"}
-          ></Image>
-          {image.getValue<string>()}
-        </>
-      ),
-    },
-    {
-      header: "Categoria",
-      accessorKey: "category",
-      cell: (item) => (
-        <>{item.getValue<any>().name}</>
-      ),
-    },
-    {
-      header: "Producto",
-      accessorKey: "name",
-      cell: (item) => (
-        <Box maxW={'150px'} whiteSpace={"wrap"}>{item.getValue<string>()}</Box>
-      ),
-    },
-    {
-      header: "Costo",
-      accessorKey: "coste_usd",
-      cell: (item) => (
-        <Flex gap={2}>
-          $ {item.getValue<number>()}
-          <Badge>USD</Badge>
-        </Flex>
-      ),
-    },
-    {
-      header: "Precio",
-      accessorKey: "price_usd",
-      cell: (item) => (
-        <Flex gap={2}>
-          $ {item.getValue<number>()}
-          <Badge>USD</Badge>
-        </Flex>
-      ),
-    },
-    {
-      header: "T/Pago",
-      accessorKey: "gain_rate",
-      cell: (item) => (
-        <Flex gap={2}>
-          {item.getValue<boolean>() ? <Badge variant='solid' colorScheme='yellow'>Fijo</Badge> : <Badge variant='solid' colorScheme='green'>Variable</Badge>}
-        </Flex>
-      ),
-    },
-    {
-      id: "actions",
-      cell: (props) => <CRUDActionsButtonGroup inTable onCreateEdit={() => {
-        onEdit(products[props.row.index])
-      }} onRemove={() => {
-        onRemove(products[props.row.index])
-      }} />,
-    },
-  ];
+export default function CRUDTable({
+  onSelectItems,
+  onFilter,
+  onFind,
+  title,
+  columns,
+  rows,
+  pagination,
+  setPagination,
+}: Props) {
 
   return (
-    <>
-      <Loading isLoading={loading} />
-      <GenericTable
-        columns={columns}
-        data={products}
-        title="Productos"
-        pagination={{
-          count,
-          page,
-          pageSize,
-          onChange: (e: number) => {
-            setPage(e);
-            Load(e);
-          },
-        }}
-        onChangeFilterCount={(e: number) => {
-          setPageSize(e);
-          Load(page, e);
-        }}
-      />
-    </>
+    <GenericTable
+      columns={columns}
+      data={rows}
+      title={title}
+      pagination={{
+        count: pagination.count,
+        page: pagination.page,
+        pageSize: pagination.pageSize,
+        onChange: (page: number) => {
+          let temp = JSON.parse(JSON.stringify(pagination))
+          temp.page = page
+          setPagination(temp);
+          onFilter(page);
+        },
+      }}
+      onChangeFilterCount={(pageSize: number) => {
+        let temp = JSON.parse(JSON.stringify(pagination))
+        temp.pageSize = pageSize
+        setPagination(temp);
+        onFilter(pagination.page, pageSize);
+      }}
+      onSelectItems={onSelectItems}
+      onFind={onFind}
+    />
   );
 }

@@ -9,7 +9,7 @@ const appPath = path.join(__dirname);
 const nextApp = next({ dev, dir: appPath });
 const handle = nextApp.getRequestHandler();
 
-function createWindow () {
+function createWindow() {
   const win = new BrowserWindow({
     webPreferences: {
       nodeIntegration: true,

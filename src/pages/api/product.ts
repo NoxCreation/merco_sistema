@@ -1,6 +1,6 @@
 import { Manager } from "@/backend/models/engine";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { ApiRequestTemplate } from "./ApiRequestTemplate";
+import { ApiRequestTemplate, cleanFilter } from "./ApiRequestTemplate";
 import multer from 'multer';
 import crypto from 'crypto';
 import { extname, resolve } from 'path';
@@ -83,13 +83,20 @@ export default async function handler(
         });
     }
 
+    const { filter } = req.query;
+    let _filter = JSON.parse(filter as string)['relations']
+    let fcategory = _filter ? _filter.category : {}
+    for (let key in fcategory) {
+        fcategory = cleanFilter(fcategory, key)
+    }
+
     return ApiRequestTemplate(
         req,
         res,
         Manager().Product,
         [
             {
-                model: Manager().Category.model, as: 'category'
+                model: Manager().Category.model, as: 'category', where: { ...fcategory }
             },
             {
                 model: Manager().Unit.model, as: 'unit'

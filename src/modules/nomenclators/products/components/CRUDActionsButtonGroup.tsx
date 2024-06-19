@@ -14,12 +14,16 @@ import React from "react";
 interface Props {
   onCreateEdit: () => void
   onRemove: () => void
+  onFind: (column: string, value: string) => void
+  column_find?: string
   inTable?: boolean
 }
 
 export default function CRUDActionsButtonGroup({
   inTable,
+  column_find,
   onCreateEdit,
+  onFind,
   onRemove
 }: Props) {
 
@@ -27,7 +31,7 @@ export default function CRUDActionsButtonGroup({
     <ButtonGroup size="sm" isAttached>
       {!inTable ? (
         <>
-          <SearchIconButton />
+          <SearchIconButton onFind={onFind} column_name={column_find as string} />
           <Tooltip label='Agregar'>
             <IconButton
               aria-label="Add to friends"
