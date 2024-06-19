@@ -3,6 +3,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import React from "react";
 import InventoryActionsButtonGroup from "./InventoryActionsButtonGroup";
 import GenericTable from "@/frontend/core/components/GenericTable";
+import InventoryTableActions from "./InventoryTableActions";
 
 const mockData: InventoryItem[] = [
   {
@@ -47,11 +48,13 @@ type InventoryItem = {
   price: number;
 };
 
-interface Props {
+type Props = {
   onTransferProducts: () => void;
-}
+  onEdit: () => void;
+  onDelete: () => void;
+};
 
-export default function InventoryTable({ onTransferProducts }: Props) {
+export default function InventoryTable({ onTransferProducts, onEdit, onDelete }: Props) {
   const page = 1;
   const pageSize = 10;
 
@@ -139,8 +142,10 @@ export default function InventoryTable({ onTransferProducts }: Props) {
       {
         id: "actions",
         cell: (props) => (
-          <InventoryActionsButtonGroup
+          <InventoryTableActions
+            onDelete={onDelete}
             onTransferProducts={onTransferProducts}
+            onEdit={onEdit}
           />
         ),
       },
