@@ -1,15 +1,22 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Flex, useDisclosure } from "@chakra-ui/react";
 import React from "react";
 import TransitTable from "./components/TransitTable";
 import { BarFilter } from "../../frontend/core/components/BarFilter";
-import TransitActionsButtonGroup from "./components/TransitTableActions";
+import TransitActionsButtonGroup from "./components/TransitActionsButtonGroup";
 import TabGroup from "@/frontend/core/components/TabGroup";
 import AddProductDialog from "./dialogs/AddProductDialog";
 import TransitDetailsDialog from "./dialogs/TransitDetailsDialog";
 import AddProductQuantityDialog from "./dialogs/AddProductQuantityDialog";
+import MainTransitDialog from "./dialogs/MainTransitDialog";
 
 export default function TransitScreen() {
   const tabs = ["Domicilio", "Deudas"];
+
+  const {
+    isOpen: isOpenTransitDetailsDialog,
+    onOpen: onOpenTransitDetailsDialog,
+    onClose: onCloseTransitDetailsDialog,
+  } = useDisclosure();
 
   return (
     <Box>
@@ -24,7 +31,7 @@ export default function TransitScreen() {
         ]}
       >
         <TabGroup tabs={tabs} />
-        <TransitActionsButtonGroup />
+        <TransitActionsButtonGroup onAddProduct={onOpenTransitDetailsDialog} />
       </BarFilter>
       {/* Fin */}
 
@@ -32,10 +39,10 @@ export default function TransitScreen() {
       <TransitTable />
       {/* Fin */}
 
-      {/* Dialogs */}
-      {/* <AddProductDialog /> */}
-      {/* <TransitDetailsDialog /> */}
-      {/* <AddProductQuantityDialog /> */}
+      <MainTransitDialog
+        isOpen={isOpenTransitDetailsDialog}
+        onClose={onCloseTransitDetailsDialog}
+      />
     </Box>
   );
 }

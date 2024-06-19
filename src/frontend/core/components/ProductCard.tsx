@@ -16,11 +16,13 @@ type Props = {
   photoUrl: string;
   price: number;
   currency: string;
+  onClick: () => void;
 };
 
 export default function ProductCard({
   productName,
   photoUrl,
+  onClick,
   price,
   currency,
   isSelected = false,
@@ -34,6 +36,7 @@ export default function ProductCard({
       border={isSelected ? "2px solid" : "nonde"}
       borderColor={"cyan.500"}
       boxShadow={"0 4px 120px 0 rgba(115, 115, 155, 8%)"}
+      onClick={onClick}
     >
       <Center
         maxWidth={"150px"}
