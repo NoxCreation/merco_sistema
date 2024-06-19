@@ -14,7 +14,7 @@ import React from "react";
 interface Props {
   onCreateEdit: () => void
   onRemove: () => void
-  onFind: (column: string, value: string) => void
+  onFind?: (column: string, value: string) => void
   column_find?: string
   inTable?: boolean
 }

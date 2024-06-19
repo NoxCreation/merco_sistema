@@ -12,6 +12,7 @@ export default function ProductGrid() {
           photoUrl="https://th.bing.com/th/id/OIP.9NpwQKAQdicXnRCFjr7KfQHaDe?w=1170&h=550&rs=1&pid=ImgDetMain"
           productName="Aceite Refrigerante"
           key={index}
+          onClick={()=>{}}
         />
       ))}
     </SimpleGrid>

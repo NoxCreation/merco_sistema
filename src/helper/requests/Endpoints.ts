@@ -7,10 +7,26 @@ export const ENDPOINTS = {
     user: "/user",
     product: "/product",
     category: "/category",
-    unit: "/unit"
+    unit: "/unit",
+    download_excel: "/download_excel"
 }
 
 type RequestMethod = 'POST' | 'PUT' | 'GET' | 'DELETE';
+
+export const download_excel = async (columns: any, rows: any) => {
+    const response = await client.post(ENDPOINTS.download_excel, { 
+        columns,
+        rows
+    }, {
+        responseType: 'blob'
+    })
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', 'Tabla Descarga.xlsx');
+    document.body.appendChild(link);
+    link.click();
+}
 
 export const model_request = async (method: RequestMethod, url: string, data?: any, token?: string, showBlob?: boolean) => {
     if (!url) throw new Error('La URL no puede ser nula.');

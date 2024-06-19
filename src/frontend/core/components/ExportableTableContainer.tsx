@@ -7,9 +7,10 @@ type Props = {
   children: ReactNode | ReactNode[];
   onExportToExcel?: () => void;
   onChangeFilterCount?: (e: number) => void
+  onDownloadExcel?: () => void
 };
 
-export default function ExportableTableContainer({ title, children, onChangeFilterCount }: Props) {
+export default function ExportableTableContainer({ title, children, onChangeFilterCount, onDownloadExcel }: Props) {
   return (
     <Stack
       spacing={5}
@@ -41,6 +42,7 @@ export default function ExportableTableContainer({ title, children, onChangeFilt
             cursor={"pointer"}
             borderRadius={"full"}
             _hover={{ backgroundColor: "gray.200" }}
+            onClick={onDownloadExcel}
           >
             <ExcelIcon />
           </Box>

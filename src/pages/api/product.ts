@@ -30,7 +30,6 @@ export default async function handler(
     res: NextApiResponse<any>,
 ) {
     if (req.method == "DELETE") {
-        //const filePath = resolve(process.cwd(), 'public', req.body.image.split("/")[1], req.body.image.split("/")[2]);
         const { id } = req.query
         const image_path = (await Manager().Product.findOneById(parseInt(id as any))).query.image
         const filePath = resolve(process.cwd(), 'public', image_path.split("/")[1], image_path.split("/")[2]);
@@ -64,13 +63,20 @@ export default async function handler(
                 }
             }
 
+            const { filter } = req.query;
+            let _filter = JSON.parse(filter as string)['relations']
+            let fcategory = _filter ? _filter.category : {}
+            for (let key in fcategory) {
+                fcategory = cleanFilter(fcategory, key)
+            }
+
             return ApiRequestTemplate(
                 req,
                 res,
                 Manager().Product,
                 [
                     {
-                        model: Manager().Category.model, as: 'category'
+                        model: Manager().Category.model, as: 'category', where: { ...fcategory }
                     },
                     {
                         model: Manager().Unit.model, as: 'unit'
@@ -83,20 +89,13 @@ export default async function handler(
         });
     }
 
-    const { filter } = req.query;
-    let _filter = JSON.parse(filter as string)['relations']
-    let fcategory = _filter ? _filter.category : {}
-    for (let key in fcategory) {
-        fcategory = cleanFilter(fcategory, key)
-    }
-
     return ApiRequestTemplate(
         req,
         res,
         Manager().Product,
         [
             {
-                model: Manager().Category.model, as: 'category', where: { ...fcategory }
+                model: Manager().Category.model, as: 'category'
             },
             {
                 model: Manager().Unit.model, as: 'unit'
