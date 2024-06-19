@@ -1,6 +1,5 @@
 import SearchIconButton from "@/frontend/core/components/SearchIconButton";
-import DollarIcon from "@/frontend/core/icons/DollarIcon";
-import { EditIcon, DeleteIcon, AddIcon } from "@chakra-ui/icons";
+import { DeleteIcon, AddIcon } from "@chakra-ui/icons";
 import { ButtonGroup, IconButton } from "@chakra-ui/react";
 import React from "react";
 

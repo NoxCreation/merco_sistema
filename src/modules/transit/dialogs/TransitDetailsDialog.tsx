@@ -27,9 +27,14 @@ import React from "react";
 type Props = {
   onClose: () => void;
   onNext: () => void;
+  checkPay?: boolean;
 };
 
-export default function TransitDetailsDialog({ onNext, onClose }: Props) {
+export default function TransitDetailsDialog({
+  onNext,
+  onClose,
+  checkPay,
+}: Props) {
   const [haveAddress, setHaveAddress] = React.useState<boolean>(false);
   const [haveAmortization, setHaveAmortization] =
     React.useState<boolean>(false);
@@ -220,8 +225,13 @@ export default function TransitDetailsDialog({ onNext, onClose }: Props) {
         <Button onClick={onClose} colorScheme="gray">
           Cancelar
         </Button>
-        <Button colorScheme="cyan" ms={3} onClick={onClose} color={"white"}>
-          Guardar
+        <Button
+          colorScheme={checkPay ? "green" : "cyan"}
+          ms={3}
+          onClick={onClose}
+          color={"white"}
+        >
+          {checkPay ? "Guardar" : "Pagado"}
         </Button>
       </ModalFooter>
     </React.Fragment>

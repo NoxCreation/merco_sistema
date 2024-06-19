@@ -22,7 +22,7 @@ type Props = {
   onBack: () => void;
 };
 
-export default function AddProductDialog({ onNext, onBack }: Props) {
+export default function SelectProductDialog({ onNext, onBack }: Props) {
   const [selectedIndexes, setSelectedIndexes] = React.useState<number[]>([]);
 
   function handleSelected(index: number) {

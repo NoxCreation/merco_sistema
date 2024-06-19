@@ -4,9 +4,9 @@ import TransitTable from "./components/TransitTable";
 import { BarFilter } from "../../frontend/core/components/BarFilter";
 import TransitActionsButtonGroup from "./components/TransitActionsButtonGroup";
 import TabGroup from "@/frontend/core/components/TabGroup";
-import AddProductDialog from "./dialogs/AddProductDialog";
+import SelectProductDialog from "../../frontend/core/dialogs/SelectProductDialog";
 import TransitDetailsDialog from "./dialogs/TransitDetailsDialog";
-import AddProductQuantityDialog from "./dialogs/AddProductQuantityDialog";
+import AddProductQuantityDialog from "../../frontend/core/dialogs/AddProductQuantityDialog";
 import MainTransitDialog from "./dialogs/MainTransitDialog";
 
 export default function TransitScreen() {
