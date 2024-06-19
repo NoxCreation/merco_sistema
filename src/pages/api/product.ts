@@ -63,20 +63,13 @@ export default async function handler(
                 }
             }
 
-            const { filter } = req.query;
-            let _filter = JSON.parse(filter as string)['relations']
-            let fcategory = _filter ? _filter.category : {}
-            for (let key in fcategory) {
-                fcategory = cleanFilter(fcategory, key)
-            }
-
             return ApiRequestTemplate(
                 req,
                 res,
                 Manager().Product,
                 [
                     {
-                        model: Manager().Category.model, as: 'category', where: { ...fcategory }
+                        model: Manager().Category.model, as: 'category'
                     },
                     {
                         model: Manager().Unit.model, as: 'unit'
@@ -89,13 +82,23 @@ export default async function handler(
         });
     }
 
+    let fcategory = {} as any
+    if (req.method == "GET") {
+        const { filter } = req.query;
+        let _filter = JSON.parse(filter as string)['relations']
+        fcategory = _filter ? _filter.category : {}
+        for (let key in fcategory) {
+            fcategory = cleanFilter(fcategory, key)
+        }
+    }
+
     return ApiRequestTemplate(
         req,
         res,
         Manager().Product,
         [
             {
-                model: Manager().Category.model, as: 'category'
+                model: Manager().Category.model, as: 'category', where: { ...fcategory }
             },
             {
                 model: Manager().Unit.model, as: 'unit'
