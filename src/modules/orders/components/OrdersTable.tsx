@@ -102,7 +102,7 @@ type MerchancyItem = {
 
 interface Props {}
 
-export default function TransitTable({}: Props) {
+export default function OrdersTable({}: Props) {
   const page = 1;
   const pageSize = 10;
 

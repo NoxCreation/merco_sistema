@@ -7,6 +7,7 @@ import HistoryTable from "./components/HistoryTable";
 import { BarFilter } from "../../frontend/core/components/BarFilter";
 import TabGroup from "../../frontend/core/components/TabGroup";
 import InventoryActionsButtonGroup from "./components/InventoryActionsButtonGroup";
+import swal from 'sweetalert';
 
 export default function InventoryScreen() {
   const [activeTabIndex, setActiveTabIndex] = useState<number>(0);
@@ -15,6 +16,12 @@ export default function InventoryScreen() {
     isOpen: isOpenTransferDialog,
     onOpen: onOpenTransferDialog,
     onClose: onCloseTransferDialog,
+  } = useDisclosure();
+
+  const {
+    isOpen: isOpenEditDialog,
+    onOpen: onOpenEditDialog,
+    onClose: onCloseEditDialog,
   } = useDisclosure();
 
   const onTransferProducts = () => {
@@ -27,30 +34,40 @@ export default function InventoryScreen() {
       <BarFilter
         breadcrumb={[
           {
-            label: 'Inventario',
+            label: "Inventario",
             icon: undefined,
-            link: '/inventario'
-          }
+            link: "/inventario",
+          },
         ]}
       >
         <TabGroup tabs={tabs} onChange={setActiveTabIndex} />
         <Select
-          fontSize={'13px'}
+          fontSize={"13px"}
           colorScheme="cyan"
           minWidth={"210px"}
           backgroundColor={"white"}
         >
           <option>Almacen</option>
         </Select>
-        <InventoryActionsButtonGroup
-          onTransferProducts={onTransferProducts}
-        />
+        <InventoryActionsButtonGroup onTransferProducts={onTransferProducts} />
       </BarFilter>
       {/* Fin */}
 
       {/* Tabla */}
       {activeTabIndex === 0 ? (
-        <InventoryTable onTransferProducts={onTransferProducts} />
+        <InventoryTable
+          onTransferProducts={onTransferProducts}
+          onEdit={onOpenEditDialog}
+          onDelete={() => {
+            swal({
+              title: "¿Está seguro?",
+              text: "Si elimina el registro no podrá recuperarlo, ¿está seguro de querer continuar?",
+              icon: "warning",
+              buttons: ["Cancelar", "Eliminar"],
+              dangerMode: true,
+            });
+          }}
+        />
       ) : (
         <HistoryTable />
       )}
@@ -61,7 +78,10 @@ export default function InventoryScreen() {
         isOpen={isOpenTransferDialog}
         onClose={onCloseTransferDialog}
       />
-      <EditInventoryDialog />
+      <EditInventoryDialog
+        isOpen={isOpenEditDialog}
+        onClose={onCloseEditDialog}
+      />
       {/* Fin */}
     </Box>
   );

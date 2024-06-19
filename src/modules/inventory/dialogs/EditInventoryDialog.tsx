@@ -20,10 +20,15 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 
-export default function EditInventoryDialog() {
+type Props = {
+  isOpen: boolean;
+  onClose: () => void;
+};
+
+export default function EditInventoryDialog({ isOpen, onClose }: Props) {
   return (
-    <Modal isOpen={false} onClose={() => null} isCentered>
-      <ModalOverlay />
+    <Modal isOpen={isOpen} onClose={onClose} isCentered>
+      <ModalOverlay bg="#00000030" backdropFilter="blur(10px)" />
       <ModalContent>
         <ModalHeader>{"{nombre del producto a editar}"}</ModalHeader>
         <ModalCloseButton />
@@ -42,7 +47,12 @@ export default function EditInventoryDialog() {
             <FormControl>
               <Flex justifyContent={"space-between"} alignItems={"center"}>
                 <FormLabel>Trasladar a:</FormLabel>
-                <Badge variant={"outline"} colorScheme="purple" borderRadius={"full"} px={"10px"}>
+                <Badge
+                  variant={"outline"}
+                  colorScheme="purple"
+                  borderRadius={"full"}
+                  px={"10px"}
+                >
                   USD
                 </Badge>
               </Flex>
@@ -57,7 +67,12 @@ export default function EditInventoryDialog() {
             <FormControl>
               <Flex justifyContent={"space-between"} alignItems={"center"}>
                 <FormLabel>Trasladar a:</FormLabel>
-                <Badge variant={"outline"} colorScheme="purple" borderRadius={"full"} px={"10px"}>
+                <Badge
+                  variant={"outline"}
+                  colorScheme="purple"
+                  borderRadius={"full"}
+                  px={"10px"}
+                >
                   USD
                 </Badge>
               </Flex>
@@ -73,10 +88,17 @@ export default function EditInventoryDialog() {
         </ModalBody>
 
         <ModalFooter>
-          <Button colorScheme="cyan" mr={3} onClick={() => null}>
+          <Button
+            colorScheme="gray"
+            color={"gray"}
+            bgColor={"white"}
+            onClick={onClose}
+          >
+            Cancelar
+          </Button>
+          <Button mr={3} onClick={() => null} color={"white"}>
             Editar
           </Button>
-          <Button>Cancelar</Button>
         </ModalFooter>
       </ModalContent>
     </Modal>

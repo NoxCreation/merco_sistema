@@ -21,23 +21,29 @@ import {
   Select,
   InputRightElement,
 } from "@chakra-ui/react";
-import {
-  AddIcon,
-  DeleteIcon,
-  ExternalLinkIcon,
-  CalendarIcon,
-  RepeatClockIcon,
-} from "@chakra-ui/icons";
+import { AddIcon, DeleteIcon, ExternalLinkIcon } from "@chakra-ui/icons";
 import React from "react";
 
-export default function OrderDetailsDialog() {
+type Props = {
+  onClose: () => void;
+  onNext: () => void;
+  isOpen: boolean;
+  checkPay?: boolean;
+};
+
+export default function OrderDetailsDialog({
+  onClose,
+  isOpen,
+  checkPay,
+  onNext,
+}: Props) {
   const [haveAddress, setHaveAddress] = React.useState<boolean>(false);
   const [haveShop, setHaveShop] = React.useState<boolean>(false);
   const [isInConfirmationState, setConfirmationState] =
     React.useState<boolean>(false);
 
   return (
-    <Modal isOpen={true} onClose={() => null} scrollBehavior="inside" isCentered>
+    <Modal isOpen={isOpen} onClose={onClose} scrollBehavior="inside" isCentered>
       <ModalOverlay />
       <ModalContent maxWidth={"500px"}>
         <ModalHeader>{"T-023023"}</ModalHeader>
@@ -117,7 +123,12 @@ export default function OrderDetailsDialog() {
                   <Text>Aceite Refrigerante Universal</Text>
                   <DeleteIcon cursor={"pointer"} />
                 </Flex>
-                <Button width={"full"} colorScheme="cyan" color={"white"}>
+                <Button
+                  width={"full"}
+                  colorScheme="cyan"
+                  color={"white"}
+                  onClick={onNext}
+                >
                   <Center gap={"20px"}>
                     <AddIcon />
                     <Text>Agregar</Text>
@@ -202,26 +213,17 @@ export default function OrderDetailsDialog() {
         </ModalBody>
 
         <ModalFooter>
-          {isInConfirmationState ? (
-            <Button
-              colorScheme="green"
-              mr={3}
-              onClick={() => null}
-              color={"white"}
-            >
-              Pagado
-            </Button>
-          ) : (
-            <Button
-              colorScheme="cyan"
-              mr={3}
-              onClick={() => null}
-              color={"white"}
-            >
-              Guardar
-            </Button>
-          )}
-          <Button color={"white"}>Cancelar</Button>
+          <Button onClick={onClose} colorScheme="gray">
+            Cancelar
+          </Button>
+          <Button
+            colorScheme={checkPay ? "green" : "cyan"}
+            ms={3}
+            onClick={onClose}
+            color={"white"}
+          >
+            {checkPay ? "Guardar" : "Pagado"}
+          </Button>
         </ModalFooter>
       </ModalContent>
     </Modal>

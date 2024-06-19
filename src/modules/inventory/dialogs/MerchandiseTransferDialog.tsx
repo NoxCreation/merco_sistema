@@ -21,28 +21,15 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 
-interface Props {
-  isOpen: boolean
-  onClose: () => void
-}
+type Props = {
+  isOpen: boolean;
+  onClose: () => void;
+};
 
-export default function MerchandiseTransferDialog({
-  isOpen,
-  onClose
-}: Props) {
-
-
+export default function MerchandiseTransferDialog({ isOpen, onClose }: Props) {
   return (
-    <Modal
-      isOpen={isOpen}
-      onClose={onClose}
-      isCentered
-      scrollBehavior="inside"
-    >
-      <ModalOverlay
-        bg='#00000030'
-        backdropFilter='blur(10px)'
-      />
+    <Modal isOpen={isOpen} onClose={onClose} isCentered scrollBehavior="inside">
+      <ModalOverlay bg="#00000030" backdropFilter="blur(10px)" />
       <ModalContent>
         <ModalHeader>Traslado de mercancia</ModalHeader>
         <ModalCloseButton />
@@ -101,7 +88,9 @@ export default function MerchandiseTransferDialog({
         </ModalBody>
 
         <ModalFooter>
-          <Button colorScheme="white" color={"gray"}>Cancelar</Button>
+          <Button colorScheme="gray" color={"gray"} bgColor={"white"}>
+            Cancelar
+          </Button>
           <Button mr={3} onClick={() => null} color={"white"}>
             Trasladar
           </Button>

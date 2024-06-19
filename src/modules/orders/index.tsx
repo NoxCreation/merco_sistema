@@ -1,15 +1,46 @@
 import React from "react";
-import { Flex } from "@chakra-ui/react";
+import { Box, useDisclosure } from "@chakra-ui/react";
+import OrdersTable from "./components/OrdersTable";
+import OrderActionsButtonGroup from "./components/OrdersActionsButtonGroup";
+import { BarFilter } from "@/frontend/core/components/BarFilter";
+import TabGroup from "@/frontend/core/components/TabGroup";
+import OrderDetailsDialog from "./dialogs/OrderDetailsDialog";
+import MainOrderDialog from "./dialogs/MainOrderDialog";
 
-export default function OrdersScreen() {
+export default function TransitScreen() {
+  const tabs = ["Tienda", "Domicilio"];
+
+  const {
+    isOpen: isOpenOrderDetailsDialog,
+    onOpen: onOpenOrderDetailsDialog,
+    onClose: onCloseOrderDetailsDialog,
+  } = useDisclosure();
+
   return (
-    <Flex
-      paddingY={"20px"}
-      marginY={"25px"}
-      alignItems={"center"}
-      justifyContent={"space-between"}
-    >
-      <h1>Order</h1>
-    </Flex>
-  )
+    <Box>
+      {/* Barra de Filteros */}
+      <BarFilter
+        breadcrumb={[
+          {
+            label: "Tránsito",
+            icon: undefined,
+            link: "/transito",
+          },
+        ]}
+      >
+        <TabGroup tabs={tabs} />
+        <OrderActionsButtonGroup onAddProduct={onOpenOrderDetailsDialog} />
+      </BarFilter>
+      {/* Fin */}
+
+      {/* Tabla */}
+      <OrdersTable />
+      {/* Fin */}
+
+      <MainOrderDialog
+        isOpen={isOpenOrderDetailsDialog}
+        onClose={onCloseOrderDetailsDialog}
+      />
+    </Box>
+  );
 }
