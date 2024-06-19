@@ -204,6 +204,7 @@ export default function TransitTable({}: Props) {
 
   return (
     <GenericTable
+      onFind={() => {}}
       columns={columns}
       data={mockData}
       title="Mercancías en Tránsito"

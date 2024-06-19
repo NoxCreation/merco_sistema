@@ -9,25 +9,23 @@ import {
   FormControl,
   FormLabel,
   ModalFooter,
-  Badge,
   Button,
-  Checkbox,
-  Flex,
-  InputGroup,
   Input,
   Text,
   InputRightAddon,
   Center,
   Select,
-  InputRightElement,
-  Tooltip,
 } from "@chakra-ui/react";
 import React from "react";
-import DollarIcon from "@/frontend/core/icons/DollarIcon";
 
-export default function DebtDeclarationDialog() {
+type Props = {
+  isOpen: boolean;
+  onClose: () => void;
+};
+
+export default function DebtDeclarationDialog({ isOpen, onClose }: Props) {
   return (
-    <Modal isOpen={true} onClose={() => null} scrollBehavior="inside" isCentered>
+    <Modal isOpen={isOpen} onClose={onClose} scrollBehavior="inside" isCentered>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>{"Cierre Diario"}</ModalHeader>
@@ -59,10 +57,10 @@ export default function DebtDeclarationDialog() {
         </ModalBody>
 
         <ModalFooter>
-          <Button colorScheme="gray" mr={3}>
+          <Button colorScheme="gray" mr={3} onClick={onClose}>
             Cancelar
           </Button>
-          <Button colorScheme="green" onClick={() => null} color={"white"}>
+          <Button colorScheme="green" onClick={onClose} color={"white"}>
             Agregar Deuda
           </Button>
         </ModalFooter>

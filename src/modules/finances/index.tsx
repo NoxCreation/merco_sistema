@@ -1,30 +1,31 @@
 import React, { useState } from "react";
-import {
-  Box,
-  Button,
-  Flex,
-  Input,
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-  PopoverCloseButton,
-  PopoverBody,
-  PopoverHeader,
-} from "@chakra-ui/react";
+import { Box, Button, Flex, useDisclosure } from "@chakra-ui/react";
 import { BarFilter } from "@/frontend/core/components/BarFilter";
 import TabGroup from "@/frontend/core/components/TabGroup";
 import WorkedTable from "./components/WorkedTable";
-import FinanceDetails from "./FinanceDetails";
-import { es } from "date-fns/locale";
 
-import "react-date-range/dist/styles.css"; // main style file
-import "react-date-range/dist/theme/default.css"; // theme css file
-import { DateRangePicker, RangeKeyDict } from "react-date-range";
 import DateRangeSelector from "@/frontend/core/components/DateRangeSelector";
+import BalanceTable from "./components/BalanceTable";
+import { useRouter } from "next/router";
+import DailyCloseDialog from "./dialogs/DailyCloseDialog";
+import DebtDeclarationDialog from "./dialogs/DebtDeclarationDialog";
 
 export default function FinancesScreen() {
-  const tabs = ["Balance", "Cierres Diarios", "Trabajados"];
+  const tabs = ["Balance", "Cierres Diarios"];
   const [activeTabIndex, setActiveTabIndex] = useState<number>(0);
+  const router = useRouter();
+
+  const {
+    isOpen: isOpenDailyCloseDialog,
+    onOpen: onOpenDailyCloseDialog,
+    onClose: onCloseDailyCloseDialog,
+  } = useDisclosure();
+
+  const {
+    isOpen: isOpenDebtDeclarationDialog,
+    onOpen: onOpenDebtDeclarationDialog,
+    onClose: onCloseDebtDeclarationDialog,
+  } = useDisclosure();
 
   return (
     <Box>
@@ -34,46 +35,61 @@ export default function FinancesScreen() {
           {
             label: `Finanzas`,
             icon: undefined,
-            link: "/finanzas",
+            link: "/finances",
           },
           {
             label: tabs[activeTabIndex],
             icon: undefined,
-            link: "/finanzas",
+            link: "/finances",
           },
         ]}
       >
         <TabGroup tabs={tabs} onChange={setActiveTabIndex} />
       </BarFilter>
 
-      {activeTabIndex == 2 && (
+      {activeTabIndex == 0 && (
         <React.Fragment>
           <Flex justifyContent={"end"} my={"20px"} gap={"10px"}>
             <DateRangeSelector />
-            <Button colorScheme="cyan" color={"white"}>
+            <Button
+              colorScheme="cyan"
+              color={"white"}
+              onClick={() => {
+                router.push("/finances/worked");
+              }}
+            >
               Realizar Balance
             </Button>
           </Flex>
-          <WorkedTable />
+          <BalanceTable
+            onViewDetails={() => {
+              router.push("/finances/details");
+            }}
+          />
         </React.Fragment>
       )}
 
       {activeTabIndex === 1 && (
         <React.Fragment>
           <Flex justifyContent={"end"} my={"20px"} gap={"10px"}>
-            <Input type="date" maxWidth={"200px"} background={"white"}/>
-            <Button colorScheme="cyan" color={"white"}>
-              Realizar Balance
+            <DateRangeSelector />
+            <Button colorScheme="cyan" color={"white"} onClick={onOpenDailyCloseDialog}>
+              Realizar Cierre
             </Button>
           </Flex>
-          <WorkedTable />
+          <WorkedTable onViewDetails={() => {}} />
         </React.Fragment>
       )}
 
-      {/* <DailyCloseDialog /> */}
-      {/* <DebtDeclarationDialog /> */}
-
-      <FinanceDetails />
+      <DailyCloseDialog
+        isOpen={isOpenDailyCloseDialog}
+        onClose={onCloseDailyCloseDialog}
+        onGenerateDebt={onOpenDebtDeclarationDialog}
+      />
+      <DebtDeclarationDialog
+        isOpen={isOpenDebtDeclarationDialog}
+        onClose={onCloseDebtDeclarationDialog}
+      />
     </Box>
   );
 }

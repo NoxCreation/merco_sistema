@@ -143,6 +143,7 @@ export default function DailyCloseTable() {
 
   return (
     <GenericTable
+      onFind={() => {}}
       columns={columns}
       data={mockData}
       title="Cierres Diarios"

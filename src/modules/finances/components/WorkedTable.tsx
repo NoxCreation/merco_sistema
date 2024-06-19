@@ -1,9 +1,9 @@
 import React from "react";
-import GenericTable from "@/frontend/core/components/GenericTable";
-import { formatDate } from "@/frontend/core/utils/formatDate";
-import DocumentIcon from "@/frontend/core/icons/DocumentIcon";
-import { Checkbox, Flex, Badge, Text, IconButton } from "@chakra-ui/react";
 import { ColumnDef } from "@tanstack/react-table";
+import DocumentIcon from "@/frontend/core/icons/DocumentIcon";
+import { formatDate } from "@/frontend/core/utils/formatDate";
+import GenericTable from "@/frontend/core/components/GenericTable";
+import { Checkbox, Flex, Badge, Text, IconButton } from "@chakra-ui/react";
 
 const mockData: WorkedItem[] = [
   {
@@ -57,104 +57,113 @@ type WorkedItem = {
   earning: number;
 };
 
-const columns: ColumnDef<WorkedItem>[] = [
-  {
-    header: ({ table }) => (
-      <Checkbox
-        size={"sm"}
-        colorScheme="cyan"
-        isChecked={table.getIsAllRowsSelected()}
-        isIndeterminate={table.getIsSomeRowsSelected()}
-        onChange={(event) => {
-          table.toggleAllRowsSelected(event.target.checked);
-        }}
-      >
-        Nombre
-      </Checkbox>
-    ),
-    accessorKey: "name",
-    cell: ({ row, getValue }) => (
-      <Flex alignItems={"center"} gap={"10px"}>
-        <Checkbox
-          size={"sm"}
-          colorScheme="cyan"
-          type="checkbox"
-          isChecked={row.getIsSelected()}
-          onChange={(event) => row.toggleSelected(event.target.checked)}
-        >
-          {getValue<string>()}
-        </Checkbox>
-      </Flex>
-    ),
-  },
-  {
-    header: "Tipo",
-    accessorKey: "type",
-    cell: ({ getValue }) => (
-      <Badge
-        boxShadow={"none"}
-        color={"white"}
-        backgroundColor={
-          getValue<string>() === "Promotor" ? "gray.500" : "teal.500"
-        }
-      >
-        {getValue<string>()}
-      </Badge>
-    ),
-  },
-  {
-    header: "Fecha de inicio",
-    accessorKey: "initDate",
-    cell: ({ getValue }) => formatDate(getValue<Date>()),
-  },
-  {
-    header: "Fecha final",
-    accessorKey: "initDate",
-    cell: ({ getValue }) => formatDate(getValue<Date>()),
-  },
-  {
-    header: "Fijo",
-    accessorKey: "fixed",
-    cell: ({ getValue }) => (
-      <Badge
-        boxShadow={"none"}
-        color={"white"}
-        backgroundColor={
-          getValue<string>() === "Fijo" ? "green.400" : "cyan.400"
-        }
-      >
-        {getValue<string>()}
-      </Badge>
-    ),
-  },
-  {
-    header: "Ganancia",
-    accessorKey: "earning",
-    cell: ({ getValue }) => (
-      <Flex alignItems={"center"} gap={"10px"}>
-        <Text>{getValue<number>()}</Text>
-        <Badge>USD</Badge>
-      </Flex>
-    ),
-  },
-  {
-    id: "actions",
-    cell: ({ getValue }) => (
-      <IconButton
-        aria-label="Icon Button"
-        icon={<DocumentIcon color="#fff" />}
-        colorScheme="cyan"
-      />
-    ),
-  },
-];
+type Props = {
+  onViewDetails: () => void;
+};
 
-export default function WorkedTable() {
+export default function WorkedTable({ onViewDetails }: Props) {
   const page = 1;
   const pageSize = 10;
 
+  const columns: ColumnDef<WorkedItem>[] = React.useMemo(
+    () => [
+      {
+        header: ({ table }) => (
+          <Checkbox
+            size={"sm"}
+            colorScheme="cyan"
+            isChecked={table.getIsAllRowsSelected()}
+            isIndeterminate={table.getIsSomeRowsSelected()}
+            onChange={(event) => {
+              table.toggleAllRowsSelected(event.target.checked);
+            }}
+          >
+            Nombre
+          </Checkbox>
+        ),
+        accessorKey: "name",
+        cell: ({ row, getValue }) => (
+          <Flex alignItems={"center"} gap={"10px"}>
+            <Checkbox
+              size={"sm"}
+              colorScheme="cyan"
+              type="checkbox"
+              isChecked={row.getIsSelected()}
+              onChange={(event) => row.toggleSelected(event.target.checked)}
+            >
+              {getValue<string>()}
+            </Checkbox>
+          </Flex>
+        ),
+      },
+      {
+        header: "Tipo",
+        accessorKey: "type",
+        cell: ({ getValue }) => (
+          <Badge
+            boxShadow={"none"}
+            color={"white"}
+            backgroundColor={
+              getValue<string>() === "Promotor" ? "gray.500" : "teal.500"
+            }
+          >
+            {getValue<string>()}
+          </Badge>
+        ),
+      },
+      {
+        header: "Fecha de inicio",
+        accessorKey: "initDate",
+        cell: ({ getValue }) => formatDate(getValue<Date>()),
+      },
+      {
+        header: "Fecha final",
+        accessorKey: "initDate",
+        cell: ({ getValue }) => formatDate(getValue<Date>()),
+      },
+      {
+        header: "Fijo",
+        accessorKey: "fixed",
+        cell: ({ getValue }) => (
+          <Badge
+            boxShadow={"none"}
+            color={"white"}
+            backgroundColor={
+              getValue<string>() === "Fijo" ? "green.400" : "cyan.400"
+            }
+          >
+            {getValue<string>()}
+          </Badge>
+        ),
+      },
+      {
+        header: "Ganancia",
+        accessorKey: "earning",
+        cell: ({ getValue }) => (
+          <Flex alignItems={"center"} gap={"10px"}>
+            <Text>{getValue<number>()}</Text>
+            <Badge>USD</Badge>
+          </Flex>
+        ),
+      },
+      {
+        id: "actions",
+        cell: ({ getValue }) => (
+          <IconButton
+            onClick={onViewDetails}
+            aria-label="Icon Button"
+            icon={<DocumentIcon color="#fff" />}
+            colorScheme="cyan"
+          />
+        ),
+      },
+    ],
+    []
+  );
+
   return (
     <GenericTable
+      onFind={() => {}}
       columns={columns}
       data={mockData}
       title="Finanzas"
