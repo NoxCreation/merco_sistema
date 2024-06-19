@@ -16,7 +16,7 @@ export default function MainTransitDialog({ isOpen, onClose }: Props) {
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} scrollBehavior="inside" isCentered>
-      <ModalOverlay />
+      <ModalOverlay bg="#00000030" backdropFilter="blur(10px)" />
       <ModalContent maxWidth={"500px"}>
         {currentStep === 0 && (
           <TransitDetailsDialog onClose={onClose} onNext={nextStep} checkPay/>

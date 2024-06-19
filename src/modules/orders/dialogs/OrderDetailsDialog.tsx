@@ -44,7 +44,7 @@ export default function OrderDetailsDialog({
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} scrollBehavior="inside" isCentered>
-      <ModalOverlay />
+      <ModalOverlay bg="#00000030" backdropFilter="blur(10px)" />
       <ModalContent maxWidth={"500px"}>
         <ModalHeader>{"T-023023"}</ModalHeader>
         <ModalCloseButton />
