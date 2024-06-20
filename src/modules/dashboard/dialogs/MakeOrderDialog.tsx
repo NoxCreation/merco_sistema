@@ -101,7 +101,7 @@ export default function MakeOrderDialog() {
                     <DeleteIcon />
                   </InputRightAddon>
                 </InputGroup>
-                <Button width={"full"} colorScheme="cyan">
+                <Button width={"full"} colorScheme="cyan" color={"white"}>
                   <Center gap={"20px"}>
                     <AddIcon />
                     <Text>Agregar</Text>
