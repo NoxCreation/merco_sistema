@@ -26,7 +26,7 @@ type Props = {
 export default function DebtDeclarationDialog({ isOpen, onClose }: Props) {
   return (
     <Modal isOpen={isOpen} onClose={onClose} scrollBehavior="inside" isCentered>
-      <ModalOverlay />
+      <ModalOverlay bg="#00000030" backdropFilter="blur(10px)" />
       <ModalContent>
         <ModalHeader>{"Cierre Diario"}</ModalHeader>
         <ModalCloseButton />

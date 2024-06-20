@@ -33,7 +33,7 @@ import React from "react";
 export default function MakeOrderDialog() {
   return (
     <Modal isOpen={true} onClose={() => null} isCentered>
-      <ModalOverlay />
+      <ModalOverlay bg="#00000030" backdropFilter="blur(10px)" />
       <ModalContent>
         <ModalHeader>{"{Nombre de la orden}"}</ModalHeader>
         <ModalCloseButton />
@@ -101,7 +101,7 @@ export default function MakeOrderDialog() {
                     <DeleteIcon />
                   </InputRightAddon>
                 </InputGroup>
-                <Button width={"full"} colorScheme="cyan">
+                <Button width={"full"} colorScheme="cyan" color={"white"}>
                   <Center gap={"20px"}>
                     <AddIcon />
                     <Text>Agregar</Text>
