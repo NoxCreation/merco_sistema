@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-
 import {
     Box,
     Checkbox,
@@ -7,11 +6,12 @@ import {
     Text,
     Image,
     Flex,
-    Badge
+    Badge,
+    useToast
 } from "@chakra-ui/react";
 import { BarFilter } from "@/frontend/core/components/BarFilter";
-import CRUDActionsButtonGroup from "./components/CRUDActionsButtonGroup";
-import CRUDTable from "./components/CRUDTable";
+import CRUDActionsButtonGroup from "../../../frontend/core/components/CRUD/CRUDActionsButtonGroup";
+import CRUDTable from "../../../frontend/core/components/CRUD/CRUDTable";
 import CreateEditProductDialog from "./dialog/CreateEditProductDialog";
 import { Product } from "@/backend/types";
 import swal from 'sweetalert';
@@ -42,6 +42,7 @@ export default function NomenclatorsProductsScreen() {
         onClose,
     } = useDisclosure();
     const businesses = useGetBussiness()
+    const toast = useToast()
 
     useEffect(() => {
         onLoad(pagination.page, pagination.pageSize)
@@ -61,6 +62,16 @@ export default function NomenclatorsProductsScreen() {
                 temp.count = data.count
                 setPagination(temp)
             }
+            else {
+                console.log("error", status, data)
+                toast({
+                    description: "Ah ocurrido un error al intentar cargar los productos",
+                    status: 'error',
+                    duration: 9000,
+                    isClosable: true,
+                    variant: "error"
+                })
+            }
             setLoading(false)
         })
     }
@@ -76,36 +87,64 @@ export default function NomenclatorsProductsScreen() {
             .then((willDelete) => {
                 if (willDelete) {
                     remove_product(product.id, (status: number, data: any) => {
-                        onLoad(pagination.page, pagination.pageSize)
+                        console.log(data)
+                        if (status == 200 && data == 1) {
+                            onLoad(pagination.page, pagination.pageSize)
+                            swal("¡Se ha eliminado satisfactoriamente!", {
+                                icon: "success",
+                            });
+                        }
+                        else {
+                            console.log("error", status, data)
+                            toast({
+                                description: "No se ha podido eliminar el elemento.",
+                                status: 'error',
+                                duration: 9000,
+                                isClosable: true,
+                                variant: "error"
+                            })
+                        }
                     })
-                    swal("¡Se ha eliminado satisfactoriamente!", {
-                        icon: "success",
-                    });
                 }
             });
     }
 
     const onMultipleRemove = async () => {
-        swal({
-            title: "¿Está seguro?",
-            text: "Si elimina los registros seleccionados no podrá recuperarlos, ¿está seguro de querer continuar?",
-            icon: "warning",
-            buttons: ["Cancelar", "Eliminar"],
-            dangerMode: true,
-        })
-            .then(async (willDelete) => {
-                if (willDelete) {
-                    for (let i = 0; i < productsSelects.length; i++) {
-                        const product = productsSelects[i]
-                        remove_product(product.id, (status: number, data: any) => {
-                            onLoad(pagination.page, pagination.pageSize)
-                        })
+        if (productsSelects.length > 0)
+            swal({
+                title: "¿Está seguro?",
+                text: "Si elimina los registros seleccionados no podrá recuperarlos, ¿está seguro de querer continuar?",
+                icon: "warning",
+                buttons: ["Cancelar", "Eliminar"],
+                dangerMode: true,
+            })
+                .then(async (willDelete) => {
+                    if (willDelete) {
+                        let flag = false
+                        for (let i = 0; i < productsSelects.length; i++) {
+                            const product = productsSelects[i]
+                            remove_product(product.id, (status: number, data: any) => {
+                                onLoad(pagination.page, pagination.pageSize)
+                                if(data != 1 || status != 200){
+                                    console.log("error", status, data)
+                                    flag = true
+                                }
+                            })
+                        }
+                        if(flag)
+                            toast({
+                                description: "Al menos un elemento no pudo ser eliminado.",
+                                status: 'error',
+                                duration: 9000,
+                                isClosable: true,
+                                variant: "error"
+                            })
+                        else
+                            swal("¡Se ha eliminado satisfactoriamente!", {
+                                icon: "success",
+                            });
                     }
-                    swal("¡Se ha eliminado satisfactoriamente!", {
-                        icon: "success",
-                    });
-                }
-            });
+                });
     }
 
     const onEdit = (product: Product) => {
@@ -124,7 +163,7 @@ export default function NomenclatorsProductsScreen() {
                     relations: {
                         category: {
                             name: {
-                                LIKE: '%' + value + '%'
+                                LIKE: value
                             }
                         }
                     }
@@ -133,7 +172,7 @@ export default function NomenclatorsProductsScreen() {
             else
                 onLoad(1, pagination.pageSize, {
                     [column]: {
-                        LIKE: '%' + value + '%'
+                        LIKE: value
                     }
                 })
         }

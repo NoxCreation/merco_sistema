@@ -114,6 +114,7 @@ export type Category = {
 
 export type Unit = {
     id: number,
+    canRemove: boolean
     name: string,
     symbol: string,
     createdAt: string,

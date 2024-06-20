@@ -60,7 +60,9 @@ export const ApiRequestTemplate = async (
             }
             catch (e) {
                 console.log("error", e)
-                return res.status(500).json({})
+                return res.status(500).json({
+                    'details': e
+                })
             }
         }
     }
@@ -99,7 +101,7 @@ export const cleanFilter = (_filter: any, key: string) => {
     // Si el valor de la clave es un objeto y tiene una clave LIKE
     if (typeof _filter[key] === 'object' && _filter[key].hasOwnProperty('LIKE')) {
         // Reemplaza la clave LIKE con [Op.like]
-        _filter[key] = { [Op.like]: _filter[key].LIKE };
+        _filter[key] = { [Op.like]: `%${_filter[key].LIKE}%` };
     }
     return _filter
 }
