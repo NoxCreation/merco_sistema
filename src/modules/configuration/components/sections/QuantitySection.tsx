@@ -6,7 +6,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import React from "react";
-import RuleItem from "./RuleItem";
+import RuleItem from "../RuleItem";
 import { AddIcon } from "@chakra-ui/icons";
 
 export default function QuantitySection() {

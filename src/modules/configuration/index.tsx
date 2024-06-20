@@ -1,13 +1,13 @@
 import React from "react";
 import { Box, Flex, Stack } from "@chakra-ui/react";
 import { BarFilter } from "@/frontend/core/components/BarFilter";
-import CurrencySettings from "./components/CurrencySettings";
-import CapitalizationAndFundsSettings from "./components/CapitalizationAndFundsSettings";
-import OfferRulesSettings from "./components/OfferRulesSettings";
-import PayRangeByResultSettings from "./components/PayRangeByResultSettings";
-import WorkersPaySettings from "./components/WorkersPaySettings";
-import VariablePaymentSettings from "./components/VariablePaymentSettings";
-import SMSSettings from "./components/SMSSettings";
+import CurrencySettings from "./components/settings/CurrencySettings";
+import CapitalizationAndFundsSettings from "./components/settings/CapitalizationAndFundsSettings";
+import OfferRulesSettings from "./components/settings/OfferRulesSettings";
+import PayRangeByResultSettings from "./components/settings/PayRangeByResultSettings";
+import WorkersPaySettings from "./components/settings/WorkersPaySettings";
+import VariablePaymentSettings from "./components/settings/VariablePaymentSettings";
+import SMSSettings from "./components/settings/SMSSettings";
 
 export default function ConfigurationScreen() {
   return (

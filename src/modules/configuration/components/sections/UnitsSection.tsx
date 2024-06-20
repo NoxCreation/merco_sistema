@@ -1,6 +1,6 @@
 import { FormControl, FormLabel, Heading, Stack } from "@chakra-ui/react";
 import React from "react";
-import UnitItem from "./UnitItem";
+import UnitItem from "../UnitItem";
 
 export default function UnitsSection() {
   return (

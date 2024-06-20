@@ -9,7 +9,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import React from "react";
-import CurrencyItem from "./CurrencyItem";
+import CurrencyItem from "../CurrencyItem";
 import { AddIcon } from "@chakra-ui/icons";
 
 export default function CurrencySettings() {

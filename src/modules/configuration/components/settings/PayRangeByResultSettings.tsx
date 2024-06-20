@@ -2,7 +2,7 @@ import GenericContainer from "@/frontend/core/components/GenericContainer";
 import { AddIcon } from "@chakra-ui/icons";
 import { Stack, Button, Center, Text, Checkbox } from "@chakra-ui/react";
 import React from "react";
-import RuleItem from "./RuleItem";
+import RuleItem from "../RuleItem";
 
 export default function PayRangeByResultSettings() {
   return (

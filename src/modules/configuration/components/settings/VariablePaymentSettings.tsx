@@ -8,9 +8,9 @@ import {
   Select,
 } from "@chakra-ui/react";
 import React from "react";
-import UnitsSection from "./UnitsSection";
-import QuantitySection from "./QuantitySection";
-import FixedPaymentQuantitySection from "./FixedPaymentQuantitySection";
+import UnitsSection from "../sections/UnitsSection";
+import QuantitySection from "../sections/QuantitySection";
+import FixedPaymentQuantitySection from "../sections/FixedPaymentQuantitySection";
 
 export default function VariablePaymentSettings() {
   return (

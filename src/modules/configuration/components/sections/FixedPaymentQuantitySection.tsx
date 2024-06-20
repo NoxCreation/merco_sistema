@@ -1,5 +1,5 @@
 import React from "react";
-import RuleItem from "./RuleItem";
+import RuleItem from "../RuleItem";
 import { AddIcon } from "@chakra-ui/icons";
 import { Stack, Heading, Button, Center, Text } from "@chakra-ui/react";
 

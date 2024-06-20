@@ -1,7 +1,8 @@
 import GenericContainer from "@/frontend/core/components/GenericContainer";
 import { Stack, Flex, Text, Center } from "@chakra-ui/react";
 import React from "react";
-import SMSPricingCard from "./SMSPricingCard";
+import SMSPricingCard from "../SMSPricingCard";
+import SMSTable from "../SMSTable";
 
 export default function SMSSettings() {
   return (
@@ -60,6 +61,7 @@ export default function SMSSettings() {
           sus órdenes, también para notificar a los administradores del sistema
           de deudas que hayan pasado el día estimado que debe ser cancelada.
         </Text>
+        <SMSTable />
       </Stack>
     </GenericContainer>
   );
