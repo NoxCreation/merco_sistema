@@ -14,7 +14,7 @@ import FixedPaymentQuantitySection from "../sections/FixedPaymentQuantitySection
 
 export default function VariablePaymentSettings() {
   return (
-    <GenericContainer title="Reglas pagos variables" width={"full"}>
+    <GenericContainer title="Reglas pagos variables" width={"full"} height={"fit-content"}>
       <Stack spacing={"10px"}>
         <UnitsSection />
         <QuantitySection />

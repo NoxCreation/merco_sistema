@@ -25,6 +25,7 @@ import OrderByIcon from "../icons/OrderByIcon";
 import ExportableTableContainer from "./ExportableTableContainer";
 import SearchIconButton from "./SearchIconButton";
 import { Pagination } from "./Pagination";
+import TableFilterCount from "./TableFilterCount";
 
 interface Props<T> {
   title: string;
@@ -79,7 +80,7 @@ export default function GenericTable<T>({
 
   const tableContent = (
     <TableContainer>
-      <Table fontSize={"13px"} minH={"100px"}>
+      <Table fontSize={"13px"} minH={"100px"} variant={"striped"}>
         <Thead position="sticky" top={0} bg={"white"}>
           {getHeaderGroups().map((headerGroup) => (
             <Tr key={headerGroup.id}>
@@ -196,7 +197,8 @@ export default function GenericTable<T>({
 
   if (noExportable)
     return (
-      <Stack spacing={5}>
+      <Stack spacing={1}>
+        <TableFilterCount onChangeFilterCount={onChangeFilterCount} />
         {tableContent}
         {paginationElement}
       </Stack>

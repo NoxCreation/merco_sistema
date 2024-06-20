@@ -16,9 +16,9 @@ export default function ConfigurationScreen() {
       <BarFilter
         breadcrumb={[
           {
-            label: "Inventario",
+            label: "Configuración",
             icon: undefined,
-            link: "/inventario",
+            link: "/configuration",
           },
         ]}
       />

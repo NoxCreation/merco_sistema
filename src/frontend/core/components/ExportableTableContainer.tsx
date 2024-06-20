@@ -1,16 +1,22 @@
 import { Box, Flex, Heading, Stack, Tooltip, Select } from "@chakra-ui/react";
 import React, { ReactNode } from "react";
 import ExcelIcon from "../icons/ExcelIcon";
+import TableFilterCount from "./TableFilterCount";
 
 type Props = {
   title: string;
   children: ReactNode | ReactNode[];
   onExportToExcel?: () => void;
-  onChangeFilterCount?: (e: number) => void
-  onDownloadExcel?: () => void
+  onChangeFilterCount?: (e: number) => void;
+  onDownloadExcel?: () => void;
 };
 
-export default function ExportableTableContainer({ title, children, onChangeFilterCount, onDownloadExcel }: Props) {
+export default function ExportableTableContainer({
+  title,
+  children,
+  onChangeFilterCount,
+  onDownloadExcel,
+}: Props) {
   return (
     <Stack
       spacing={5}
@@ -48,24 +54,7 @@ export default function ExportableTableContainer({ title, children, onChangeFilt
           </Box>
         </Tooltip>
       </Flex>
-      <Flex
-        width={"full"}
-        justifyContent={"end"}
-        position={"relative"}
-        height={"45px"}
-      >
-        <Select
-          defaultValue={10}
-          width={"fit-content"}
-          colorScheme="cyan"
-          position={"sticky"}
-          onChange={e => onChangeFilterCount && onChangeFilterCount(parseInt(e.target.value))}
-        >
-          {Array.from({ length: 10 }).map((_, index) => (
-            <option key={index}>{(index + 1) * 5}</option>
-          ))}
-        </Select>
-      </Flex>
+      <TableFilterCount onChangeFilterCount={onChangeFilterCount} />
       <Box>{children}</Box>
     </Stack>
   );
