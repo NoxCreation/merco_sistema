@@ -7,8 +7,10 @@ export default async function handler(
 ) {
     try {
         // Creando BD si no está creada
+        console.log("Comprobando la BD")
         await Manager()
         await sleep(10000)
+        console.log("Se termino la comprobacion")
 
         // Accediendo a los usuarios
         const users = (await Manager().User.findAll()).toJSON()

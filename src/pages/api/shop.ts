@@ -10,6 +10,11 @@ export default async function handler(
         req,
         res,
         Manager().Shop,
+        [
+            {
+                model: Manager().Business.model, as: 'businesses'
+            },
+        ]
     )
 
 }

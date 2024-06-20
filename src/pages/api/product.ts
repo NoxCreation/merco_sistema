@@ -29,84 +29,93 @@ export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse<any>,
 ) {
-    if (req.method == "DELETE") {
-        const { id } = req.query
-        const image_path = (await Manager().Product.findOneById(parseInt(id as any))).query.image
-        const filePath = resolve(process.cwd(), 'public', image_path.split("/")[1], image_path.split("/")[2]);
-        fs.unlink(filePath, (err) => {
-            if (err) {
-                console.error('Error al eliminar el archivo:', err);
-            }
-        });
-    }
-    else if (req.method == "POST" || req.method == "PUT") {
-        return upload(req as any, res as any, function (err: any) {
-            if (req.method == "POST") {
-                if (err instanceof multer.MulterError) {
-                    return res.status(500).json({ error: err.message });
-                } else if (err) {
-                    return res.status(500).json({ error: err.message });
+    try {
+        if (req.method == "DELETE") {
+            const { id } = req.query
+            const image_path = (await Manager().Product.findOneById(parseInt(id as any))).query.image
+            const filePath = resolve(process.cwd(), 'public', image_path.split("/")[1], image_path.split("/")[2]);
+            fs.unlink(filePath, (err) => {
+                if (err) {
+                    console.error('Error al eliminar el archivo:', err);
                 }
-                req.body.image = `/products/${(req as any).file.filename}`
-            }
-            else if (req.method == "PUT") {
-                const file = (req as any).file
-                if (file) {
-                    // elimina la imagen anterior
-                    const filePath = resolve(process.cwd(), 'public', req.body.image.split("/")[1], req.body.image.split("/")[2]);
-                    fs.unlink(filePath, (err) => {
-                        if (err) {
-                            console.error('Error al eliminar el archivo:', err);
-                        }
-                    });
+            });
+        }
+        else if (req.method == "POST" || req.method == "PUT") {
+            return upload(req as any, res as any, function (err: any) {
+                if (req.method == "POST") {
+                    if (err instanceof multer.MulterError) {
+                        return res.status(500).json({ error: err.message });
+                    } else if (err) {
+                        return res.status(500).json({ error: err.message });
+                    }
                     req.body.image = `/products/${(req as any).file.filename}`
                 }
-            }
+                else if (req.method == "PUT") {
+                    const file = (req as any).file
+                    if (file) {
+                        // elimina la imagen anterior
+                        const filePath = resolve(process.cwd(), 'public', req.body.image.split("/")[1], req.body.image.split("/")[2]);
+                        fs.unlink(filePath, (err) => {
+                            if (err) {
+                                console.error('Error al eliminar el archivo:', err);
+                            }
+                        });
+                        req.body.image = `/products/${(req as any).file.filename}`
+                    }
+                }
 
-            return ApiRequestTemplate(
-                req,
-                res,
-                Manager().Product,
-                [
-                    {
-                        model: Manager().Category.model, as: 'category'
-                    },
-                    {
-                        model: Manager().Unit.model, as: 'unit'
-                    },
-                    {
-                        model: Manager().Business.model, as: 'business'
-                    },
-                ]
-            )
-        });
-    }
-
-    let fcategory = {} as any
-    if (req.method == "GET") {
-        const { filter } = req.query;
-        let _filter = JSON.parse(filter as string)['relations']
-        fcategory = _filter ? _filter.category : {}
-        for (let key in fcategory) {
-            fcategory = cleanFilter(fcategory, key)
+                return ApiRequestTemplate(
+                    req,
+                    res,
+                    Manager().Product,
+                    [
+                        {
+                            model: Manager().Category.model, as: 'category'
+                        },
+                        {
+                            model: Manager().Unit.model, as: 'unit'
+                        },
+                        {
+                            model: Manager().Business.model, as: 'business'
+                        },
+                    ]
+                )
+            });
         }
+
+        let fcategory = {} as any
+        if (req.method == "GET") {
+            const { filter } = req.query;
+            let _filter = JSON.parse(filter as string)['relations']
+            fcategory = _filter ? _filter.category : {}
+            console.log("fcategory", fcategory)
+            for (let key in fcategory) {
+                fcategory = cleanFilter(fcategory, key)
+            }
+        }
+
+        return ApiRequestTemplate(
+            req,
+            res,
+            Manager().Product,
+            [
+                {
+                    model: Manager().Category.model, as: 'category', where: { ...fcategory }
+                },
+                {
+                    model: Manager().Unit.model, as: 'unit'
+                },
+                {
+                    model: Manager().Business.model, as: 'business'
+                },
+            ]
+        )
+    }
+    catch (e) {
+        return res.status(500).json({
+            'details': e
+        })
     }
 
-    return ApiRequestTemplate(
-        req,
-        res,
-        Manager().Product,
-        [
-            {
-                model: Manager().Category.model, as: 'category', where: { ...fcategory }
-            },
-            {
-                model: Manager().Unit.model, as: 'unit'
-            },
-            {
-                model: Manager().Business.model, as: 'business'
-            },
-        ]
-    )
 
 }

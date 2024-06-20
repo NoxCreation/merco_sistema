@@ -100,16 +100,16 @@ export default function CreateEditProductDialog({
       code == "" ||
       name == "" ||
       coste_usd == 0 ||
-      coste_usd == null ||
+      isNaN(coste_usd) ||
       price_usd == 0 ||
-      price_usd == null ||
+      isNaN(price_usd) ||
       count_unit == 0 ||
-      count_unit == null
+      isNaN(count_unit)
     ) {
       valid = false
     }
 
-    if(action == 'create' && file == null)
+    if (action == 'create' && file == null)
       valid = false
 
     if (gain_rate) {
@@ -147,6 +147,16 @@ export default function CreateEditProductDialog({
         console.log("data", data[0])
         if (status == 200 && (data[0] == undefined || data[0] == 1)) {
           onClose()
+        }
+        else {
+          console.log("error", status, data)
+          toast({
+            description: "Ocurrió un error al editar/crear. Revise tenga creado y elegido al menos una unidad y una categoría.",
+            status: 'error',
+            duration: 9000,
+            isClosable: true,
+            variant: "error"
+          })
         }
       })
     }

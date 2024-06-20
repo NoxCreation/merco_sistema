@@ -3,6 +3,10 @@ import { sequelize } from "./engine";
 
 export const UnitModel = (Business?: any) => {
     const Unit = sequelize.define('Unit', {
+        canRemove: {
+            type: (Sequelize as any).BOOLEAN,
+            defaultValue: true
+        },
         name: {
             type: (Sequelize as any).STRING
         },

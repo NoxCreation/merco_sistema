@@ -54,6 +54,14 @@ export default async function handler(
                     view_box: true,
                     perms_box: "{}"
                 }, { transaction: t })).query
+
+                // Creando unidad
+                const unidad = (await Manager().Unit.create({
+                    canRemove: false,
+                    name: "Unidad",
+                    symbol: "U",
+                    businessId: business.dataValues.id
+                }, { transaction: t })).query
                 
             })
 

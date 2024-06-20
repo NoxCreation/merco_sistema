@@ -656,8 +656,10 @@ export const Manager = () => {
     )
 
     // Si no esta sincronizado, se sincroniza la primera vez nada mas.
+    console.log("sync", sync)
     if (!sync) {
         sync = true
+        console.log("entre")
         const sc = async () => {
             await sequelize.sync()
             console.log('Base de datos y tablas creadas!')
