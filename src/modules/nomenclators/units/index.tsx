@@ -3,11 +3,8 @@ import {
     Box,
     Checkbox,
     Text,
-    Image,
     useDisclosure,
     useToast,
-    Flex,
-    Badge
 } from "@chakra-ui/react";
 import { BarFilter } from "@/frontend/core/components/BarFilter";
 import CRUDActionsButtonGroup from "../../../frontend/core/components/CRUD/CRUDActionsButtonGroup";
@@ -60,6 +57,7 @@ export default function NomenclatorsUnitsScreen() {
                 setItems(data.data)
                 let temp = JSON.parse(JSON.stringify(pagination))
                 temp.count = data.count
+                temp.page = data.page
                 setPagination(temp)
             }
             else {

@@ -1,7 +1,7 @@
 import { Sequelize } from "sequelize";
 import { sequelize } from "./engine";
 
-export const CoinModel = () => {
+export const CoinModel = (Business?: any) => {
     const Coin = sequelize.define('Coin', {
         active: {
             type: (Sequelize as any).BOOLEAN
@@ -11,6 +11,17 @@ export const CoinModel = () => {
         },
         value_change: {
             type: (Sequelize as any).FLOAT
+        },
+        canRemove: {
+            type: (Sequelize as any).BOOLEAN,
+            defaultValue: true
+        },
+        businessId: {
+            type: (Sequelize as any).INTEGER,
+            references: {
+                model: Business,
+                key: 'id'
+            }
         }
     }, {});
 

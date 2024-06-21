@@ -4,10 +4,11 @@ import {
     Checkbox,
     useDisclosure,
     useToast,
-    Text
+    Text,
+    Select
 } from "@chakra-ui/react";
 import { BarFilter } from "@/frontend/core/components/BarFilter";
-import { Shop } from "@/backend/types";
+import { Bussines, Shop } from "@/backend/types";
 import { useGetBussiness } from "@/helper/hooks/useGetBussiness";
 import swal from 'sweetalert';
 import { MapData } from "@/helper/maps";
@@ -17,6 +18,9 @@ import CRUDActionsButtonGroup from "@/frontend/core/components/CRUD/CRUDActionsB
 import { Loading } from "@/frontend/core/components/Loading";
 import CRUDTable from "@/frontend/core/components/CRUD/CRUDTable";
 import { get_shops, remove_shop } from "@/helper/requests/Shop";
+import CreateEditShopDialog from "./dialog/CreateEditShopDialog";
+import { useRouter } from "next/router";
+import { get_bussiness } from "@/helper/requests/Bussiness";
 
 export default function NomenclatorsWorkersScreen() {
     const [action, setAction] = useState("" as string)
@@ -40,22 +44,33 @@ export default function NomenclatorsWorkersScreen() {
     const businesses = useGetBussiness()
     const toast = useToast()
 
+    const router = useRouter()
+    const { business_id, inShow } = router.query
+    useEffect(() => {
+        console.log("business_id", business_id)
+        if (inShow) {
+            setAction("create")
+            onOpen()
+        }
+    }, [router.query])
+
     useEffect(() => {
         onLoad(pagination.page, pagination.pageSize)
-    }, [isOpen]);
+    }, [isOpen, router.query]);
 
     const onLoad = async (npage?: number, npageSize?: number, new_filter?: {}) => {
         setLoading(true);
         // Filtrar por el id del negocio
         const filter = {
-            /* businesses: businesses?.id,
-            ...new_filter */
+            "$Businesses.id$": business_id ? business_id : businesses?.id,
+            ...new_filter
         }
         await get_shops({ page: npage ? npage : pagination.page, pageSize: npageSize ? npageSize : pagination.pageSize, filter }, (status: number, data: any) => {
             if (status == 200) {
                 setItems(data.data)
                 let temp = JSON.parse(JSON.stringify(pagination))
                 temp.count = data.count
+                temp.page = data.page
                 setPagination(temp)
             }
             else {
@@ -119,13 +134,14 @@ export default function NomenclatorsWorkersScreen() {
                         let flag = false
                         for (let i = 0; i < itemsSelects.length; i++) {
                             const item = itemsSelects[i]
-                            remove_shop(item.id, (status: number, data: any) => {
-                                onLoad(pagination.page, pagination.pageSize)
-                                if (data != 1 || status != 200) {
-                                    console.log("error", status, data)
-                                    flag = true
-                                }
-                            })
+                            if (item.canRemove)
+                                remove_shop(item.id, (status: number, data: any) => {
+                                    onLoad(pagination.page, pagination.pageSize)
+                                    if (data != 1 || status != 200) {
+                                        console.log("error", status, data)
+                                        flag = true
+                                    }
+                                })
                         }
                         if (flag)
                             toast({
@@ -203,18 +219,28 @@ export default function NomenclatorsWorkersScreen() {
             ),
             accessorKey: "id",
             /* id: "id", */
-            cell: ({ row, getValue, cell }) => (
-                <Checkbox
-                    size={'sm'}
-                    colorScheme="cyan"
-                    type="checkbox"
-                    isChecked={row.getIsSelected()}
-                    onChange={(event) => row.toggleSelected(event.target.checked)}
-                    fontSize={'0.75rem'}
-                >
-                    {getValue<string>()}
-                </Checkbox>
-            ),
+            cell: ({ row, getValue, cell }) => {
+                const canRemove = cell.row.original.canRemove
+                if (canRemove)
+                    return (
+                        <Checkbox
+                            size={'sm'}
+                            colorScheme="cyan"
+                            type="checkbox"
+                            isChecked={row.getIsSelected()}
+                            onChange={(event) => row.toggleSelected(event.target.checked)}
+                            fontSize={'0.75rem'}
+                        >
+                            {getValue<string>()}
+                        </Checkbox>
+                    )
+                else
+                    return (
+                        <>
+                            {getValue<string>()}
+                        </>
+                    )
+            },
         },
         {
             header: "Nombre",
@@ -228,15 +254,28 @@ export default function NomenclatorsWorkersScreen() {
         },
         {
             id: "actions",
-            cell: (props) => (
-                <CRUDActionsButtonGroup inTable onCreateEdit={() => {
-                    onEdit(items[props.row.index])
-                }} onRemove={() => {
-                    onRemove(items[props.row.index])
-                }} />
-            ),
+            cell: (props) => {
+                const canRemove = props.cell.row.original.canRemove
+                if (canRemove)
+                    return (
+                        <CRUDActionsButtonGroup inTable onCreateEdit={() => {
+                            onEdit(items[props.row.index])
+                        }} onRemove={() => {
+                            onRemove(items[props.row.index])
+                        }} />
+                    )
+            },
         },
     ];
+
+    const [business, setBusiness] = useState([] as Array<Bussines>)
+    useEffect(() => {
+        get_bussiness({ page: 1, pageSize: 10000 }, (status: number, data: any) => {
+            if (status == 200) {
+                setBusiness(data.data)
+            }
+        })
+    }, [])
 
     return (
         <Box>
@@ -268,7 +307,16 @@ export default function NomenclatorsWorkersScreen() {
                     }}
                     column_find="name"
                     onFind={onFind}
-                />
+                >
+                    <Select bg={'white'} mr={'15px'} value={business_id ? business_id : businesses?.id} onChange={t => {
+                        setLoading(true)
+                        router.push(`/nomenclators/shops?business_id=${t.target.value}`)
+                    }}>
+                        {business.map((b, i) => (
+                            <option value={b.id} key={i}>{b.name}</option>
+                        ))}
+                    </Select>
+                </CRUDActionsButtonGroup>
             </BarFilter>
             {/* Fin */}
 
@@ -290,7 +338,13 @@ export default function NomenclatorsWorkersScreen() {
             {/* Fin */}
 
             {/* Ventanas modales */}
-
+            <CreateEditShopDialog
+                action={action}
+                isOpen={isOpen}
+                onClose={onClose}
+                shop={itemsSelects[0]}
+                business_id={business_id as string | undefined}
+            />
             {/* Fin */}
         </Box>
     )

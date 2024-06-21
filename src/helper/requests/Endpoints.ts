@@ -9,7 +9,8 @@ export const ENDPOINTS = {
     category: "/category",
     unit: "/unit",
     download_excel: "/download_excel",
-    shop: '/shop'
+    shop: '/shop',
+    expense: '/expense'
 }
 
 type RequestMethod = 'POST' | 'PUT' | 'GET' | 'DELETE';

@@ -48,7 +48,7 @@ export const Manager = () => {
     const Business = BusinessModel()//-
     const Category = CategoryModel(Business)//-
     const Unit = UnitModel(Business)//-
-    const Coin = CoinModel()//-
+    const Coin = CoinModel(Business)//-
     const ValueCoin = ValueCoinModel(Coin)//-
     const Stock = StockModel()//-
     const Shop = ShopModel()//-
@@ -66,7 +66,7 @@ export const Manager = () => {
     const SMSHistory = SMSHistoryModel(Employee)
     const PaymentRule = PaymentRuleModel(OfferRule)
     const Configuration = ConfigurationModel()
-    const Expense = ExpenseModel(ValueCoin)
+    const Expense = ExpenseModel(ValueCoin, Business)
     const DailyDebt = DailyDebtModel(ValueCoin)
     const DailyClosing = DailyClosingModel(Employee)
     const Payroll = PayrollModel(Employee)
