@@ -57,6 +57,7 @@ export default function NomenclatorsCategoriesScreen() {
                 setItems(data.data)
                 let temp = JSON.parse(JSON.stringify(pagination))
                 temp.count = data.count
+                temp.page = data.page
                 setPagination(temp)
             }
             else {

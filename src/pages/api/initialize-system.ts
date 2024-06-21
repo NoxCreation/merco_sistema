@@ -18,15 +18,18 @@ export default async function handler(
                 // Creando tienda
                 shop1 = (await Manager().Shop.create({
                     name: "Almacen",
-                    description: "Almacen del negocio"
+                    description: "Almacen del negocio",
+                    canRemove: false
                 }, { transaction: t })).query
                 shop2 = (await Manager().Shop.create({
                     name: "Frio Plus SHOP Lisa",
-                    description: "Tienda ubicada en la Lisa"
+                    description: "Tienda ubicada en la Lisa",
+                    canRemove: true
                 }, { transaction: t })).query
                 shop3 = (await Manager().Shop.create({
                     name: "Frio Plus SHOP Marianao",
-                    description: "Tienda ubicada en Marianao"
+                    description: "Tienda ubicada en Marianao",
+                    canRemove: true
                 }, { transaction: t })).query
 
                 // Creando negocio
@@ -62,7 +65,15 @@ export default async function handler(
                     symbol: "U",
                     businessId: business.dataValues.id
                 }, { transaction: t })).query
-                
+
+                // Creando moneda USD
+                const coin = (await Manager().Coin.create({
+                    canRemove: false,
+                    active: true,
+                    symbol: "USD",
+                    value_change: 1,
+                    businessId: business.dataValues.id
+                }, { transaction: t })).query
             })
 
 

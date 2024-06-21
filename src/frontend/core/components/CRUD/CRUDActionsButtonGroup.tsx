@@ -9,14 +9,15 @@ import {
   IconButton,
   Tooltip,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { ReactNode } from "react";
 
 interface Props {
   onCreateEdit: () => void
   onRemove: () => void
   onFind?: (column: string, value: string) => void
   column_find?: string
-  inTable?: boolean
+  inTable?: boolean,
+  children?: ReactNode
 }
 
 export default function CRUDActionsButtonGroup({
@@ -24,11 +25,13 @@ export default function CRUDActionsButtonGroup({
   column_find,
   onCreateEdit,
   onFind,
-  onRemove
+  onRemove,
+  children
 }: Props) {
 
   return (
     <ButtonGroup size="sm" isAttached>
+      {children}
       {!inTable ? (
         <>
           <SearchIconButton onFind={onFind} column_name={column_find as string} />

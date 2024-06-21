@@ -90,6 +90,7 @@ export type Product = {
 
 export type Shop = {
     id: number,
+    canRemove: Boolean,
     name: string,
     description: string,
     createdAt: string,
@@ -113,10 +114,37 @@ export type Category = {
 };
 
 export type Unit = {
-    id: number,
+    id: number
     canRemove: boolean
-    name: string,
-    symbol: string,
-    createdAt: string,
-    updatedAt: string,
+    name: string
+    symbol: string
+    createdAt: string
+    updatedAt: string
+};
+
+export type Coin = {
+    id: number
+    active: boolean
+    symbol: string
+    value_change: 1
+    createdAt: string
+    updatedAt: string
+}
+
+export type ValueCoin = {
+    id: number
+    value: number
+    coinId: number
+    createdAt: string
+    updatedAt: string
+    coin: Coin
+}
+
+export type Expense = {
+    id: number
+    amountId: number
+    description: string
+    createdAt: string
+    updatedAt: string
+    valuecoin: ValueCoin
 };

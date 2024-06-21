@@ -1,4 +1,3 @@
-import { PAGESIZE } from "@/backend/models/VARS";
 import { Manager, sequelize } from "@/backend/models/engine";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { ApiRequestTemplate } from "./ApiRequestTemplate";
@@ -14,7 +13,11 @@ export default async function handler(
         Manager().Business,
         [
             {
-                model: Manager().Shop.model, as: 'shops'
+                model: Manager().Shop.model, as: 'shops', include: [
+                    {
+                        model: Manager().Business.model, as: 'businesses'
+                    }
+                ]
             }
         ],
         async () => {

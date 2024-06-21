@@ -30,14 +30,36 @@ export const ApiRequestTemplate = async (
             _page = parseInt(page as string)
         if (pageSize != undefined)
             _pageSize = parseInt(pageSize as string)
-        const data = (await manager.findAll({
-            limit: _pageSize,
-            offset: (_page - 1) * _pageSize,
-            include,
-            where: {
-                ..._filter
-            }
-        })).toJSON()
+
+        let data = null as any
+        try {
+            data = (await manager.findAll({
+                limit: _pageSize,
+                offset: (_page - 1) * _pageSize,
+                include,
+                where: {
+                    ..._filter
+                },
+                order: [
+                    ['id', 'DESC']
+                ]
+            })).toJSON()
+        }
+        catch {
+            data = (await manager.findAll({
+                include,
+                where: {
+                    ..._filter
+                },
+                order: [
+                    ['id', 'DESC']
+                ]
+            })).toJSON()
+            console.log((_page - 1) * _pageSize, _pageSize)
+            data = data.slice((_page - 1) * _pageSize, ((_page - 1) * _pageSize) + _pageSize)
+        }
+
+        //console.log("data", data)
         count = (await (await manager.findAll({})).count())
 
         return res.status(200).json({
@@ -102,6 +124,15 @@ export const cleanFilter = (_filter: any, key: string) => {
     if (typeof _filter[key] === 'object' && _filter[key].hasOwnProperty('LIKE')) {
         // Reemplaza la clave LIKE con [Op.like]
         _filter[key] = { [Op.like]: `%${_filter[key].LIKE}%` };
+    }
+    return _filter
+}
+
+export const cleanNumberFilter = (_filter: any, key: string) => {
+    // Si el valor de la clave es un objeto y tiene una clave LIKE
+    if (typeof _filter[key] === 'object' && _filter[key].hasOwnProperty('LIKE')) {
+        // Reemplaza la clave LIKE con [Op.like]
+        _filter[key] = parseInt(_filter[key].LIKE)
     }
     return _filter
 }
