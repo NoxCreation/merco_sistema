@@ -24,21 +24,36 @@ type DateRange = {
   endDate: Date;
 };
 
-export default function DateRangeSelector() {
+interface Props {
+  onChange?: (startDate: Date, endDate: Date) => void
+}
+
+export default function DateRangeSelector({ onChange }: Props) {
   const [dateRange, setDateRange] = useState<DateRange>({
     startDate: new Date(),
     endDate: new Date(),
   });
 
   function handleChange(rangesByKey: RangeKeyDict) {
-    const startDate = rangesByKey.selection.startDate;
-    const endDate = rangesByKey.selection.endDate;
+    const startDate = new Date(rangesByKey.selection.startDate as Date);
+    startDate.setHours(0);
+    startDate.setMinutes(0);
+    startDate.setSeconds(0);
+    startDate.setMilliseconds(0);
 
-    if (startDate !== undefined && endDate !== undefined)
+    const endDate = new Date(rangesByKey.selection.endDate as Date);
+    endDate.setHours(23);
+    endDate.setMinutes(59);
+    endDate.setSeconds(59);
+    endDate.setMilliseconds(999);
+
+    if (startDate !== undefined && endDate !== undefined) {
       setDateRange({
         startDate,
         endDate,
       });
+      onChange && onChange(startDate, endDate)
+    }
   }
 
   return (

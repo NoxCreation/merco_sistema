@@ -142,6 +142,7 @@ export type ValueCoin = {
 
 export type Expense = {
     id: number
+    inUse: Boolean
     amountId: number
     description: string
     createdAt: string

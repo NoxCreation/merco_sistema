@@ -8,6 +8,7 @@ export const ENDPOINTS = {
     product: "/product",
     category: "/category",
     unit: "/unit",
+    coin: "/coin",
     download_excel: "/download_excel",
     shop: '/shop',
     expense: '/expense'

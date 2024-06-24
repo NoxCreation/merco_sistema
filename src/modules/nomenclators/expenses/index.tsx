@@ -4,7 +4,9 @@ import {
     Checkbox,
     useDisclosure,
     useToast,
-    Text
+    Text,
+    Badge,
+    Flex
 } from "@chakra-ui/react";
 import { BarFilter } from "@/frontend/core/components/BarFilter";
 import { Expense } from "@/backend/types";
@@ -18,6 +20,7 @@ import CRUDTable from "@/frontend/core/components/CRUD/CRUDTable";
 import { Loading } from "@/frontend/core/components/Loading";
 import { get_expense, remove_expense } from "@/helper/requests/Expenses";
 import CreateEditExpenseDialog from "./dialog/CreateEditExpenseDialog";
+import DateRangeSelector from "@/frontend/core/components/DateRangeSelector";
 
 export default function NomenclatorsExpensesScreen() {
     const [action, setAction] = useState("" as string)
@@ -33,6 +36,7 @@ export default function NomenclatorsExpensesScreen() {
     })
     const [items, setItems] = useState([] as Array<Expense>)
     const [itemsSelects, setItemsSelects] = useState([] as Array<Expense>)
+    const [rangeDate, setRangeDate] = useState([new Date(), new Date()] as [Date, Date])
     const {
         isOpen,
         onOpen,
@@ -41,15 +45,50 @@ export default function NomenclatorsExpensesScreen() {
     const businesses = useGetBussiness()
     const toast = useToast()
 
+    const changeRangeToday=()=>{
+        const startDate = new Date()
+        startDate.setHours(0);
+        startDate.setMinutes(0);
+        startDate.setSeconds(0);
+        startDate.setMilliseconds(0);
+        const endDate = new Date()
+        endDate.setHours(23);
+        endDate.setMinutes(59);
+        endDate.setSeconds(59);
+        endDate.setMilliseconds(999);
+        setRangeDate([startDate, endDate])
+        return [startDate, endDate]
+    }
+
     useEffect(() => {
-        onLoad(pagination.page, pagination.pageSize)
+        const [startDate, endDate] = changeRangeToday()
+        onLoad(pagination.page, pagination.pageSize, {
+            createdAt: {
+                BETWEEN_DATE: [startDate, endDate]
+            }
+        })
+    }, [])
+
+    useEffect(() => {
+        if (!isOpen){
+            const [startDate, endDate] = changeRangeToday()
+            onLoad(pagination.page, pagination.pageSize, {
+                createdAt: {
+                    BETWEEN_DATE: [startDate, endDate]
+                }
+            })
+        }
     }, [isOpen]);
 
-    const onLoad = async (npage?: number, npageSize?: number, new_filter?: {}) => {
+    const onLoad = async (npage?: number, npageSize?: number, new_filter?: any) => {
+        console.log(rangeDate[0].toISOString(), rangeDate[1].toISOString())
         setLoading(true);
         // Filtrar por el id del negocio
         const filter = {
             businessId: businesses?.id,
+            createdAt: (new_filter && new_filter.createdAt) ? new_filter.createdAt : {
+                BETWEEN_DATE: [rangeDate[0], rangeDate[1]]
+            },
             ...new_filter
         }
         await get_expense({ page: npage ? npage : pagination.page, pageSize: npageSize ? npageSize : pagination.pageSize, filter }, (status: number, data: any) => {
@@ -120,15 +159,15 @@ export default function NomenclatorsExpensesScreen() {
                     if (willDelete) {
                         let flag = false
                         for (let i = 0; i < itemsSelects.length; i++) {
-                            /* const product = itemsSelects[i]
-                            if (product.canRemove)
+                            const product = itemsSelects[i]
+                            if (!product.inUse)
                                 remove_expense(product.id, (status: number, data: any) => {
                                     onLoad(pagination.page, pagination.pageSize)
                                     if (data != 1 || status != 200) {
                                         console.log("error", status, data)
                                         flag = true
                                     }
-                                }) */
+                                })
                         }
                         if (flag)
                             toast({
@@ -206,18 +245,27 @@ export default function NomenclatorsExpensesScreen() {
             ),
             accessorKey: "id",
             /* id: "id", */
-            cell: ({ row, getValue, cell }) => (
-                <Checkbox
-                    size={'sm'}
-                    colorScheme="cyan"
-                    type="checkbox"
-                    isChecked={row.getIsSelected()}
-                    onChange={(event) => row.toggleSelected(event.target.checked)}
-                    fontSize={'0.75rem'}
-                >
-                    {getValue<string>()}
-                </Checkbox>
-            ),
+            cell: ({ row, getValue, cell }) => {
+                const inUse = cell.row.original.inUse
+                if (!inUse)
+                    return (
+                        <Checkbox
+                            size={'sm'}
+                            colorScheme="cyan"
+                            type="checkbox"
+                            isChecked={row.getIsSelected()}
+                            onChange={(event) => row.toggleSelected(event.target.checked)}
+                            fontSize={'0.75rem'}
+                        >
+                            {getValue<string>()}
+                        </Checkbox>
+                    )
+                else {
+                    return (
+                        <Badge variant='solid' colorScheme='yellow'>En Uso</Badge>
+                    )
+                }
+            },
         },
         {
             header: "Creado",
@@ -250,13 +298,17 @@ export default function NomenclatorsExpensesScreen() {
         },
         {
             id: "actions",
-            cell: (props) => (
-                <CRUDActionsButtonGroup inTable onCreateEdit={() => {
-                    onEdit(items[props.row.index])
-                }} onRemove={() => {
-                    onRemove(items[props.row.index])
-                }} />
-            ),
+            cell: (props) => {
+                const inUse = props.cell.row.original.inUse
+                if (!inUse)
+                    return (
+                        <CRUDActionsButtonGroup inTable onCreateEdit={() => {
+                            onEdit(items[props.row.index])
+                        }} onRemove={() => {
+                            onRemove(items[props.row.index])
+                        }} />
+                    )
+            },
         },
     ];
 
@@ -290,7 +342,18 @@ export default function NomenclatorsExpensesScreen() {
                     }}
                     column_find="name"
                     onFind={onFind}
-                />
+                >
+                    <Flex mr={5}>
+                        <DateRangeSelector onChange={(startDate: Date, endDate: Date) => {
+                            setRangeDate([startDate, endDate])
+                            onLoad(pagination.page, pagination.pageSize, {
+                                createdAt: {
+                                    BETWEEN_DATE: [startDate, endDate]
+                                }
+                            })
+                        }} />
+                    </Flex>
+                </CRUDActionsButtonGroup>
             </BarFilter>
             {/* Fin */}
 

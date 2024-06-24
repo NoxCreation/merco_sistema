@@ -13,11 +13,15 @@ import {
   Box,
   Input,
   useToast,
+  Select,
+  Flex,
+  Textarea,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { useGetBussiness } from "@/helper/hooks/useGetBussiness";
-import { Expense } from "@/backend/types";
+import { Expense, Coin } from "@/backend/types";
 import { create_edit_expense } from "@/helper/requests/Expenses";
+import { get_coin } from "@/helper/requests/Coin";
 
 interface Props {
   action: string
@@ -34,20 +38,31 @@ export default function CreateEditExpenseDialog({
 }: Props) {
   const toast = useToast()
 
-  const [name, setName] = useState("" as string)
-  const [symbol, setSymbol] = useState("" as string)
+  const [amount, setAmount] = useState(0 as number)
+  const [coinId, setCoinId] = useState(1 as number)
+  const [description, setDescription] = useState("" as string)
+
+  const [coins, setCoins] = useState([] as Array<Coin>)
 
   const businesses = useGetBussiness()
 
   useEffect(() => {
     if (isOpen) {
+      get_coin({ page: 1, pageSize: 10000 }, (status: number, data: any) => {
+        if (status == 200)
+          setCoins(data.data)
+      })
+
       if (action == 'edit') {
-        //setName(expense?.name as string)
-        //setSymbol(expense?.symbol as string)
+        console.log(expense)
+        setAmount(expense?.valuecoin.value as number)
+        setCoinId(expense?.valuecoin.coin.id as number)
+        setDescription(expense?.description as string)
       }
       else {
-        //setName("")
-        //setSymbol("")
+        setAmount(0)
+        setCoinId(1)
+        setDescription("")
       }
     }
   }, [isOpen])
@@ -55,8 +70,8 @@ export default function CreateEditExpenseDialog({
   const isValid = () => {
     let valid = true
     if (
-      name == "" ||
-      symbol == ""
+      amount == 0 ||
+      description == ""
     ) {
       valid = false
     }
@@ -67,8 +82,10 @@ export default function CreateEditExpenseDialog({
   const onCreateEdit = async () => {
     if (isValid()) {
       const data = {
-        name,
-        symbol,
+        amount,
+        coinId,
+        description,
+        amountId: expense?.amountId,
         businessId: businesses?.id
       }
       await create_edit_expense(action, expense?.id as number, data, (status: number, data: any) => {
@@ -115,13 +132,23 @@ export default function CreateEditExpenseDialog({
         <ModalCloseButton />
         <ModalBody>
           <Stack spacing={3}>
+            <Flex gap={5}>
+              <FormControl>
+                <FormLabel><Box as="span" color={"red"}>*</Box> Cantidad</FormLabel>
+                <Input type="text" value={amount} onChange={t => setAmount(parseFloat(t.target.value))} />
+              </FormControl>
+              <FormControl>
+                <FormLabel><Box as="span" color={"red"}>*</Box> Cantidad</FormLabel>
+                <Select value={coinId} onChange={t => setCoinId(parseInt(t.target.value))}>
+                  {coins.map((c, i) => (
+                    <option value={c.id} key={i}>{c.symbol}</option>
+                  ))}
+                </Select>
+              </FormControl>
+            </Flex>
             <FormControl>
-              <FormLabel><Box as="span" color={"red"}>*</Box> Nombre</FormLabel>
-              <Input type="text" value={name} onChange={t => setName(t.target.value)} />
-            </FormControl>
-            <FormControl>
-              <FormLabel><Box as="span" color={"red"}>*</Box> Símbolo</FormLabel>
-              <Input type="text" value={symbol} onChange={t => setSymbol(t.target.value)} />
+              <FormLabel><Box as="span" color={"red"}>*</Box> Description</FormLabel>
+              <Textarea value={description} onChange={t => setDescription(t.target.value)}/>
             </FormControl>
           </Stack>
         </ModalBody>
