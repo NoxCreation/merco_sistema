@@ -41,20 +41,22 @@ export default function ExportableTableContainer({
         >
           {title}
         </Heading>
-        <Tooltip hasArrow label="Exportar a Excel" fontSize={"sm"}>
-          <Box
-            paddingX={"8px"}
-            paddingY={"6px"}
-            cursor={"pointer"}
-            borderRadius={"full"}
-            _hover={{ backgroundColor: "gray.200" }}
-            onClick={onDownloadExcel}
-          >
-            <ExcelIcon />
-          </Box>
-        </Tooltip>
+        {onDownloadExcel && (
+          <Tooltip hasArrow label="Exportar a Excel" fontSize={"sm"}>
+            <Box
+              paddingX={"8px"}
+              paddingY={"6px"}
+              cursor={"pointer"}
+              borderRadius={"full"}
+              _hover={{ backgroundColor: "gray.200" }}
+              onClick={onDownloadExcel}
+            >
+              <ExcelIcon />
+            </Box>
+          </Tooltip>
+        )}
       </Flex>
-      <TableFilterCount onChangeFilterCount={onChangeFilterCount} />
+      {onChangeFilterCount && <TableFilterCount onChangeFilterCount={onChangeFilterCount} />}
       <Box>{children}</Box>
     </Stack>
   );

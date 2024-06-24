@@ -120,13 +120,15 @@ export default function NomenclatorsCoinsScreen() {
                     if (willDelete) {
                         let flag = false
                         for (let i = 0; i < itemsSelects.length; i++) {
-                            remove_coin(itemsSelects[i].id, (status: number, data: any) => {
-                                onLoad(pagination.page, pagination.pageSize)
-                                if (data != 1 || status != 200) {
-                                    console.log("error", status, data)
-                                    flag = true
-                                }
-                            })
+                            const coin = itemsSelects[i]
+                            if (coin.canRemove)
+                                remove_coin(coin.id, (status: number, data: any) => {
+                                    onLoad(pagination.page, pagination.pageSize)
+                                    if (data != 1 || status != 200) {
+                                        console.log("error", status, data)
+                                        flag = true
+                                    }
+                                })
                         }
                         if (flag)
                             toast({
@@ -179,12 +181,9 @@ export default function NomenclatorsCoinsScreen() {
 
     const onDownloadExcel = () => {
         let columns = {
-            "first_name": "Nombres",
-            "last_name": "Apellidos",
-            "ci": "Carnet de Identidad",
-            "email": "Correo",
-            "phone": "Teléfono",
-            "chargeemployee.name": "Cargo"
+            "active": "Activo",
+            "symbol": "Símbolo",
+            "value_change": "Valor de Cambio",
         };
         let row = MapData(itemsSelects.length > 0 ? itemsSelects : items, columns)
         download_excel(columns, row)
@@ -238,7 +237,7 @@ export default function NomenclatorsCoinsScreen() {
                 if (getValue<boolean>() == true)
                     return <Badge variant='solid' colorScheme='green' fontSize={'9px'}>Activa</Badge>
                 else if (getValue<boolean>() == false)
-                        return <Badge variant='solid' colorScheme='red' fontSize={'9px'}>Inactiva</Badge>
+                    return <Badge variant='solid' colorScheme='red' fontSize={'9px'}>Inactiva</Badge>
             }
         },
         {

@@ -1,8 +1,12 @@
 import { Sequelize } from "sequelize";
 import { sequelize } from "./engine";
 
-export const RoleModel = () => {
+export const RoleModel = (Business?: any) => {
     const Role = sequelize.define('Role', {
+        canRemove: {
+            type: (Sequelize as any).BOOLEAN,
+            defaultValue: true
+        },
         name: {
             type: (Sequelize as any).STRING
         },
@@ -48,6 +52,13 @@ export const RoleModel = () => {
         perms_box: {
             type: (Sequelize as any).STRING
         },
+        businessId: {
+            type: (Sequelize as any).INTEGER,
+            references: {
+                model: Business,
+                key: 'id'
+            }
+        }
     }, {});
 
     return Role

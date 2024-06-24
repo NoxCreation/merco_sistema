@@ -42,20 +42,70 @@ export default async function handler(
                 // Creando role admin
                 const role = (await Manager().Role.create({
                     name: "admin",
+                    canRemove: false,
                     view_dashboard: true,
-                    perms_dashboard: "{}",
+                    perms_dashboard: JSON.stringify({
+                        view_profits: true,
+                        view_fixed_costs: true,
+                        view_import_amount: true,
+                        view_investment: true,
+                        view_sponser_earnings: true,
+                        view_seller_earnings: true,
+                        view_product_quantity: true,
+                        view_total_promoters: true,
+                        view_total_sellers: true,
+                        view_earnings_by_sponsers: true,
+                        view_earnings_by_sellers: true,
+                        view_investments_by_day: true,
+                        view_earnings_by_day: true
+                    }),
                     view_inventory: true,
-                    perms_inventory: "{}",
+                    perms_inventory: JSON.stringify({
+                        list_inventory: true,
+                        show_store_inventory: true,
+                        view_history: true,
+                        transfer_goods_to_stores: true,
+                        edit_product_in_stock: true,
+                    }),
                     view_transit: true,
-                    perms_transit: "{}",
+                    perms_transit: JSON.stringify({
+                        add_new_goods_in_transit: true,
+                        add_goods_in_transit: true,
+                        remove_goods_in_transit: true,
+                        edit_goods_in_transit: true,
+                        list_debts: true,
+                        add_new_debt: true,
+                        remove_debt: true,
+                        edit_debt: true
+                    }),
                     view_orders: true,
-                    perms_orders: "{}",
+                    perms_orders: JSON.stringify({
+                        list_orders: true,
+                        add_order: true,
+                        remove_order: true,
+                        edit_order: true,
+                        list_address: true,
+                        add_address: true,
+                        remove_address: true,
+                        edit_address: true
+                    }),
                     view_finance: true,
-                    perms_finance: "{}",
+                    perms_finance: JSON.stringify({
+                        list_balances: true,
+                        view_balance_details: true,
+                        view_worker_details: true,
+                        list_daily_closures: true,
+                        perform_daily_closure: true
+                    }),
                     view_sales: true,
-                    perms_sales: "{}",
+                    perms_sales: JSON.stringify({
+                        create_invoices: true,
+                        view_history: true
+                    }),
                     view_box: true,
-                    perms_box: "{}"
+                    perms_box: JSON.stringify({
+                    }),
+                    businessId: business.dataValues.id
                 }, { transaction: t })).query
 
                 // Creando unidad
