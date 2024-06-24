@@ -38,7 +38,7 @@ export default function Navbar() {
         {navbarItems.map((item) => (
           <NavbarLink
             key={item.href}
-            isActive={false}
+            isActive={pathname === item.href || (item.subitems ? (item.subitems.find(t => t.href === pathname) ? true : false) : false)}
             href={item.href}
             icon={item.icon}
             text={item.text}

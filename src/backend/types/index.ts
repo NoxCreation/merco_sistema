@@ -193,3 +193,24 @@ export type Employees = {
     chargeemployee: Charge
 };
 
+export type Rol = {
+    id: number
+    canRemove: boolean
+    name: string
+    view_dashboard: boolean
+    perms_dashboard: string,
+    view_inventory: true,
+    perms_inventory: string,
+    view_transit: true,
+    perms_transit: string,
+    view_orders: true,
+    perms_orders: string,
+    view_finance: true,
+    perms_finance: string,
+    view_sales: true,
+    perms_sales: string,
+    view_box: true,
+    perms_box: string,
+    businessId: number
+}
+

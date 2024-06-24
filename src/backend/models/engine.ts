@@ -59,7 +59,7 @@ export const Manager = () => {
     const HistoryCardAccount = HistoryCardAccountModel(ValueCoin)//-
     const CardAccount = CardAccountModel(HistoryCardAccount)//-
     const ProfitEmployee = ProfitEmployeeModel(Employee, ValueCoin)//-
-    const Role = RoleModel()//-
+    const Role = RoleModel(Business)//-
     const User = UserModel(Role, Shop)
     const Sale = SaleModel(Coin, ValueCoin, Product, User, ProfitEmployee, CardAccount)// en el api modificar el post
     const OfferRule = OfferRuleModel()
@@ -246,6 +246,15 @@ export const Manager = () => {
         User,
         Role,
         'users',
+        'role',
+        'roleId'
+    )
+
+    // Relación Uno a Mucho entre Role y Business
+    relateOneToMany(
+        Role,
+        Business,
+        'businesss',
         'role',
         'roleId'
     )
