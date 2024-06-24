@@ -124,6 +124,7 @@ export type Unit = {
 
 export type Coin = {
     id: number
+    canRemove: boolean
     active: boolean
     symbol: string
     value_change: 1
