@@ -54,8 +54,8 @@ export const Manager = () => {
     const Shop = ShopModel()//-
     const Product = ProductModel(Category, Unit, Shop, Business)//-
     const Inventary = InventaryModel(Product, ValueCoin)
-    const ChargeEmployee = ChargeEmployeeModel()//-
-    const Employee = EmployeeModel(Shop, ChargeEmployee)//-
+    const ChargeEmployee = ChargeEmployeeModel(Business)//-
+    const Employee = EmployeeModel(Shop, ChargeEmployee, Business)//-
     const HistoryCardAccount = HistoryCardAccountModel(ValueCoin)//-
     const CardAccount = CardAccountModel(HistoryCardAccount)//-
     const ProfitEmployee = ProfitEmployeeModel(Employee, ValueCoin)//-
@@ -71,7 +71,7 @@ export const Manager = () => {
     const DailyClosing = DailyClosingModel(Employee)
     const Payroll = PayrollModel(Employee)
     const Balance = BalanceModel()
-    const Messenger = MessengerModel()
+    const Messenger = MessengerModel(Business)
     const MessagingData = MessagingDataModel(Employee, Messenger)
     const OrderProduct = OrderProductModel(Product)
     const StorePickUpData = StorePickUpDataModel(Employee)
@@ -111,6 +111,15 @@ export const Manager = () => {
         Category,
         Business,
         'categories',
+        'business',
+        'businessId'
+    )
+
+    // Relación Uno a Mucho entre Messenger y Business
+    relateOneToMany(
+        Messenger,
+        Business,
+        'messengers',
         'business',
         'businessId'
     )
@@ -185,6 +194,15 @@ export const Manager = () => {
         'employees',
         'chargeemployee',
         'chargeId'
+    )
+
+    // Relación Uno a Mucho entre Employee y Business
+    relateOneToMany(
+        Employee,
+        Business,
+        'employees',
+        'business',
+        'businessId'
     )
 
     // Relación Uno a Mucho entre HistoryCardAccount y ValueCoin

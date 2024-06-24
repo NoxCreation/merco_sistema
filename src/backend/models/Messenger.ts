@@ -1,7 +1,7 @@
 import { Sequelize } from "sequelize";
 import { sequelize } from "./engine";
 
-export const MessengerModel = () => {
+export const MessengerModel = (Business?: any) => {
     const Messenger = sequelize.define('Messenger', {
         first_name: {
             type: (Sequelize as any).STRING
@@ -21,6 +21,13 @@ export const MessengerModel = () => {
         more_data: {
             type: (Sequelize as any).STRING
         },
+        businessId: {
+            type: (Sequelize as any).INTEGER,
+            references: {
+                model: Business,
+                key: 'id'
+            }
+        }
     }, {});
 
     return Messenger

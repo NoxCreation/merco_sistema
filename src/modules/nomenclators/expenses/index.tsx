@@ -81,7 +81,6 @@ export default function NomenclatorsExpensesScreen() {
     }, [isOpen]);
 
     const onLoad = async (npage?: number, npageSize?: number, new_filter?: any) => {
-        console.log(rangeDate[0].toISOString(), rangeDate[1].toISOString())
         setLoading(true);
         // Filtrar por el id del negocio
         const filter = {
@@ -220,9 +219,11 @@ export default function NomenclatorsExpensesScreen() {
 
     const onDownloadExcel = () => {
         let columns = {
-            "id": "Id",
-            "name": "Nombre",
-            "symbol": "Símbolo",
+            "createdAt": "Creado",
+            "updatedAt": "Actualizado",
+            "valuecoin.value": "Monto",
+            "valuecoin.coin.symbol": "Moneda",
+            "description": "Descripción",
         };
         let row = MapData(itemsSelects.length > 0 ? itemsSelects : items, columns)
         download_excel(columns, row)
