@@ -22,11 +22,7 @@ export default async function handler(
             },
             data: data
         } as any
-        console.log(user_id)
-
         const response = await axios.request(config)
-
-        console.log("response.data.id", response.data.id, "user_id", user_id)
         if (response.status == 200)
             (await Manager().SMSHistory).create({
                 sms_id: response.data.id,
@@ -37,6 +33,5 @@ export default async function handler(
             })
 
         return res.status(200).json(response.data)
-        //return res.status(200).json()
     }
 }
