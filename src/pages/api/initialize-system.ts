@@ -74,6 +74,23 @@ export default async function handler(
                     value_change: 1,
                     businessId: business.dataValues.id
                 }, { transaction: t })).query
+
+                // Creando cargos
+                const charge1 = (await Manager().ChargeEmployee.create({
+                    canRemove: false,
+                    name: "Promotor",
+                    description: "Un promotor es la persona que vende articulos de la tienda y gana una comisión por ello",
+                    businessId: business.dataValues.id
+                }, { transaction: t })).query
+
+                const charge2 = (await Manager().ChargeEmployee.create({
+                    canRemove: false,
+                    name: "Vendedor",
+                    description: "Un vendedor es la persona que vende articulos en la tienda.",
+                    businessId: business.dataValues.id
+                }, { transaction: t })).query
+
+
             })
 
 

@@ -166,6 +166,7 @@ export type Messenger = {
 
 export type Charge = {
     id: number
+    canRemove: boolean
     name: string,
     description: string,
     createdAt: string
