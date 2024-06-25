@@ -163,3 +163,31 @@ export type Messenger = {
     updatedAt: string
     business: Bussines
 };
+
+export type Charge = {
+    id: number
+    name: string,
+    description: string,
+    createdAt: string
+    updatedAt: string
+}
+
+export type Employees = {
+    id: number
+    first_name: string
+    last_name: string
+    ci: string
+    email: string
+    phone: string
+    shopId: number
+    businessId: number
+    createdAt: string
+    updatedAt: string
+    business: Bussines
+    fixed_payment: boolean
+    fixed_payment_value: number
+    chargeId: number
+    shop: Shop
+    chargeemployee: Charge
+};
+

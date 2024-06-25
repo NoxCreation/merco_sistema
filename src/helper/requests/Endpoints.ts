@@ -12,7 +12,9 @@ export const ENDPOINTS = {
     download_excel: "/download_excel",
     shop: '/shop',
     expense: '/expense',
-    messenger: '/messenger'
+    messenger: '/messenger',
+    employees: '/employee',
+    charge: '/chargeemployee'
 }
 
 type RequestMethod = 'POST' | 'PUT' | 'GET' | 'DELETE';

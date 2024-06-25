@@ -1,7 +1,7 @@
 import { Sequelize } from "sequelize";
 import { sequelize } from "./engine";
 
-export const EmployeeModel = (Shop?: any, ChargeEmployee?: any) => {
+export const EmployeeModel = (Shop?: any, ChargeEmployee?: any, Business?: any) => {
     const Employee = sequelize.define('Employee', {
         first_name: {
             type: (Sequelize as any).STRING
@@ -38,6 +38,13 @@ export const EmployeeModel = (Shop?: any, ChargeEmployee?: any) => {
                 key: 'id'
             }
         },
+        businessId: {
+            type: (Sequelize as any).INTEGER,
+            references: {
+                model: Business,
+                key: 'id'
+            }
+        }
     }, {});
 
     return Employee

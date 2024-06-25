@@ -1,7 +1,7 @@
 import { Sequelize } from "sequelize";
 import { sequelize } from "./engine";
 
-export const ChargeEmployeeModel = () => {
+export const ChargeEmployeeModel = (Business?: any) => {
     const ChargeEmployee = sequelize.define('ChargeEmployee', {
         name: {
             type: (Sequelize as any).STRING
@@ -9,6 +9,13 @@ export const ChargeEmployeeModel = () => {
         description: {
             type: (Sequelize as any).STRING
         },
+        businessId: {
+            type: (Sequelize as any).INTEGER,
+            references: {
+                model: Business,
+                key: 'id'
+            }
+        }
     }, {});
 
     return ChargeEmployee
