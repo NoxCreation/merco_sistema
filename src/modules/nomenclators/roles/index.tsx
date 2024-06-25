@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import {
     Box,
     Checkbox,
-    useDisclosure,
     useToast,
     Text,
     Badge,
@@ -372,7 +371,7 @@ export default function NomenclatorsRolesScreen() {
             {/* Fin */}
 
             {/* Ventanas modales */}
-
+            
             {/* Fin */}
         </Box>
     )

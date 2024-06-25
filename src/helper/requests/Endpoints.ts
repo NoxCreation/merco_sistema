@@ -15,7 +15,8 @@ export const ENDPOINTS = {
     messenger: '/messenger',
     employees: '/employee',
     charge: '/chargeemployee',
-    rol: '/role'
+    rol: '/role',
+    cardaccount: '/cardaccount'
 }
 
 type RequestMethod = 'POST' | 'PUT' | 'GET' | 'DELETE';

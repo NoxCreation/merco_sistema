@@ -16,8 +16,10 @@ interface Props {
   onRemove: () => void
   onFind?: (column: string, value: string) => void
   column_find?: string
-  inTable?: boolean,
+  inTable?: boolean
   children?: ReactNode
+  showFind?: boolean
+  showRemove?: boolean
 }
 
 export default function CRUDActionsButtonGroup({
@@ -26,7 +28,9 @@ export default function CRUDActionsButtonGroup({
   onCreateEdit,
   onFind,
   onRemove,
-  children
+  children,
+  showFind = true,
+  showRemove = true
 }: Props) {
 
   return (
@@ -34,7 +38,7 @@ export default function CRUDActionsButtonGroup({
       {children}
       {!inTable ? (
         <>
-          <SearchIconButton onFind={onFind} column_name={column_find as string} />
+          {showFind && (<SearchIconButton onFind={onFind} column_name={column_find as string} />)}
           <Tooltip label='Agregar'>
             <IconButton
               aria-label="Add to friends"
@@ -55,14 +59,16 @@ export default function CRUDActionsButtonGroup({
         </Tooltip>
       )}
 
-      <Tooltip label='Eliminar'>
-        <IconButton
-          aria-label="Add to friends"
-          icon={<DeleteIcon w={'10px'} h={'10px'} />}
-          colorScheme="red"
-          onClick={onRemove}
-        />
-      </Tooltip>
+      {showRemove && (
+        <Tooltip label='Eliminar'>
+          <IconButton
+            aria-label="Add to friends"
+            icon={<DeleteIcon w={'10px'} h={'10px'} />}
+            colorScheme="red"
+            onClick={onRemove}
+          />
+        </Tooltip>
+      )}
 
     </ButtonGroup>
   );
