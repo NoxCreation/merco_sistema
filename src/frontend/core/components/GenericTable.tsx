@@ -62,7 +62,7 @@ export default function GenericTable<T>({
   onDownloadExcel,
   noExportable = false,
 }: Props<T>) {
-  const { getRowModel, getHeaderGroups, getSelectedRowModel } = useReactTable({
+  const { getRowModel, getHeaderGroups, getSelectedRowModel, toggleAllRowsSelected } = useReactTable({
     data: data,
     columns: columns,
     getCoreRowModel: getCoreRowModel(),
@@ -72,6 +72,10 @@ export default function GenericTable<T>({
     enableExpanding: true,
     enableRowSelection: true,
   });
+
+  useEffect(()=>{
+    toggleAllRowsSelected(false)
+  }, [data])
 
   useEffect(() => {
     if (onSelectItems)

@@ -30,7 +30,7 @@ export default function CRUDActionsButtonGroup({
 }: Props) {
 
   return (
-    <ButtonGroup size="sm" isAttached>
+    <ButtonGroup size="sm" isAttached alignItems={'center'}>
       {children}
       {!inTable ? (
         <>

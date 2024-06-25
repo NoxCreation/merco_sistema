@@ -26,6 +26,7 @@ export const ApiRequestTemplate = async (
                 delete _filter[key]
             }
         }
+        console.log("filter clean", _filter)
         if (page != undefined)
             _page = parseInt(page as string)
         if (pageSize != undefined)
@@ -122,8 +123,13 @@ export const ApiRequestTemplate = async (
 export const cleanFilter = (_filter: any, key: string) => {
     // Si el valor de la clave es un objeto y tiene una clave LIKE
     if (typeof _filter[key] === 'object' && _filter[key].hasOwnProperty('LIKE')) {
-        // Reemplaza la clave LIKE con [Op.like]
         _filter[key] = { [Op.like]: `%${_filter[key].LIKE}%` };
+    }
+    else if (typeof _filter[key] === 'object' && _filter[key].hasOwnProperty('BETWEEN_DATE')) {
+        const btw = _filter[key].BETWEEN_DATE
+        const startDate = new Date(btw[0]);
+        const endDate = new Date(btw[1]);
+        _filter[key] = { [Op.between]: [startDate, endDate] };
     }
     return _filter
 }
