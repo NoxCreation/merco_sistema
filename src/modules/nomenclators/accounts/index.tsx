@@ -13,6 +13,7 @@ import { FiEdit, FiExternalLink, FiTrash2 } from "react-icons/fi";
 import CreateEditCardAccountDialog from "./dialog/CreateEditCardAccountDialog";
 import { formatNumber } from "@/helper/formatNumber";
 import { Loading } from "@/frontend/core/components/Loading";
+import { useRouter } from "next/router";
 
 export default function NomenclatorsAccountsScreen() {
     const [action, setAction] = useState("" as string)
@@ -222,6 +223,7 @@ interface Props {
 
 const Card = ({ card, onRemove, onEdit, onLoad }: Props) => {
     const toast = useToast()
+    const router = useRouter()
     const [loading, setLoading] = useState(false)
 
     const onActive = async () => {
@@ -285,7 +287,9 @@ const Card = ({ card, onRemove, onEdit, onLoad }: Props) => {
                                 aria-label="editar" icon={<FiEdit />} borderRadius={'full'} bg={'gray.50'} _hover={{ bg: 'gray.300' }} color={'gray'} />
                         </Tooltip>
                         <Tooltip label='Historial'>
-                            <IconButton aria-label="historial" icon={<FiExternalLink />} borderRadius={'full'} bg={'gray.50'} _hover={{ bg: 'gray.300' }} color={'gray'} />
+                            <IconButton 
+                                onClick={()=> router.push(`/nomenclators/accounts/history?id=${card.id}`)}
+                                aria-label="historial" icon={<FiExternalLink />} borderRadius={'full'} bg={'gray.50'} _hover={{ bg: 'gray.300' }} color={'gray'} />
                         </Tooltip>
                     </ButtonGroup>
                 </Flex>

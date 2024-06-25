@@ -16,7 +16,10 @@ export default async function handler(
                     {
                         model: Manager().Coin.model, as: 'coin'
                     }
-                ]
+                ],
+            },
+            {
+                model: Manager().CardAccount.model, as: 'cardaccounts'
             }
         ]
     )

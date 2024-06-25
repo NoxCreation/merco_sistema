@@ -16,7 +16,8 @@ export const ENDPOINTS = {
     employees: '/employee',
     charge: '/chargeemployee',
     rol: '/role',
-    cardaccount: '/cardaccount'
+    cardaccount: '/cardaccount',
+    historycardaccount: '/historycardaccount'
 }
 
 type RequestMethod = 'POST' | 'PUT' | 'GET' | 'DELETE';
