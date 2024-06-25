@@ -21,6 +21,9 @@ export default async function handler(
                         model: Manager().ChargeEmployee.model, as: 'chargeemployee'
                    }
                 ]
+            },
+            {
+                model: Manager().User.model, as: 'user'
             }
         ]
     )

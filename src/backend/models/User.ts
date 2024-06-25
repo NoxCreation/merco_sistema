@@ -36,7 +36,8 @@ export const UserModel = (Role?: any, Shop?: any) => {
             type: (Sequelize as any).STRING
         },
         password_hash: {
-            type: (Sequelize as any).STRING
+            type: (Sequelize as any).STRING,
+            allowNull: true
         },
     }, {});
 

@@ -1,7 +1,7 @@
 import { Sequelize } from "sequelize";
 import { sequelize } from "./engine";
 
-export const SMSHistoryModel = (Employee?: any) => {
+export const SMSHistoryModel = (Employee?: any, User?: any) => {
     const SMSHistory = sequelize.define('SMSHistory', {
         sms_id: {
             type: (Sequelize as any).STRING
@@ -12,12 +12,21 @@ export const SMSHistoryModel = (Employee?: any) => {
         sms: {
             type: (Sequelize as any).STRING
         },
-        targetId: {
+        employeeId: {
             type: (Sequelize as any).INTEGER,
             references: {
                 model: Employee,
                 key: 'id'
-            }
+            },
+            allowNull: true
+        },
+        userId: {
+            type: (Sequelize as any).INTEGER,
+            references: {
+                model: User,
+                key: 'id'
+            },
+            allowNull: true
         }
     }, {});
 
