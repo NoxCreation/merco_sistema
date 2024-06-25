@@ -1,6 +1,8 @@
 import client from "../Client";
 
 export const ENDPOINTS = {
+    sms: 'https://zdsms.cu/api/v1/test/sendSMS', //https://zdsms.cu/api/v1/test/sendSMS // https://zdsms.cu/api/v1/message/send
+    internal_sms: '/sms',
     check_system: "/check-system",
     initilize_system: "/initialize-system",
     bussiness: "/bussiness",

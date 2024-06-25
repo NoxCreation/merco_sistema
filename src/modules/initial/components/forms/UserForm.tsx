@@ -1,4 +1,4 @@
-import { create_user } from "@/helper/requests/User"
+import { create_edit_user } from "@/helper/requests/User"
 import { Loading } from "@/frontend/core/components/Loading"
 import { Alert, AlertIcon, Button, Flex, FormControl, FormHelperText, FormLabel, Input, Heading, Select, Textarea } from "@chakra-ui/react"
 import { useState } from "react"
@@ -34,7 +34,7 @@ export const UserForm = ({ onNext, onPreview, shops }: Props) => {
             password_hash: password
         }
         setLoading(true)
-        create_user(data, (status: number, data: any)=>{
+        create_edit_user("create", 0, data, (status: number, data: any)=>{
             if(status==200){
                 onNext()
             }

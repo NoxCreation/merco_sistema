@@ -63,7 +63,7 @@ export const Manager = () => {
     const User = UserModel(Role, Shop)
     const Sale = SaleModel(Coin, ValueCoin, Product, User, ProfitEmployee, CardAccount)// en el api modificar el post
     const OfferRule = OfferRuleModel()
-    const SMSHistory = SMSHistoryModel(Employee)
+    const SMSHistory = SMSHistoryModel(Employee, User)
     const PaymentRule = PaymentRuleModel(OfferRule)
     const Configuration = ConfigurationModel()
     const Expense = ExpenseModel(ValueCoin, Business)
@@ -364,7 +364,16 @@ export const Manager = () => {
         Employee,
         'smshistories',
         'employee',
-        'targetId'
+        'employeeId'
+    )
+
+    // Relación Uno a Mucho entre SMSHistory y User
+    relateOneToMany(
+        SMSHistory,
+        User,
+        'smshistories',
+        'user',
+        'userId'
     )
 
     // Relación Mucho a Mucho entre PaymentRule y OfferRule
