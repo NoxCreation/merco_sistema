@@ -13,13 +13,11 @@ import {
   Box,
   Input,
   useToast,
-  Textarea,
   Select,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { useGetBussiness } from "@/helper/hooks/useGetBussiness";
-import { Rol, Shop, Shop, UserType } from "@/backend/types";
-import { create_edit_messenger } from "@/helper/requests/Messenger";
+import { Rol, Shop, UserType } from "@/backend/types";
 import { create_edit_user } from "@/helper/requests/User";
 import { get_rol } from "@/helper/requests/Rol";
 import { get_shops } from "@/helper/requests/Shop";
