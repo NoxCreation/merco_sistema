@@ -302,7 +302,7 @@ export default function NomenclatorsWorkersScreen() {
                         setItemsSelects(products)
                 }}
                 onFilter={onLoad}
-                title={"Mensajeros"}
+                title={"Trabajadores"}
                 columns={columns}
                 rows={items}
                 pagination={pagination}
