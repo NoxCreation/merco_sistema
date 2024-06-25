@@ -11,7 +11,8 @@ export const ENDPOINTS = {
     coin: "/coin",
     download_excel: "/download_excel",
     shop: '/shop',
-    expense: '/expense'
+    expense: '/expense',
+    messenger: '/messenger'
 }
 
 type RequestMethod = 'POST' | 'PUT' | 'GET' | 'DELETE';

@@ -71,7 +71,7 @@ export const Manager = () => {
     const DailyClosing = DailyClosingModel(Employee)
     const Payroll = PayrollModel(Employee)
     const Balance = BalanceModel()
-    const Messenger = MessengerModel()
+    const Messenger = MessengerModel(Business)
     const MessagingData = MessagingDataModel(Employee, Messenger)
     const OrderProduct = OrderProductModel(Product)
     const StorePickUpData = StorePickUpDataModel(Employee)
@@ -111,6 +111,15 @@ export const Manager = () => {
         Category,
         Business,
         'categories',
+        'business',
+        'businessId'
+    )
+
+    // Relación Uno a Mucho entre Messenger y Business
+    relateOneToMany(
+        Messenger,
+        Business,
+        'messengers',
         'business',
         'businessId'
     )

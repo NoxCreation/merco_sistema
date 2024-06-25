@@ -149,3 +149,17 @@ export type Expense = {
     updatedAt: string
     valuecoin: ValueCoin
 };
+
+export type Messenger = {
+    id: number
+    first_name: string
+    last_name: string
+    ci: string
+    email: string
+    phone: string
+    more_data: string
+    businessId: number
+    createdAt: string
+    updatedAt: string
+    business: Bussines
+};
