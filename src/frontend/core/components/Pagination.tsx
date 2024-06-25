@@ -53,7 +53,7 @@ export const PaginationMain = (props: PaginationProps) => {
         <List display="flex" justifyContent="space-between">
           <ListItem mr={2}>
             <PaginationPrevPageTrigger asChild >
-              <Button colorScheme="cyan" color={"white"}>
+              <Button colorScheme="cyan" color={"white"} size={'sm'}>
                 <Flex gap={"8px"}>
                   <ArrowBackIcon />
                   <Text>Anterior</Text>
@@ -79,6 +79,7 @@ export const PaginationMain = (props: PaginationProps) => {
                         bg: "#00B5D8",
                         color: 'white'
                       }}
+                      size={'sm'}
                     >
                       {page.value}
                     </Button>
@@ -87,7 +88,7 @@ export const PaginationMain = (props: PaginationProps) => {
               ) : (
                 <ListItem mr={2} key={index} alignItems="center" display="flex">
                   <PaginationEllipsis index={index}>
-                    <Button variant="secondary" borderRadius="full" pointerEvents="none" width="10">
+                    <Button variant="secondary" borderRadius="full" pointerEvents="none" width="10" size={'sm'}>
                       &#8230;
                     </Button>
                   </PaginationEllipsis>
@@ -103,7 +104,7 @@ export const PaginationMain = (props: PaginationProps) => {
 
           <ListItem ml={2}>
             <PaginationNextPageTrigger asChild >
-              <Button colorScheme="cyan" color={"white"}>
+              <Button colorScheme="cyan" color={"white"} size={'sm'}>
                 <Flex gap={"8px"}>
                   <ArrowForwardIcon />
                   <Text>Siguiente</Text>

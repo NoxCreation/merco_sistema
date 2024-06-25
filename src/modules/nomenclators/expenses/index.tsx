@@ -219,6 +219,7 @@ export default function NomenclatorsExpensesScreen() {
 
     const onDownloadExcel = () => {
         let columns = {
+            "id": "Id",
             "createdAt": "Creado",
             "updatedAt": "Actualizado",
             "valuecoin.value": "Monto",
