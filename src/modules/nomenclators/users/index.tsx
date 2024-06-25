@@ -207,7 +207,7 @@ export default function NomenclatorsUsersScreen() {
                     }
                     create_edit_user("edit", user?.id as number, data, (status: number, data: any) => {
                         if (status == 200 && (data[0] == undefined || data[0] == 1)) {
-                            send_sms(`Su contraseña temporal es: ${password}`, user.phone, mdata?.user.id, (status: number, data: any) => {
+                            send_sms(`Su contraseña temporal es: ${password}`, user.phone, mdata?.user.id as string, (status: number, data: any) => {
                                 if (status == 200) {
                                     swal("¡Se ha cambiado la contraseña satisfactoriamente!", {
                                         icon: "success",
