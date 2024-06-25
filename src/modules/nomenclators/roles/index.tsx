@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import {
     Box,
     Checkbox,
-    useDisclosure,
     useToast,
     Text,
     Badge,
@@ -22,7 +21,6 @@ import { Loading } from "@/frontend/core/components/Loading";
 import { useRouter } from "next/router";
 
 export default function NomenclatorsRolesScreen() {
-    const [action, setAction] = useState("" as string)
     const [loading, setLoading] = useState(true)
     const [pagination, setPagination] = useState({
         page: 1,
@@ -35,18 +33,13 @@ export default function NomenclatorsRolesScreen() {
     })
     const [items, setItems] = useState([] as Array<Rol>)
     const [itemsSelects, setItemsSelects] = useState([] as Array<Rol>)
-    const {
-        isOpen,
-        onOpen,
-        onClose,
-    } = useDisclosure();
     const businesses = useGetBussiness()
     const toast = useToast()
     const router = useRouter()
 
     useEffect(() => {
         onLoad(pagination.page, pagination.pageSize)
-    }, [isOpen]);
+    }, []);
 
     const onLoad = async (npage?: number, npageSize?: number, new_filter?: {}) => {
         setLoading(true);
@@ -149,9 +142,7 @@ export default function NomenclatorsRolesScreen() {
     }
 
     const onEdit = (rol: Rol) => {
-        setItemsSelects([rol])
-        setAction("edit")
-        onOpen()
+        router.push(`/nomenclators/roles/edit?id=${rol.id}`)
     }
 
     const onFind = (column: string, value: string) => {
@@ -181,10 +172,10 @@ export default function NomenclatorsRolesScreen() {
             onLoad(1, pagination.pageSize)
     }
 
-    const BadgeColor = ({ perms, all_perms, name }: { perms: number, all_perms: number, name: string }) => {
+    const BadgeColor = ({ view, perms, all_perms, name }: { view: boolean, perms: number, all_perms: number, name: string }) => {
         return (
             <>
-                {perms == 0 ? <Badge variant='solid' colorScheme='red'>{name}</Badge> :
+                {(view == false || perms == 0) ? <Badge variant='solid' colorScheme='red'>{name}</Badge> :
                     (all_perms == perms ?
                         <Badge variant='solid' colorScheme='green'>{name}</Badge> :
                         <Badge variant='solid' colorScheme='yellow'>{name}</Badge>
@@ -254,13 +245,20 @@ export default function NomenclatorsRolesScreen() {
             /* id: "value_change" */
             cell: ({ row }) => {
                 const perms_dashboard = Object.values(JSON.parse(row.original.perms_dashboard)).filter(t => t === true).length
+                const total_dashboard = row.original.view_dashboard ? perms_dashboard : 0
                 const perms_inventory = Object.values(JSON.parse(row.original.perms_inventory)).filter(t => t === true).length
+                const total_inventory = row.original.view_inventory ? perms_inventory : 0
                 const perms_transit = Object.values(JSON.parse(row.original.perms_transit)).filter(t => t === true).length
+                const total_transit = row.original.view_transit ? perms_transit : 0
                 const perms_orders = Object.values(JSON.parse(row.original.perms_orders)).filter(t => t === true).length
+                const total_orders = row.original.view_orders ? perms_orders : 0
                 const perms_finance = Object.values(JSON.parse(row.original.perms_finance)).filter(t => t === true).length
+                const total_finance = row.original.view_finance ? perms_finance : 0
                 const perms_sales = Object.values(JSON.parse(row.original.perms_sales)).filter(t => t === true).length
+                const total_sales = row.original.view_sales ? perms_sales : 0
                 const perms_box = Object.values(JSON.parse(row.original.perms_box)).filter(t => t === true).length
-                return <>{perms_dashboard + perms_inventory + perms_transit + perms_orders + perms_finance + perms_sales + perms_box} permisos</>
+                const total_box = row.original.view_box ? perms_box : 0
+                return <>{total_dashboard + total_inventory + total_transit + total_orders + total_finance + total_sales + total_box} permisos</>
             }
         },
         {
@@ -268,35 +266,42 @@ export default function NomenclatorsRolesScreen() {
             accessorKey: "modules",
             /* id: "value_change" */
             cell: ({ row }) => {
+                const view_dashboard = row.original.view_dashboard
                 const all_perms_dashboard = Object.values(JSON.parse(row.original.perms_dashboard)).length
                 const perms_dashboard = Object.values(JSON.parse(row.original.perms_dashboard)).filter(t => t === true).length
 
+                const view_inventory = row.original.view_inventory
                 const all_perms_inventory = Object.values(JSON.parse(row.original.perms_inventory)).length
                 const perms_inventory = Object.values(JSON.parse(row.original.perms_inventory)).filter(t => t === true).length
 
+                const view_transit = row.original.view_transit
                 const all_perms_transit = Object.values(JSON.parse(row.original.perms_transit)).length
                 const perms_transit = Object.values(JSON.parse(row.original.perms_transit)).filter(t => t === true).length
 
+                const view_orders = row.original.view_orders
                 const all_perms_orders = Object.values(JSON.parse(row.original.perms_orders)).length
                 const perms_orders = Object.values(JSON.parse(row.original.perms_orders)).filter(t => t === true).length
 
+                const view_finance = row.original.view_finance
                 const all_perms_finance = Object.values(JSON.parse(row.original.perms_finance)).length
                 const perms_finance = Object.values(JSON.parse(row.original.perms_finance)).filter(t => t === true).length
 
+                const view_sales = row.original.view_sales
                 const all_perms_sales = Object.values(JSON.parse(row.original.perms_sales)).length
                 const perms_sales = Object.values(JSON.parse(row.original.perms_sales)).filter(t => t === true).length
 
+                const view_box = row.original.view_box
                 const all_perms_box = Object.values(JSON.parse(row.original.perms_box)).length
                 const perms_box = Object.values(JSON.parse(row.original.perms_box)).filter(t => t === true).length
                 return (
                     <Flex gap={2} wrap={"wrap"}>
-                        <BadgeColor perms={perms_dashboard} all_perms={all_perms_dashboard} name="dashboard" />
-                        <BadgeColor perms={perms_inventory} all_perms={all_perms_inventory} name="inventario" />
-                        <BadgeColor perms={perms_transit} all_perms={all_perms_transit} name="tránsito" />
-                        <BadgeColor perms={perms_orders} all_perms={all_perms_orders} name="órdenes" />
-                        <BadgeColor perms={perms_finance} all_perms={all_perms_finance} name="finanzas" />
-                        <BadgeColor perms={perms_sales} all_perms={all_perms_sales} name="ventas" />
-                        <BadgeColor perms={perms_box} all_perms={all_perms_box} name="caja" />
+                        <BadgeColor view={view_dashboard} perms={perms_dashboard} all_perms={all_perms_dashboard} name="dashboard" />
+                        <BadgeColor view={view_inventory} perms={perms_inventory} all_perms={all_perms_inventory} name="inventario" />
+                        <BadgeColor view={view_transit} perms={perms_transit} all_perms={all_perms_transit} name="tránsito" />
+                        <BadgeColor view={view_orders} perms={perms_orders} all_perms={all_perms_orders} name="órdenes" />
+                        <BadgeColor view={view_finance} perms={perms_finance} all_perms={all_perms_finance} name="finanzas" />
+                        <BadgeColor view={view_sales} perms={perms_sales} all_perms={all_perms_sales} name="ventas" />
+                        <BadgeColor view={view_box} perms={perms_box} all_perms={all_perms_box} name="caja" />
                     </Flex>
                 )
             }
@@ -338,9 +343,6 @@ export default function NomenclatorsRolesScreen() {
             >
                 <CRUDActionsButtonGroup
                     onCreateEdit={() => {
-                        /* setItemsSelects([])
-                        setAction("create")
-                        onOpen() */
                         router.push("/nomenclators/roles/create")
                     }}
                     onRemove={() => {
@@ -355,8 +357,7 @@ export default function NomenclatorsRolesScreen() {
             {/* Tabla */}
             <CRUDTable
                 onSelectItems={(products: Array<Rol>) => {
-                    if (!isOpen)
-                        setItemsSelects(products)
+                    setItemsSelects(products)
                 }}
                 onFilter={onLoad}
                 title={"Monedas"}
@@ -370,7 +371,7 @@ export default function NomenclatorsRolesScreen() {
             {/* Fin */}
 
             {/* Ventanas modales */}
-
+            
             {/* Fin */}
         </Box>
     )

@@ -214,3 +214,27 @@ export type Rol = {
     businessId: number
 }
 
+export type HistoryCardAccount = {
+    id: number
+    amountId: number
+    description: string
+    createdAt: string
+    updatedAt: string
+}
+
+export type CardAccount = {
+    id: number
+    active: boolean
+    name: string
+    code: string
+    value: number
+    limit: number
+    coinId: number
+    flexibility: string
+    percent_flexibility: 0
+    businessId: 1
+    createdAt: string
+    updatedAt: string
+    historycardaccount: Array<HistoryCardAccount>
+    coin: Coin
+}

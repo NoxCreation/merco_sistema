@@ -3,18 +3,20 @@ import { BarFilter } from "@/frontend/core/components/BarFilter"
 import ExportableTableContainer from "@/frontend/core/components/ExportableTableContainer"
 import { Loading } from "@/frontend/core/components/Loading"
 import { useGetBussiness } from "@/helper/hooks/useGetBussiness"
-import { create_edit_rol } from "@/helper/requests/Rol"
+import { create_edit_rol, get_rol } from "@/helper/requests/Rol"
 import { Box, Button, Checkbox, Flex, FormControl, FormLabel, Input, useToast } from "@chakra-ui/react"
 import { useRouter } from "next/router"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 interface Props {
     role?: Rol
 }
 
-const RoleCreate = ({ role }: Props) => {
+const RoleEdit = ({ role }: Props) => {
     const toast = useToast()
     const router = useRouter()
+    const { id } = router.query
+    const [loading, setLoading] = useState(true)
 
     const [view_dashboard, setViewDashboard] = useState(true)
     const [perms_dashboard, setPermsDashboard] = useState({
@@ -102,7 +104,7 @@ const RoleCreate = ({ role }: Props) => {
     }
 
     const onCreateEdit = async () => {
-        const action = 'create'
+        const action = 'edit'
         if (isValid()) {
             const data = {
                 name,
@@ -122,7 +124,8 @@ const RoleCreate = ({ role }: Props) => {
                 perms_box: JSON.stringify(perms_box),
                 businessId: businesses?.id
             }
-            await create_edit_rol(action, role?.id as number, data, (status: number, data: any) => {
+            setLoading(true)
+            await create_edit_rol(action, parseInt(id as string), data, (status: number, data: any) => {
                 if (status == 200 && (data[0] == undefined || data[0] == 1)) {
                     router.push("/nomenclators/roles")
                 }
@@ -136,6 +139,7 @@ const RoleCreate = ({ role }: Props) => {
                         variant: "error"
                     })
                 }
+                setLoading(false)
             })
         }
         else {
@@ -149,6 +153,35 @@ const RoleCreate = ({ role }: Props) => {
         }
 
     }
+
+    useEffect(() => {
+        if (id) {
+            const filter = {
+                businessId: businesses?.id,
+                id
+            }
+            setLoading(true)
+            get_rol({ page: 1, pageSize: 10000, filter }, (status: number, data: any) => {
+                const _data = data.data[0] as Rol
+                setName(_data.name)
+                setViewDashboard(_data.view_dashboard)
+                setPermsDashboard(JSON.parse(_data.perms_dashboard))
+                setViewInventory(_data.view_inventory)
+                setPermsInventory(JSON.parse(_data.perms_inventory))
+                setViewTransit(_data.view_transit)
+                setPermsTransit(JSON.parse(_data.perms_transit))
+                setViewOrders(_data.view_orders)
+                setPermsOrders(JSON.parse(_data.perms_orders))
+                setViewFinance(_data.view_finance)
+                setPermsFinance(JSON.parse(_data.perms_finance))
+                setViewSales(_data.view_sales)
+                setPermsSales(JSON.parse(_data.perms_sales))
+                setViewBox(_data.view_box)
+                setPermsBox(JSON.parse(_data.perms_box))
+                setLoading(false)
+            })
+        }
+    }, [id])
 
     return (
         <Box>
@@ -168,15 +201,15 @@ const RoleCreate = ({ role }: Props) => {
                         link: '/nomenclators/roles'
                     },
                     {
-                        label: 'Agregar',
+                        label: 'Editar',
                         icon: undefined,
-                        link: '/nomenclators/roles/create'
+                        link: '/nomenclators/roles/edit'
                     },
                 ]}
             ></BarFilter>
             {/* Fin */}
 
-            <ExportableTableContainer title={"Agregar"}>
+            <ExportableTableContainer title={"Editar"}>
                 <Flex>
                     <FormControl>
                         <FormLabel><Box as="span" color={"red"}>*</Box> Nombre del Rol</FormLabel>
@@ -340,4 +373,4 @@ const PermissionColumn = ({
     )
 }
 
-export default RoleCreate
+export default RoleEdit

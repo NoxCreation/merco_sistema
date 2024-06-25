@@ -57,7 +57,7 @@ export const Manager = () => {
     const ChargeEmployee = ChargeEmployeeModel(Business)//-
     const Employee = EmployeeModel(Shop, ChargeEmployee, Business)//-
     const HistoryCardAccount = HistoryCardAccountModel(ValueCoin)//-
-    const CardAccount = CardAccountModel(HistoryCardAccount)//-
+    const CardAccount = CardAccountModel(Business, Coin)//-
     const ProfitEmployee = ProfitEmployeeModel(Employee, ValueCoin)//-
     const Role = RoleModel(Business)//-
     const User = UserModel(Role, Shop)
@@ -215,12 +215,21 @@ export const Manager = () => {
     )
 
     // Relación Uno a Mucho entre CardAccount y HistoryCardAccount
-    relateOneToMany(
+    relateManyToMany(
         CardAccount,
         HistoryCardAccount,
         'cardaccounts',
         'historycardaccount',
-        'historyId'
+        'CardAccountHistoryCardAccount'
+    )
+
+    // Relación Uno a Mucho entre CardAccount y Coin
+    relateOneToMany(
+        CardAccount,
+        Coin,
+        'cardaccounts',
+        'coin',
+        'coinId'
     )
 
     // Relación Uno a Mucho entre ProfitEmployee y Employee
