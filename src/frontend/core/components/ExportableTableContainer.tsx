@@ -19,6 +19,7 @@ export default function ExportableTableContainer({
 }: Props) {
   return (
     <Stack
+      width={"full"}
       spacing={5}
       backgroundColor={"white"}
       paddingY={"20px"}
