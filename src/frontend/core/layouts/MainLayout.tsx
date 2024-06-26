@@ -1,12 +1,11 @@
-import {
-  Box,
-} from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import React, { ReactNode, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import Head from "next/head";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { Loading } from "../components/Loading";
+import SyncWithServerToast from "../components/SyncWithServerToast";
 
 type Props = {
   children: ReactNode | ReactNode[];
@@ -14,14 +13,14 @@ type Props = {
 };
 
 export default function MainLayout({ children, screenTitle }: Props) {
-  const session = useSession()
-  const { status, data } = session
-  const router = useRouter()
+  const session = useSession();
+  const { status, data } = session;
+  const router = useRouter();
   useEffect(() => {
     if (status == "unauthenticated") {
-      router.push("/auth")
+      router.push("/auth");
     }
-  }, [session, status, data])
+  }, [session, status, data]);
 
   return (
     <Box
@@ -31,12 +30,13 @@ export default function MainLayout({ children, screenTitle }: Props) {
       backgroundColor={"#F5F9FC"}
     >
       <Head>
-        <title>{screenTitle ? screenTitle : 'Merco Sistema'}</title>
+        <title>{screenTitle ? screenTitle : "Merco Sistema"}</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Navbar />
-      {status == 'loading' && <Loading isLoading />}
-      {status == 'authenticated' && (children)}
+      {status == "loading" && <Loading isLoading />}
+      {status == "authenticated" && children}
+      <SyncWithServerToast />
     </Box>
   );
 }
