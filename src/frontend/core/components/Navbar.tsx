@@ -1,4 +1,23 @@
-import { Box, Center, Flex, Menu, MenuButton, MenuItem, MenuList, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Center,
+  Flex,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+  Text,
+} from "@chakra-ui/react";
+import HomeIcon from "../icons/HomeIcon";
+import ShoppingBagIcon from "../icons/ShoppingBagIcon";
+import CarIcon from "../icons/CarIcon";
+import DocumentIcon from "../icons/DocumentIcon";
+import DollarIcon from "../icons/DollarIcon";
+import ShoppingCartIcon from "../icons/ShoppingCartIcon";
+import BoxIcon from "../icons/BoxIcon";
+import SettingsIcon from "../icons/SettingsIcon";
+import ListIcon from "../icons/ListIcon";
 import Logo from "./Logo";
 import UserAvatar from "./UserAvatar";
 import { usePathname } from "next/navigation";
@@ -13,7 +32,7 @@ type Props = {
   icon: ReactElement;
   href: string;
   isActive: boolean;
-  subitems?: Array<any>
+  subitems?: Array<any>;
 };
 
 export default function Navbar() {
@@ -54,13 +73,13 @@ export default function Navbar() {
 }
 
 function NavbarLink({ text, href, icon, isActive, subitems }: Props) {
-  const [contraction, setContraction] = useState(false)
+  const [contraction, setContraction] = useState(false);
   const pathname = usePathname();
   return (
     <>
       {subitems ? (
-        <Menu isOpen={contraction} >
-          <MenuButton onClick={t => setContraction(!contraction)}>
+        <Menu isOpen={contraction}>
+          <MenuButton onClick={(t) => setContraction(!contraction)}>
             <Flex
               direction={"column"}
               alignItems={"center"}
@@ -71,7 +90,7 @@ function NavbarLink({ text, href, icon, isActive, subitems }: Props) {
             >
               <Center height={"25px"} color={isActive ? "cyan" : ""}>
                 {React.cloneElement(icon, {
-                  color: isActive ? "#0BC5EA" : "#718096"
+                  color: isActive ? "#0BC5EA" : "#718096",
                 })}
               </Center>
               <Flex gap={2}>
@@ -79,19 +98,21 @@ function NavbarLink({ text, href, icon, isActive, subitems }: Props) {
                   flexGrow={1}
                   color={isActive ? "cyan.400" : ""}
                   fontWeight={isActive ? "bold" : ""}
-                  fontSize={'13px'}
+                  fontSize={"13px"}
                 >
                   {text}
                 </Text>
-                {!contraction && (<FiChevronDown />)}
-                {contraction && (<FiChevronUp />)}
+                {!contraction && <FiChevronDown />}
+                {contraction && <FiChevronUp />}
               </Flex>
-            </Flex >
+            </Flex>
           </MenuButton>
           <MenuList>
             {subitems.map((si, index) => (
               <Link href={si.href} key={index}>
-                <MenuItem color={pathname === si.href ? "#0BC5EA" : "#718096"}>{si.text}</MenuItem>
+                <MenuItem color={pathname === si.href ? "#0BC5EA" : "#718096"}>
+                  {si.text}
+                </MenuItem>
               </Link>
             ))}
           </MenuList>
@@ -108,21 +129,20 @@ function NavbarLink({ text, href, icon, isActive, subitems }: Props) {
           >
             <Center height={"25px"} color={isActive ? "cyan" : ""}>
               {React.cloneElement(icon, {
-                color: isActive ? "#0BC5EA" : "#718096"
+                color: isActive ? "#0BC5EA" : "#718096",
               })}
             </Center>
             <Text
               flexGrow={1}
               color={isActive ? "cyan.400" : ""}
               fontWeight={isActive ? "bold" : ""}
-              fontSize={'13px'}
+              fontSize={"13px"}
             >
               {text}
             </Text>
-          </Flex >
-        </Link >
+          </Flex>
+        </Link>
       )}
     </>
-
   );
 }
