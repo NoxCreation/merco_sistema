@@ -31,6 +31,7 @@ export default function ProductCard({
     <Stack
       cursor={"pointer"}
       maxWidth={"150px"}
+      height={'fit-content'}
       backgroundColor={"white"}
       borderRadius={"lg"}
       border={isSelected ? "2px solid" : "nonde"}
@@ -49,14 +50,14 @@ export default function ProductCard({
           height={"full"}
           objectFit={"contain"}
           width={"150px"}
-          src="https://gegshop.nl/162891-tm_large_default/Repsol-4t-olie-moto-off-road-10w40-olie-vol-synthetisch-4l.jpg"
+          src={photoUrl ? photoUrl : "https://gegshop.nl/162891-tm_large_default/Repsol-4t-olie-moto-off-road-10w40-olie-vol-synthetisch-4l.jpg"}
         />
       </Center>
       <Stack padding={"10px"} spacing={0} width={"full"}>
         <Heading as="h5" fontSize={"14px"} fontWeight={"semibold"}>
           {productName}
         </Heading>
-        <Flex alignItems={"center"} justifyContent={"space-between"}>
+        <Flex alignItems={"center"} justifyContent={"space-between"} mt={2}>
           <Text color={"gray.500"}>$ {price}</Text>
           <Badge
             variant={"outline"}

@@ -50,10 +50,10 @@ export const Manager = () => {
     const Unit = UnitModel(Business)//-
     const Coin = CoinModel(Business)//-
     const ValueCoin = ValueCoinModel(Coin)//-
-    const Stock = StockModel()//-
+    /* const Stock = StockModel()//- */
     const Shop = ShopModel()//-
     const Product = ProductModel(Category, Unit, Shop, Business)//-
-    const Inventary = InventaryModel(Product, ValueCoin)
+    const Inventary = InventaryModel(Product, ValueCoin, Shop, Business)
     const ChargeEmployee = ChargeEmployeeModel(Business)//-
     const Employee = EmployeeModel(Shop, ChargeEmployee, Business)//-
     const HistoryCardAccount = HistoryCardAccountModel(ValueCoin)//-
@@ -161,13 +161,13 @@ export const Manager = () => {
     )
 
     // Relación Mucho a Mucho entre Inventary y Stock
-    relateManyToMany(
+    /* relateManyToMany(
         Inventary,
         Stock,
         'inventaries3',
         'stocks',
         'InventaryStock',
-    )
+    ) */
 
     // Relación Mucho a Mucho entre Bussiness y Shop
     relateManyToMany(
@@ -718,7 +718,7 @@ export const Manager = () => {
         Unit: new Model(Unit),
         Coin: new Model(Coin),
         ValueCoin: new Model(ValueCoin),
-        Stock: new Model(Stock),
+        /* Stock: new Model(Stock), */
         Inventary: new Model(Inventary),
         Shop: new Model(Shop),
         Business: new Model(Business),

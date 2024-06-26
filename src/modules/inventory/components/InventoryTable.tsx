@@ -1,64 +1,44 @@
-import { Image, Text, Checkbox } from "@chakra-ui/react";
+import { Image, Text, Checkbox, Badge } from "@chakra-ui/react";
 import { ColumnDef } from "@tanstack/react-table";
 import React from "react";
-import InventoryActionsButtonGroup from "./InventoryActionsButtonGroup";
+import InventoryActionsButtonGroup from "./InventoryTopActionsButtonGroup";
 import GenericTable from "@/frontend/core/components/GenericTable";
+import { InventaryType } from "@/backend/types";
 import InventoryTableActions from "./InventoryTableActions";
 
-const mockData: InventoryItem[] = [
-  {
-    code: "INV001",
-    image:
-      "https://th.bing.com/th/id/R.790c5d80aa7ebcd2f4648aba12afe84f?rik=x%2byWiTnZqv5UbA&riu=http%3a%2f%2fwww.solquimia.com%2ffr%2fwp-content%2fuploads%2fsites%2f5%2f2016%2f01%2faceite-refrigerante-repsol-32.jpg&ehk=Qa%2bV%2feD3pjB887Pbkn7ugz%2bTZJcL5HmPfD5u7eoMIYc%3d&risl=&pid=ImgRaw&r=0",
-    category: "Electronics",
-    product: "Aceite Refrigerante Universal",
-    inStock: 75,
-    cost: 750,
-    price: 999,
-  },
-  {
-    code: "INV002",
-    image:
-      "https://th.bing.com/th/id/R.ab6dc5c65021cffdb521043fd9cddc54?rik=KUdqSwdrWzl7Xg&pid=ImgRaw&r=0",
-    category: "Refrigeración",
-    product: "Aflojalo Todo  WD40 591 ml",
-    inStock: 50,
-    cost: 45,
-    price: 59,
-  },
-  {
-    code: "INV003",
-    image:
-      "https://http2.mlstatic.com/D_NQ_NP_831842-MLC42192808966_062020-F.jpg",
-    category: "Aceite /Bomba de Vacio 4Lt",
-    product: "Refrigeración",
-    inStock: 30,
-    cost: 120,
-    price: 150,
-  },
-];
 
-type InventoryItem = {
-  code: string;
-  image: string;
-  category: string;
-  product: string;
-  inStock: number;
-  cost: number;
-  price: number;
-};
 
 type Props = {
+  inventary: Array<InventaryType>
+  pagination: {
+    page: number,
+    pageSize: number,
+    count: number
+  }
+  setPagination: (pagination: {
+    page: number,
+    pageSize: number,
+    count: number
+  }) => void
   onTransferProducts: () => void;
   onEdit: () => void;
-  onDelete: () => void;
+  onDelete: (inventary: InventaryType) => void;
+  onFilter: (page: number) => void
+  onSelectItems?: (inventaries: Array<InventaryType>) => void
 };
 
-export default function InventoryTable({ onTransferProducts, onEdit, onDelete }: Props) {
-  const page = 1;
-  const pageSize = 10;
+export default function InventoryTable({
+  onTransferProducts,
+  onEdit,
+  onDelete,
+  setPagination,
+  onFilter,
+  onSelectItems,
+  pagination,
+  inventary
+}: Props) {
 
-  const columns: ColumnDef<InventoryItem>[] = React.useMemo(
+  const columns: ColumnDef<InventaryType>[] = React.useMemo(
     () => [
       {
         header: ({ table }) => (
@@ -74,7 +54,7 @@ export default function InventoryTable({ onTransferProducts, onEdit, onDelete }:
             Código
           </Checkbox>
         ),
-        accessorKey: "code",
+        accessorKey: "product.code",
         cell: ({ row, getValue }) => (
           <Checkbox
             size={"sm"}
@@ -89,10 +69,11 @@ export default function InventoryTable({ onTransferProducts, onEdit, onDelete }:
       },
       {
         header: "Imagen",
-        accessorKey: "image",
-        cell: (imageUrl) => (
+        accessorKey: "product.image",
+        /* id: "name", */
+        cell: (image) => (
           <Image
-            src={imageUrl.getValue<string>()}
+            src={`/api/statics${image.getValue<string>()}`}
             alt="Product Image"
             width={"60px"}
           ></Image>
@@ -100,34 +81,68 @@ export default function InventoryTable({ onTransferProducts, onEdit, onDelete }:
       },
       {
         header: "Categoria",
-        accessorKey: "category",
+        accessorKey: "product.category.name",
       },
       {
         header: "Producto",
-        accessorKey: "product",
+        accessorKey: "product.name",
       },
       {
         header: "En Stock",
-        accessorKey: "inStock",
-        cell: (inStock) => {
-          const inStockQuantity = inStock.getValue<number>();
-          const isEmptyStock = inStockQuantity === 0;
+        accessorKey: "stock",
+        cell: ({ row }) => {
+          const inventary = row.original
+          const name_unit = inventary.product.unit.symbol // U, L ...
+          const count_unit = inventary.product.count_unit
+          const stock = inventary.stock
+
+          const view_capacity = (
+            <>
+              {stock} {name_unit}
+            </>
+          )
+
+          const view_unit = (
+            <>
+              {(stock % count_unit) == 0 ? `${(stock / count_unit)} U` : (
+                <>
+                  {Math.floor(stock / count_unit)} U / {(stock / count_unit) - Math.floor(stock / count_unit)} {name_unit}
+                </>
+              )}
+            </>
+          )
+
           return (
-            <Text color={isEmptyStock ? "red" : ""}>
-              {isEmptyStock ? "Agotado" : inStockQuantity}
+            <Text>
+              {view_capacity} <br />
+              {name_unit != "U" && view_unit}
             </Text>
           );
         },
       },
       {
         header: "Costo",
-        accessorKey: "cost",
+        accessorKey: "product.coste_usd",
+        cell: ({ getValue }) => {
+          return (
+            <>
+              {getValue<string>()} <Badge>USD</Badge>
+            </>
+          )
+        }
       },
       {
         header: "Precio",
-        accessorKey: "price",
+        accessorKey: "valuecoin.value",
+        cell: ({ getValue }) => {
+          return (
+            <>
+              {getValue<string>()} <Badge>USD</Badge>
+            </>
+          )
+        }
       },
-      {
+      /* {
         header: "200/USD",
         accessorKey: "price",
       },
@@ -138,14 +153,12 @@ export default function InventoryTable({ onTransferProducts, onEdit, onDelete }:
       {
         header: "1000/USD",
         accessorKey: "price",
-      },
+      }, */
       {
         id: "actions",
-        cell: (props) => (
+        cell: ({ cell }) => (
           <InventoryTableActions
-            onDelete={onDelete}
-            onTransferProducts={onTransferProducts}
-            onEdit={onEdit}
+            onDelete={() => onDelete(cell.row.original as InventaryType)}
           />
         ),
       },
@@ -156,13 +169,25 @@ export default function InventoryTable({ onTransferProducts, onEdit, onDelete }:
   return (
     <GenericTable
       columns={columns}
-      data={mockData}
+      data={inventary as Array<any>}
       title="Inventario"
-      pagination={{
-        count: 10,
-        page,
-        pageSize,
+      onChangeFilterCount={(page: number) => {
+        let temp = JSON.parse(JSON.stringify(pagination))
+        temp.count = page
+        setPagination(temp)
       }}
+      pagination={{
+        count: pagination.count,
+        page: pagination.page,
+        pageSize: pagination.pageSize,
+        onChange: (page: number) => {
+          let temp = JSON.parse(JSON.stringify(pagination))
+          temp.page = page
+          setPagination(temp);
+          onFilter(page);
+        },
+      }}
+      onSelectItems={onSelectItems}
     />
   );
 }
