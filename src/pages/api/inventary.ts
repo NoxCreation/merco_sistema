@@ -6,6 +6,32 @@ export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse<any>,
 ) {
+    // Si se va a agregar un nuevo produto al inventario, se comprueba que ya no exista.
+    if (req.method == "POST") {
+        const { productId, businessId, shopId} = req.body
+        const exist = (await (await Manager().Inventary).findOne({
+            where: {
+                productId,
+                businessId,
+                shopId
+            }
+        })).query
+        if (exist)
+            return res.status(400).json({
+                'details': "El producto ya se ha agregado al stock."
+            })
+    }
+
+    // Si se está agregando un nuevo producto al stock, crea un valor nuevo
+    if (req.method == "POST") {
+        const { value, coinId } = req.body
+        const vc = (await (await Manager().ValueCoin).create({
+            "value": value,
+            "coinId": coinId
+        })).toJSON()
+        console.log(vc)
+        req.body.priceId = vc.id
+    }
 
     return ApiRequestTemplate(
         req,
@@ -20,30 +46,16 @@ export default async function handler(
                 ]
             },
             {
-                model: Manager().Product.model, as: 'product'
-            },
-            {
-                model: Manager().Stock.model, as: 'stocks'
+                model: Manager().Product.model, as: 'product', include: [
+                    {
+                        model: Manager().Category.model, as: 'category'
+                    },
+                    {
+                        model: Manager().Unit.model, as: 'unit'
+                    }
+                ]
             }
-        ],
-        async () => {
-            try {
-                await sequelize.transaction(async (t) => {
-                    const inventary = (await Manager().Inventary.create({
-                        productId: req.body.productId,
-                        priceId: req.body.priceId,
-                    }, { transaction: t })).query
-                    await inventary.setStocks(req.body.stocksId, { transaction: t });
-                    res.status(200).json(inventary)
-                })
-            }
-            catch (e){
-                console.log(e)
-                res.status(500).json({})
-            }
-        }
+        ]
     )
-
-
 
 }

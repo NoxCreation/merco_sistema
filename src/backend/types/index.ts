@@ -238,3 +238,14 @@ export type CardAccount = {
     historycardaccount: Array<HistoryCardAccount>
     coin: Coin
 }
+
+export type InventaryType = {
+    id: number
+    stock: number,
+    productId: number,
+    priceId: number,
+    createdAt: string
+    updatedAt: string
+    valuecoin: ValueCoin,
+    product: Product
+}
