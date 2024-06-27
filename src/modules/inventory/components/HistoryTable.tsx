@@ -114,7 +114,13 @@ export default function HistoryTable() {
                 {getValue<string>() == 'traslate' ? (
                   <Badge variant={'solid'} colorScheme="purple" fontSize={'10px'}>Traslado</Badge>
                 ) : (
-                  <Badge variant={'solid'} colorScheme="green" fontSize={'10px'}>Creado</Badge>
+                  <>
+                    {getValue<string>() == "update" ? (
+                      <Badge variant={'solid'} colorScheme="yellow" fontSize={'10px'}>Actualizado</Badge>
+                    ) : (
+                      <Badge variant={'solid'} colorScheme="green" fontSize={'10px'}>Creado</Badge>
+                    )}
+                  </>
                 )}
               </>
 

@@ -34,7 +34,7 @@ export default function InventoryTopActionsButtonGroup({
 
   return (
     <ButtonGroup size="sm" isAttached>
-      <SearchIconButton />
+      {/* <SearchIconButton /> */}
       {showTransferButton && (
         <Tooltip label={"Transferir mercancia"}>
           <IconButton

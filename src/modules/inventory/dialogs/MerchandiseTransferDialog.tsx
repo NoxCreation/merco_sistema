@@ -62,44 +62,65 @@ export default function MerchandiseTransferDialog({ isOpen, inventariesSelects, 
     }
   }, [isOpen])
 
+  const isValid = () => {
+    let valid = true
+    count.forEach(c => {
+      if (c == 0)
+        valid = false
+    })
+
+    return valid
+  }
+
   const onRelocation = () => {
-    setLoading(true)
-    const inventary_relocation = inventariesSelects.map((t, i) => {
-      return {
-        inventaryId: t.id,
-        stock: count[i] * t.product.count_unit
+    if (isValid()) {
+      setLoading(true)
+      const inventary_relocation = inventariesSelects.map((t, i) => {
+        return {
+          inventaryId: t.id,
+          stock: count[i] * t.product.count_unit
+        }
+      })
+
+      const historyId = `H-${generateRandomString(5)}`
+      const data = {
+        historyId,
+        userId: session?.user.id,
+        shopId: shop,
+        inventary_relocation,
+        description,
+        businessId: businesses?.id
       }
-    })
 
-    const historyId = `H-${generateRandomString(5)}`
-    const data = {
-      historyId,
-      userId: session?.user.id,
-      shopId: shop,
-      inventary_relocation,
-      description,
-      businessId: businesses?.id
+      set_inventary_relocation(data, (status: number, data: any) => {
+        setTimeout(() => {
+          if (status == 200) {
+            onEndTransfer()
+            onClose()
+          }
+          else {
+            console.log("error", status, data)
+            toast({
+              description: "No se ha podido transferir los productos del inventario.",
+              status: 'error',
+              duration: 9000,
+              isClosable: true,
+              variant: "error"
+            })
+          }
+          setLoading(false)
+        }, 1000)
+      })
     }
-
-    set_inventary_relocation(data, (status: number, data: any) => {
-      setTimeout(() => {
-        if (status == 200) {
-          onEndTransfer()
-          onClose()
-        }
-        else {
-          console.log("error", status, data)
-          toast({
-            description: "No se ha podido transferir los productos del inventario.",
-            status: 'error',
-            duration: 9000,
-            isClosable: true,
-            variant: "error"
-          })
-        }
-        setLoading(false)
-      }, 1000)
-    })
+    else {
+      toast({
+        description: "La cantidad a transferir debe ser mayor a cero.",
+        status: 'error',
+        duration: 9000,
+        isClosable: true,
+        variant: "error"
+      })
+    }
   }
 
 

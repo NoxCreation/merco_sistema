@@ -39,6 +39,15 @@ export default async function handler(
         setHistory(historyId, userId, "delete", shopId, productId, "Eliminando producto", businessId)
     }
 
+    if(req.method == "PUT"){
+        const { userId, shopId, productId, businessId, historyId, stock, priceId, value } = req.body
+        const r = (await (await Manager().ValueCoin).update(priceId, {
+            value
+        }))
+        setHistory(historyId, userId, "update", shopId, productId, `Se actualizó el producto. Stock: ${stock} | Precio: ${value} USD`, businessId)
+
+    }
+
     return ApiRequestTemplate(
         req,
         res,

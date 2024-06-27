@@ -262,6 +262,37 @@ export default function InventoryScreen() {
         });
   }
 
+  const onEditInventary = ({ inventary, stock, price }: { inventary: InventaryType, stock: number, price: number }) => {
+    const _data = {
+      historyId: `H-${generateRandomString(5)}`,
+      userId: session?.user.id,
+      productId: inventary.product.id,
+      value: price,
+      priceId: inventary.priceId,
+      stock: stock,
+      shopId: shopSelect,
+      businessId: businesses?.id
+    }
+    setLoading(true)
+    onCloseEditDialog()
+    create_edit_inventary('edit', inventary.id, _data, (status: number, data: any) => {
+      if (status == 200) {
+        onLoad()
+      }
+      else {
+        console.log("error", status, data)
+        toast({
+          description: "No se ha podido actualizar el inventario.",
+          status: 'error',
+          duration: 9000,
+          isClosable: true,
+          variant: "error"
+        })
+      }
+      setLoading(false)
+    })
+
+  }
 
   return (
     <Box>
@@ -278,29 +309,33 @@ export default function InventoryScreen() {
         ]}
       >
         <TabGroup tabs={tabs} onChange={setActiveTabIndex} />
-        <Select
-          fontSize={"13px"}
-          colorScheme="cyan"
-          minWidth={"210px"}
-          backgroundColor={"white"}
-          value={shopSelect}
-          onChange={t => {
-            setShopSelect(parseInt(t.target.value))
-          }}
-        >
-          {shops.map((s, i) => (
-            <option key={i} value={s.id}>{s.name}</option>
-          ))}
-        </Select>
-        <InventoryTopActionsButtonGroup
-          onTransferProducts={onTransferProducts}
-          onShowAddProduct={onOpenAddProductDialog}
-          onMultipleRemove={onMultipleRemove}
-          showAddButton={(shops.find(t => t.name == "Almacen") as Shop)?.id === shopSelect}
-          showTransferButton={(shops.find(t => t.name == "Almacen") as Shop)?.id === shopSelect}
-          disabledTransferButton={inventariesSelects.length == 0}
-          disabledRemoveButton={inventariesSelects.length == 0}
-        />
+        {activeTabIndex == 0 && (
+          <Select
+            fontSize={"13px"}
+            colorScheme="cyan"
+            minWidth={"210px"}
+            backgroundColor={"white"}
+            value={shopSelect}
+            onChange={t => {
+              setShopSelect(parseInt(t.target.value))
+            }}
+          >
+            {shops.map((s, i) => (
+              <option key={i} value={s.id}>{s.name}</option>
+            ))}
+          </Select>
+        )}
+        {activeTabIndex == 0 && (
+          <InventoryTopActionsButtonGroup
+            onTransferProducts={onTransferProducts}
+            onShowAddProduct={onOpenAddProductDialog}
+            onMultipleRemove={onMultipleRemove}
+            showAddButton={(shops.find(t => t.name == "Almacen") as Shop)?.id === shopSelect}
+            showTransferButton={(shops.find(t => t.name == "Almacen") as Shop)?.id === shopSelect}
+            disabledTransferButton={inventariesSelects.length == 0}
+            disabledRemoveButton={inventariesSelects.length == 0}
+          />
+        )}
       </BarFilter>
       {/* Fin */}
 
@@ -310,7 +345,12 @@ export default function InventoryScreen() {
           inventary={inventary}
           pagination={pagination}
           setPagination={setPagination}
-          onEdit={onOpenEditDialog}
+          onEdit={(inventaries: InventaryType) => {
+            setInventariesSelects([inventaries])
+            setTimeout(() => {
+              onOpenEditDialog()
+            }, 100)
+          }}
           onDelete={onRemove}
           onFilter={() => { }}
           showTransferButton={(shops.find(t => t.name == "Almacen") as Shop)?.id === shopSelectRef.current}
@@ -342,6 +382,8 @@ export default function InventoryScreen() {
       <EditInventoryDialog
         isOpen={isOpenEditDialog}
         onClose={onCloseEditDialog}
+        inventary={inventariesSelects[0]}
+        onEditInventary={onEditInventary}
       />
       <AddProductToInventaryDialog
         isOpen={isOpenAddProductDialog}
