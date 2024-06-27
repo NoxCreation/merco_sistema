@@ -15,6 +15,7 @@ import React from "react";
 interface Props {
   onTransferProducts: () => void
   onShowAddProduct: () => void
+  onMultipleRemove: () => void
   showAddButton?: boolean
   showTransferButton?: boolean
   disabledTransferButton?: boolean
@@ -24,6 +25,7 @@ interface Props {
 export default function InventoryTopActionsButtonGroup({
   onTransferProducts,
   onShowAddProduct,
+  onMultipleRemove,
   showAddButton,
   showTransferButton,
   disabledTransferButton,
@@ -68,6 +70,7 @@ export default function InventoryTopActionsButtonGroup({
           aria-label="Eliminar"
           icon={<DeleteIcon />}
           colorScheme="red"
+          onClick={onMultipleRemove}
         />
       </Tooltip>
 

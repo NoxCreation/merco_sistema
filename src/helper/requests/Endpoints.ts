@@ -20,7 +20,9 @@ export const ENDPOINTS = {
     rol: '/role',
     cardaccount: '/cardaccount',
     historycardaccount: '/historycardaccount',
-    inventary: '/inventary'
+    inventary: '/inventary',
+    inventary_history: '/inventary_history',
+    inventary_relocation: '/inventary_relocation'
 }
 
 type RequestMethod = 'POST' | 'PUT' | 'GET' | 'DELETE';

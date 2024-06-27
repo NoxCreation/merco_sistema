@@ -15,10 +15,7 @@ export default async function handler(
                 },
                 {
                     model: Manager().ValueCoin.model, as: 'valuecoin'
-                },
-                {
-                    model: Manager().Stock.model, as: 'stock'
-                },
+                }
             ]
         })).toJSON()
         if (inventary == null)

@@ -17,7 +17,12 @@ export const create_edit_inventary = async (action: string, id: number, data: an
     }
 }
 
-export const remove_inventary = async (id: number, onSend: (status: number, data: any) => void) => {
-    const response = await model_request("DELETE", `${ENDPOINTS.inventary}?id=${id}`) as any
+export const remove_inventary = async (id: number, data: any, onSend: (status: number, data: any) => void) => {
+    const response = await model_request("DELETE", `${ENDPOINTS.inventary}?id=${id}`, data) as any
+    onSend(response.status, response.data)
+}
+
+export const set_inventary_relocation = async (data: any, onSend: (status: number, data: any) => void) => {
+    const response = await model_request("POST", `${ENDPOINTS.inventary_relocation}`, data) as any
     onSend(response.status, response.data)
 }

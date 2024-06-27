@@ -26,7 +26,6 @@ export const ApiRequestTemplate = async (
                 delete _filter[key]
             }
         }
-        console.log("filter clean", _filter)
         if (page != undefined)
             _page = parseInt(page as string)
         if (pageSize != undefined)
