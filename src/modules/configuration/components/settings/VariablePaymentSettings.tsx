@@ -12,7 +12,7 @@ export default function VariablePaymentSettings() {
       width={"full"}
       height={"fit-content"}
     >
-      <Stack spacing={"10px"}>
+      <Stack spacing={"20px"} >
         <UnitsSection />
         <QuantitySection />
         <FixedPaymentQuantitySection />

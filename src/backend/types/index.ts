@@ -268,3 +268,28 @@ export type InventaryHistoryType = {
     product: Product,
     business: Bussines
 }
+
+export type OfferRule = {
+    id: number
+    comparative_symbol: string
+    value: number
+    percentage: number
+    createdAt: string
+    updatedAt: string
+}
+
+export type ConfigurationType = {
+    id: number
+    currency_payment_to_workers_id: number
+    administrative_payments: number
+    re_investment: number
+    apply_rules_ofers: boolean
+    apply_payment_results: boolean
+    businessId: number
+    createdAt: string
+    updatedAt: string
+    offers_rules: Array<OfferRule>
+    payment_results: Array<OfferRule>
+    payment_rules: []
+    sms_history: []
+}

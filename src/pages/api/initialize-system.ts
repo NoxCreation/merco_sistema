@@ -140,6 +140,20 @@ export default async function handler(
                     businessId: business.dataValues.id
                 }, { transaction: t })).query
 
+                // Creando configuración
+                const paymentrule = (await Manager().PaymentRule.create({
+                    sponser_unit: 6,
+                    seller_unit: 4
+                }, { transaction: t })).query
+                const config = (await Manager().Configuration.create({
+                    administrative_payments: 30,
+                    re_investment: 70,
+                    apply_rules_ofers: true,
+                    apply_payment_results: true,
+                    currency_payment_to_workers_id: coin.dataValues.id,
+                    paymentruleId: paymentrule.dataValues.id,
+                    businessId: business.dataValues.id
+                }, { transaction: t })).query
 
             })
 

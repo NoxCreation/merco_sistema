@@ -22,7 +22,9 @@ export const ENDPOINTS = {
     historycardaccount: '/historycardaccount',
     inventary: '/inventary',
     inventary_history: '/inventary_history',
-    inventary_relocation: '/inventary_relocation'
+    inventary_relocation: '/inventary_relocation',
+    configuration: '/configuration',
+    offerrule: '/offerrule'
 }
 
 type RequestMethod = 'POST' | 'PUT' | 'GET' | 'DELETE';

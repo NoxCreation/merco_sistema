@@ -6,21 +6,34 @@ import {
   InputGroup,
   InputRightAddon,
 } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 import React from "react";
 
-export default function CurrencyItem() {
+interface Props {
+  active: boolean
+  symbol: string
+  value_change: number
+}
+
+export default function CurrencyItem({ active, symbol, value_change }: Props) {
+  const router = useRouter()
+
   return (
     <Flex alignItems={"center"} gap={"10px"}>
-      <Checkbox colorScheme="cyan"></Checkbox>
-      <Input placeholder="CUP" flex={1} />
+      {symbol != "USD" && (<Checkbox colorScheme="cyan" isChecked={active} isDisabled></Checkbox>)}
+      <Input value={symbol} flex={1} fontSize={'14px'} isDisabled />
       <InputGroup flex={3}>
-        <Input type="number" />
-        <InputRightAddon
-          cursor={"pointer"}
-          _hover={{ filter: "brightness(0.94)" }}
-        >
-          <DeleteIcon />
-        </InputRightAddon>
+        <Input type="number" fontSize={'14px'} value={value_change} isDisabled />
+        {symbol != "USD" && (
+          <InputRightAddon
+            fontSize={'14px'}
+            cursor={"pointer"}
+            _hover={{ filter: "brightness(0.94)" }}
+            onClick={() => router.push("/nomenclators/coins")}
+          >
+            <DeleteIcon />
+          </InputRightAddon>
+        )}
       </InputGroup>
     </Flex>
   );

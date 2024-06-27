@@ -11,18 +11,8 @@ import SMSSettings from "./components/settings/SMSSettings";
 
 export default function ConfigurationScreen() {
   return (
-    <Box>
-      {/* Barra de Filteros */}
-      <BarFilter
-        breadcrumb={[
-          {
-            label: "Configuración",
-            icon: undefined,
-            link: "/configuration",
-          },
-        ]}
-      />
-      <Grid templateColumns={"1fr 1fr"} gap={"25px"}>
+    <Box mt={"50px"}>
+      <Grid templateColumns={"1fr 1fr"} gap={"25px"} fontSize={'14px'}>
         <CurrencySettings />
         <CapitalizationAndFundsSettings />
         <Stack gap={"25px"}>

@@ -6,7 +6,7 @@ import SMSTable from "../SMSTable";
 
 export default function SMSSettings() {
   return (
-    <GenericContainer title="SMS" w={"full"}>
+    <GenericContainer title="SMS" w={"full"} >
       <Stack spacing={"25px"}>
         <Center width={"full"}>
           <Stack
