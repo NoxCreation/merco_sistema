@@ -278,6 +278,22 @@ export type OfferRule = {
     updatedAt: string
 }
 
+export type PaymentRule = {
+    id: number
+    sponser_unit: number,
+    seller_unit: number,
+    by_quantity_sponser: OfferRule,
+    by_quantity_seller: null,
+    by_quantity_sponser_fixed_payment: null,
+    by_quantity_seller_fixed_payment: null,
+    createdAt: string
+    updatedAt: string
+    data_by_quantity_sponser: Array<OfferRule>,
+    data_by_quantity_seller: Array<OfferRule>,
+    data_by_quantity_sponser_fixed_payment: Array<OfferRule>,
+    data_by_quantity_seller_fixed_payment: Array<OfferRule>
+}
+
 export type ConfigurationType = {
     id: number
     currency_payment_to_workers_id: number
@@ -290,6 +306,6 @@ export type ConfigurationType = {
     updatedAt: string
     offers_rules: Array<OfferRule>
     payment_results: Array<OfferRule>
-    payment_rules: []
+    paymentrule: PaymentRule
     sms_history: []
 }

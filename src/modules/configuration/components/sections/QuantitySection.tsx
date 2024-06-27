@@ -9,6 +9,8 @@ import React from "react";
 import Rules from "../Rules";
 
 export default function QuantitySection() {
+  
+
   return (
     <Stack width={"full"} spacing={"20px"} my={"20px"}>
       <Flex alignItems={'center'} gap={5}>
