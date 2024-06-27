@@ -12,13 +12,13 @@ export default async function handler(
         Manager().Configuration,
         [
             {
-                model: Manager().Coin.model, as: 'coins'
-            },
-            {
                 model: Manager().OfferRule.model, as: 'offers_rules'
             },
             {
-                model: Manager().PaymentRule.model, as: 'payment_rules'
+                model: Manager().OfferRule.model, as: 'payment_results'
+            },
+            {
+                model: Manager().PaymentRule.model, as: 'paymentrule'
             },
             {
                 model: Manager().SMSHistory.model, as: 'sms_history'

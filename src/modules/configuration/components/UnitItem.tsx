@@ -1,6 +1,6 @@
-import { Flex, Input, Select, Text, Box } from "@chakra-ui/react";
+import { Flex, Input, Select, Text, Box, IconButton } from "@chakra-ui/react";
 import React from "react";
-import { FaTrash } from "react-icons/fa";
+import { FaSave, FaTrash } from "react-icons/fa";
 
 export default function UnitItem() {
   return (
@@ -9,9 +9,18 @@ export default function UnitItem() {
       <Text fontWeight={"bold"} color={"cyan.500"}>
         %
       </Text>
-      <Box>
-        <FaTrash color="#00A3C4" width={"30px"} />
-      </Box>
+      <Flex>
+        <IconButton
+          onClick={() => {
+            
+          }}
+          aria-label="eliminar" variant={'ghost'} icon={<FaTrash color="#00A3C4" width={"30px"} />} />
+        <IconButton aria-label="salvar"
+          onClick={() => {
+
+          }}
+          variant={'ghost'} icon={<FaSave color="#00A3C4" width={"30px"} />} />
+      </Flex>
     </Flex>
   );
 }

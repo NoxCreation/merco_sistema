@@ -67,7 +67,7 @@ export const Manager = () => {
     const OfferRule = OfferRuleModel()
     const SMSHistory = SMSHistoryModel(Employee, User)
     const PaymentRule = PaymentRuleModel(OfferRule)
-    const Configuration = ConfigurationModel()
+    const Configuration = ConfigurationModel(Business, Coin, PaymentRule)
     const Expense = ExpenseModel(ValueCoin, Business)
     const DailyDebt = DailyDebtModel(ValueCoin)
     const DailyClosing = DailyClosingModel(Employee)
@@ -451,30 +451,39 @@ export const Manager = () => {
     )
 
     // Relación Mucho a Mucho entre Configuration y Coin
-    relateManyToMany(
+    /* relateManyToMany(
         Configuration,
         Coin,
         'configurations',
         'coins',
         'ConfigurationCoin',
+    ) */
+
+    // Relación Mucho a Mucho entre Configuration y OfferRule
+    relateManyToMany(
+        Configuration,
+        OfferRule,
+        'configurations1',
+        'offers_rules',
+        'ConfigurationOfferRule',
     )
 
     // Relación Mucho a Mucho entre Configuration y OfferRule
     relateManyToMany(
         Configuration,
         OfferRule,
-        'configurations',
-        'offers_rules',
-        'ConfigurationOfferRule',
+        'configurations2',
+        'payment_results',
+        'ConfigurationPaymentResults',
     )
 
     // Relación Uno a Mucho entre Configuration y PaymentRule
-    relateManyToMany(
+    relateOneToMany(
         Configuration,
         PaymentRule,
         'configurations',
-        'payment_rules',
-        'ConfigurationPaymentRule',
+        'paymentrule',
+        'paymentruleId'
     )
 
     // Relación Uno a Mucho entre Configuration y SMSHistory
@@ -484,6 +493,15 @@ export const Manager = () => {
         'configurations',
         'sms_history',
         'ConfigurationSMSHistory',
+    )
+
+    // Relación Uno a Mucho entre Configuration y Coin
+    relateOneToMany(
+        Configuration,
+        Coin,
+        'configurations',
+        'coin',
+        'currency_payment_to_workers_id'
     )
 
     // Relación Uno a Mucho entre Expense y ValueCoin

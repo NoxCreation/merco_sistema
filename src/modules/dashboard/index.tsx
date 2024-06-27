@@ -1,9 +1,10 @@
 import React from "react";
-import { Badge, Flex } from "@chakra-ui/react";
+import { Badge, Flex, Select } from "@chakra-ui/react";
 import { MiniCard } from "./components/MiniCard";
 import GraphicGrowingIcon from "@/frontend/core/icons/GraphicGrowingIcon";
 import DashboardTable from "./components/DashboardTable";
 import { CustomBarChart } from "@/frontend/core/components/BarChart";
+import DateRangeSelector from "@/frontend/core/components/DateRangeSelector";
 
 export default function DashboardScreen() {
   return (
@@ -15,6 +16,16 @@ export default function DashboardScreen() {
       gap={"25px"}
       flexDir={"column"}
     >
+      <Flex w={'100%'}>
+        <Flex flex={1}></Flex>
+        <Flex flex={1} gap={5} justifyContent={'end'}>
+          <DateRangeSelector />
+          <Select bg={'white'} w={'100px'}>
+            <option value="">CUP</option>
+          </Select>
+        </Flex>
+      </Flex>
+
       <Flex w={"100%"} gap={"25px"}>
         <MiniCard
           title={"Ganancia"}
