@@ -6,7 +6,7 @@ import RuleItem from "../RuleItem";
 
 export default function OfferRulesSettings() {
   return (
-    <GenericContainer title="Divisas" width={"full"}>
+    <GenericContainer title="Reglas y ofertas" width={"full"}>
       <Stack spacing={"10px"}>
         <Checkbox colorScheme="cyan">Aplicar ofertas</Checkbox>
         <RuleItem />
