@@ -9,15 +9,16 @@ interface Props extends StackProps {
 export default function GenericContainer({ children, title, ...props }: Props) {
   return (
     <Stack
-    spacing={5}
-    backgroundColor={"white"}
-    paddingY={"20px"}
-    paddingX={"30px"}
-    borderRadius={"md"}
-    boxShadow={"0 4px 120px 0 rgba(115, 115, 155, 8%)"}
-    {...props}
+      spacing={5}
+      backgroundColor={"white"}
+      paddingY={"20px"}
+      paddingX={"30px"}
+      borderRadius={"md"}
+      boxShadow={"0 4px 120px 0 rgba(115, 115, 155, 8%)"}
+      {...props}
     >
       <Heading
+        alignSelf={"start"}
         as={"h4"}
         fontSize={"12px"}
         textTransform={"uppercase"}

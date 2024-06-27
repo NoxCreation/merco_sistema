@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Flex, Stack } from "@chakra-ui/react";
+import { Box, Flex, Grid, Stack } from "@chakra-ui/react";
 import { BarFilter } from "@/frontend/core/components/BarFilter";
 import CurrencySettings from "./components/settings/CurrencySettings";
 import CapitalizationAndFundsSettings from "./components/settings/CapitalizationAndFundsSettings";
@@ -22,23 +22,17 @@ export default function ConfigurationScreen() {
           },
         ]}
       />
-      <Stack>
-        <Flex gap={"10px"}>
-          <CurrencySettings />
-          <Stack width={"full"}>
-            <CapitalizationAndFundsSettings />
-          </Stack>
-        </Flex>
-        <Flex gap={"10px"}>
-          <Stack width={"full"}>
-            <OfferRulesSettings />
-            <PayRangeByResultSettings />
-            <WorkersPaySettings />
-            <SMSSettings />
-          </Stack>
-          <VariablePaymentSettings />
-        </Flex>
-      </Stack>
+      <Grid templateColumns={"1fr 1fr"} gap={"25px"}>
+        <CurrencySettings />
+        <CapitalizationAndFundsSettings />
+        <Stack gap={"25px"}>
+          <OfferRulesSettings />
+          <PayRangeByResultSettings />
+          <WorkersPaySettings />
+          <SMSSettings />
+        </Stack>
+        <VariablePaymentSettings />
+      </Grid>
     </Box>
   );
 }
