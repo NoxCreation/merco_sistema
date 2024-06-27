@@ -5,23 +5,19 @@ import { ButtonGroup, IconButton, Tooltip } from "@chakra-ui/react";
 import React, { useEffect } from "react";
 
 type Props = {
-  /* onEdit: () => void;
-  
-   */
   showTransferButton: boolean
   onTransferProducts: () => void;
   onDelete: () => void;
+  onEdit: () => void;
 };
 
 export default function InventoryTableActions({
-  /* ,
   onEdit,
-  onDelete, */
   showTransferButton,
   onTransferProducts,
   onDelete
 }: Props) {
-  
+
   return (
     <ButtonGroup size="sm" isAttached>
       <Tooltip label={"Editar"}>
@@ -30,7 +26,7 @@ export default function InventoryTableActions({
           color={"white"}
           icon={<EditIcon w={"12px"} h={"12px"} />}
           colorScheme="cyan"
-        /* onClick={onEdit} */
+          onClick={onEdit}
         />
       </Tooltip>
       {showTransferButton && (

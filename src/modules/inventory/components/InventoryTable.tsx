@@ -20,7 +20,7 @@ type Props = {
     count: number
   }) => void
   onTransferProducts: (inventary: InventaryType) => void;
-  onEdit: () => void;
+  onEdit: (inventaries: InventaryType) => void;
   onDelete: (inventary: InventaryType) => void;
   onFilter: (page: number) => void
   onSelectItems?: (inventaries: Array<InventaryType>) => void
@@ -164,6 +164,9 @@ export default function InventoryTable({
         cell: ({ cell }) => (
           <InventoryTableActions
             onDelete={() => onDelete(cell.row.original as InventaryType)}
+            onEdit={()=>{
+              onEdit(cell.row.original as InventaryType)
+            }}
             showTransferButton={ref.current}
             onTransferProducts={()=>{
               onTransferProducts(cell.row.original as InventaryType)

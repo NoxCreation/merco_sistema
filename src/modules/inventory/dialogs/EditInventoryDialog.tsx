@@ -1,3 +1,4 @@
+import { InventaryType } from "@/backend/types";
 import {
   Modal,
   ModalOverlay,
@@ -17,26 +18,42 @@ import {
   NumberDecrementStepper,
   NumberIncrementStepper,
   NumberInputStepper,
+  Input,
+  FormHelperText,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 type Props = {
-  isOpen: boolean;
-  onClose: () => void;
+  inventary: InventaryType | undefined
+  isOpen: boolean
+  onClose: () => void
+  onEditInventary: ({ inventary, stock, price }: { inventary: InventaryType, stock: number, price: number }) => void
 };
 
-export default function EditInventoryDialog({ isOpen, onClose }: Props) {
+export default function EditInventoryDialog({ inventary, isOpen, onClose, onEditInventary }: Props) {
+  const [stock, setStock] = useState(0 as number)
+  const [price, setPrice] = useState(0 as number)
+
+  useEffect(() => {
+    if (isOpen) {
+      if (inventary) {
+        setStock(inventary?.stock / inventary?.product.count_unit)
+        setPrice(inventary.valuecoin.value)
+      }
+    }
+  }, [isOpen, inventary])
+
   return (
     <Modal isOpen={isOpen} onClose={onClose} isCentered>
       <ModalOverlay bg="#00000030" backdropFilter="blur(10px)" />
       <ModalContent>
-        <ModalHeader>{"{nombre del producto a editar}"}</ModalHeader>
+        <ModalHeader>Editar</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <Stack spacing={3}>
             <FormControl>
-              <FormLabel>En stock</FormLabel>
-              <NumberInput>
+              <FormLabel>En stock <small>(por unidades)</small></FormLabel>
+              <NumberInput value={stock} onChange={t => setStock(parseInt(t))}>
                 <NumberInputField />
                 <NumberInputStepper>
                   <NumberIncrementStepper />
@@ -46,7 +63,7 @@ export default function EditInventoryDialog({ isOpen, onClose }: Props) {
             </FormControl>
             <FormControl>
               <Flex justifyContent={"space-between"} alignItems={"center"}>
-                <FormLabel>Trasladar a:</FormLabel>
+                <FormLabel>Precio</FormLabel>
                 <Badge
                   variant={"outline"}
                   colorScheme="purple"
@@ -56,47 +73,27 @@ export default function EditInventoryDialog({ isOpen, onClose }: Props) {
                   USD
                 </Badge>
               </Flex>
-              <NumberInput>
-                <NumberInputField />
-                <NumberInputStepper>
-                  <NumberIncrementStepper />
-                  <NumberDecrementStepper />
-                </NumberInputStepper>
-              </NumberInput>
+              <Input type="number" value={price} onChange={t => setPrice(parseFloat(t.target.value))} />
+              <FormHelperText>Esta variación no modificará el precio en el nomenclador del producto.</FormHelperText>
             </FormControl>
-            <FormControl>
-              <Flex justifyContent={"space-between"} alignItems={"center"}>
-                <FormLabel>Trasladar a:</FormLabel>
-                <Badge
-                  variant={"outline"}
-                  colorScheme="purple"
-                  borderRadius={"full"}
-                  px={"10px"}
-                >
-                  USD
-                </Badge>
-              </Flex>
-              <NumberInput>
-                <NumberInputField />
-                <NumberInputStepper>
-                  <NumberIncrementStepper />
-                  <NumberDecrementStepper />
-                </NumberInputStepper>
-              </NumberInput>
-            </FormControl>
+
           </Stack>
         </ModalBody>
 
-        <ModalFooter>
+        <ModalFooter gap={5} display={'flex'}>
           <Button
-            colorScheme="gray"
-            color={"gray"}
-            bgColor={"white"}
+            variant={'ghost'}
             onClick={onClose}
           >
             Cancelar
           </Button>
-          <Button mr={3} onClick={() => null} color={"white"}>
+          <Button onClick={() => {
+            onEditInventary({
+              inventary: inventary as InventaryType,
+              stock: inventary ? (stock * inventary?.product.count_unit) : 0,
+              price
+            })
+          }} color={"white"}>
             Editar
           </Button>
         </ModalFooter>
