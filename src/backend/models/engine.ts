@@ -32,6 +32,7 @@ import { OrderModel } from "./Order";
 import { StorePickUpDataModel } from "./StorePickUpData";
 import { DebtDataModel } from "./DebtData";
 import { TransitModel } from "./Transit";
+import { InventaryHistoryModel } from "./InventaryHistory";
 
 export const sequelize = new Sequelize({
     dialect: 'sqlite',
@@ -52,15 +53,16 @@ export const Manager = () => {
     const ValueCoin = ValueCoinModel(Coin)//-
     /* const Stock = StockModel()//- */
     const Shop = ShopModel()//-
+    const Role = RoleModel(Business)//-
+    const User = UserModel(Role, Shop)
     const Product = ProductModel(Category, Unit, Shop, Business)//-
     const Inventary = InventaryModel(Product, ValueCoin, Shop, Business)
+    const InventaryHistory = InventaryHistoryModel(User, Shop, Product, Business)
     const ChargeEmployee = ChargeEmployeeModel(Business)//-
     const Employee = EmployeeModel(Shop, ChargeEmployee, Business)//-
     const HistoryCardAccount = HistoryCardAccountModel(ValueCoin)//-
     const CardAccount = CardAccountModel(Business, Coin)//-
     const ProfitEmployee = ProfitEmployeeModel(Employee, ValueCoin)//-
-    const Role = RoleModel(Business)//-
-    const User = UserModel(Role, Shop)
     const Sale = SaleModel(Coin, ValueCoin, Product, User, ProfitEmployee, CardAccount)// en el api modificar el post
     const OfferRule = OfferRuleModel()
     const SMSHistory = SMSHistoryModel(Employee, User)
@@ -168,6 +170,42 @@ export const Manager = () => {
         'stocks',
         'InventaryStock',
     ) */
+
+    // Relación Uno a Mucho entre InventaryHistory y User
+    relateOneToMany(
+        InventaryHistory,
+        User,
+        'inventaryhistorys',
+        'user',
+        'userId'
+    )
+
+    // Relación Uno a Mucho entre InventaryHistory y Shop
+    relateOneToMany(
+        InventaryHistory,
+        Shop,
+        'inventaryhistorys',
+        'shop',
+        'shopToId'
+    )
+
+    // Relación Uno a Mucho entre InventaryHistory y Product
+    relateOneToMany(
+        InventaryHistory,
+        Product,
+        'inventaryhistorys',
+        'product',
+        'productId'
+    )
+
+    // Relación Uno a Mucho entre InventaryHistory y Business
+    relateOneToMany(
+        InventaryHistory,
+        Business,
+        'inventaryhistorys',
+        'business',
+        'businessId'
+    )        
 
     // Relación Mucho a Mucho entre Bussiness y Shop
     relateManyToMany(
@@ -720,6 +758,7 @@ export const Manager = () => {
         ValueCoin: new Model(ValueCoin),
         /* Stock: new Model(Stock), */
         Inventary: new Model(Inventary),
+        InventaryHistory: new Model(InventaryHistory),
         Shop: new Model(Shop),
         Business: new Model(Business),
         ChargeEmployee: new Model(ChargeEmployee),

@@ -1,11 +1,9 @@
 import { Image, Text, Checkbox, Badge } from "@chakra-ui/react";
 import { ColumnDef } from "@tanstack/react-table";
-import React from "react";
-import InventoryActionsButtonGroup from "./InventoryTopActionsButtonGroup";
+import React, { useEffect, useRef } from "react";
 import GenericTable from "@/frontend/core/components/GenericTable";
 import { InventaryType } from "@/backend/types";
 import InventoryTableActions from "./InventoryTableActions";
-
 
 
 type Props = {
@@ -15,12 +13,13 @@ type Props = {
     pageSize: number,
     count: number
   }
+  showTransferButton: boolean
   setPagination: (pagination: {
     page: number,
     pageSize: number,
     count: number
   }) => void
-  onTransferProducts: () => void;
+  onTransferProducts: (inventary: InventaryType) => void;
   onEdit: () => void;
   onDelete: (inventary: InventaryType) => void;
   onFilter: (page: number) => void
@@ -34,9 +33,15 @@ export default function InventoryTable({
   setPagination,
   onFilter,
   onSelectItems,
+  showTransferButton,
   pagination,
   inventary
 }: Props) {
+
+  const ref = useRef(showTransferButton);
+  useEffect(()=>{
+    ref.current = showTransferButton;
+  }, [showTransferButton])
 
   const columns: ColumnDef<InventaryType>[] = React.useMemo(
     () => [
@@ -51,7 +56,7 @@ export default function InventoryTable({
               table.toggleAllRowsSelected(event.target.checked);
             }}
           >
-            Código
+            <Text fontSize={'12px'}>Código</Text>
           </Checkbox>
         ),
         accessorKey: "product.code",
@@ -159,6 +164,10 @@ export default function InventoryTable({
         cell: ({ cell }) => (
           <InventoryTableActions
             onDelete={() => onDelete(cell.row.original as InventaryType)}
+            showTransferButton={ref.current}
+            onTransferProducts={()=>{
+              onTransferProducts(cell.row.original as InventaryType)
+            }}
           />
         ),
       },

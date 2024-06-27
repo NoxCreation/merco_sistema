@@ -15,3 +15,11 @@ export const generatePassword = (): string => {
         return generatePassword()
     }
 }
+
+export const generateRandomString = (length: number = 8): string => {
+    var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789';
+    var _string = '';
+    for (var i = 0; i < length; i++)
+        _string += characters.charAt(Math.floor(Math.random() * characters.length));
+    return _string.toLocaleUpperCase();
+}

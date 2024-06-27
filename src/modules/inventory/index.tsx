@@ -16,6 +16,7 @@ import { create_edit_inventary, get_inventary, remove_inventary } from "@/helper
 import { Loading } from "@/frontend/core/components/Loading";
 import { get_coin } from "@/helper/requests/Coin";
 import { useSession } from "next-auth/react";
+import { generateRandomString } from "@/helper/generatePassword";
 
 export default function InventoryScreen() {
   const [activeTabIndex, setActiveTabIndex] = useState<number>(0);
@@ -58,7 +59,6 @@ export default function InventoryScreen() {
   })
   const [loading, setLoading] = useState(true)
   const [inventariesSelects, setInventariesSelects] = useState([] as Array<InventaryType>)
-
 
   useEffect(() => {
     shopSelectRef.current = shopSelect;
@@ -130,6 +130,8 @@ export default function InventoryScreen() {
         const coins = data.data as Array<Coin>
         const coin_usd_id = coins.find(c => c.canRemove == false)?.id
         const _data = {
+          historyId: `H-${generateRandomString(5)}`,
+          userId: session?.user.id,
           productId: product.id,
           value: product.price_usd,
           coinId: coin_usd_id,
@@ -180,7 +182,14 @@ export default function InventoryScreen() {
       .then((willDelete) => {
         if (willDelete) {
           setLoading(true)
-          remove_inventary(inventary.id, (status: number, data: any) => {
+          const _data = {
+            historyId: `H-${generateRandomString(5)}`,
+            userId: session?.user.id,
+            shopId: shopSelectRef.current,
+            productId: inventary.productId,
+            businessId: businesses?.id
+          }
+          remove_inventary(inventary.id, _data, (status: number, data: any) => {
             if (status == 200 && data == 1) {
               const filter = {
                 businessId: businesses?.id,
@@ -206,6 +215,53 @@ export default function InventoryScreen() {
         }
       });
   }
+
+  const onMultipleRemove = async () => {
+    if (inventariesSelects.length > 0)
+      swal({
+        title: "¿Está seguro?",
+        text: "Si elimina los registros seleccionados no podrá recuperarlos, ¿está seguro de querer continuar?",
+        icon: "warning",
+        buttons: ["Cancelar", "Eliminar"],
+        dangerMode: true,
+      })
+        .then(async (willDelete) => {
+          if (willDelete) {
+            let flag = false
+            const historyId = `H-${generateRandomString(5)}`
+            for (let i = 0; i < inventariesSelects.length; i++) {
+              const inventary = inventariesSelects[i]
+              const _data = {
+                historyId,
+                userId: session?.user.id,
+                shopId: shopSelect,
+                productId: inventary.productId,
+                businessId: businesses?.id
+              }
+              remove_inventary(inventary.id, _data, (status: number, data: any) => {
+                onLoad(pagination.page, pagination.pageSize)
+                if (data != 1 || status != 200) {
+                  console.log("error", status, data)
+                  flag = true
+                }
+              })
+            }
+            if (flag)
+              toast({
+                description: "Al menos un elemento no pudo ser eliminado.",
+                status: 'error',
+                duration: 9000,
+                isClosable: true,
+                variant: "error"
+              })
+            else
+              swal("¡Se ha eliminado satisfactoriamente!", {
+                icon: "success",
+              });
+          }
+        });
+  }
+
 
   return (
     <Box>
@@ -239,6 +295,7 @@ export default function InventoryScreen() {
         <InventoryTopActionsButtonGroup
           onTransferProducts={onTransferProducts}
           onShowAddProduct={onOpenAddProductDialog}
+          onMultipleRemove={onMultipleRemove}
           showAddButton={(shops.find(t => t.name == "Almacen") as Shop)?.id === shopSelect}
           showTransferButton={(shops.find(t => t.name == "Almacen") as Shop)?.id === shopSelect}
           disabledTransferButton={inventariesSelects.length == 0}
@@ -253,16 +310,22 @@ export default function InventoryScreen() {
           inventary={inventary}
           pagination={pagination}
           setPagination={setPagination}
-          onTransferProducts={onTransferProducts}
           onEdit={onOpenEditDialog}
           onDelete={onRemove}
           onFilter={() => { }}
+          showTransferButton={(shops.find(t => t.name == "Almacen") as Shop)?.id === shopSelectRef.current}
           onSelectItems={(inventaries: Array<InventaryType>) => {
             setInventariesSelects(inventaries)
           }}
+          onTransferProducts={(inventary: InventaryType) => {
+            setInventariesSelects([inventary])
+            setTimeout(() => {
+              onTransferProducts()
+            }, 100)
+          }}
         />
-      ) : (<>{/* <HistoryTable /> */}</>
-
+      ) : (
+        <HistoryTable />
       )}
       {/* Fin */}
 
@@ -271,6 +334,10 @@ export default function InventoryScreen() {
         isOpen={isOpenTransferDialog}
         onClose={onCloseTransferDialog}
         inventariesSelects={inventariesSelects}
+        shops={shops.filter(t => t.name !== "Almacen")}
+        onEndTransfer={() => {
+          onLoad()
+        }}
       />
       <EditInventoryDialog
         isOpen={isOpenEditDialog}

@@ -243,9 +243,28 @@ export type InventaryType = {
     id: number
     stock: number,
     productId: number,
+    shopId: number
     priceId: number,
     createdAt: string
     updatedAt: string
     valuecoin: ValueCoin,
-    product: Product
+    product: Product,
+    businessId: number
+}
+
+export type InventaryHistoryType = {
+    id: number,
+    historyId: string,
+    userId: number,
+    action: string,
+    shopToId: number,
+    description: string,
+    productId: number,
+    businessId: number,
+    createdAt: string
+    updatedAt: string
+    user: UserType,
+    shop: Shop,
+    product: Product,
+    business: Bussines
 }
