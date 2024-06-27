@@ -5,6 +5,9 @@ import { ChakraProvider } from "@chakra-ui/react";
 import type { AppProps } from "next/app";
 import { SessionProvider } from "next-auth/react";
 import MercoSistemaProvider from "@/frontend/core/contexts/MercoSistemaProvider";
+import { Chart, scales, elements } from "chart.js";
+
+Chart.register(scales, elements);
 
 export default function App({
   Component,

@@ -3,6 +3,7 @@ import { Badge, Flex } from "@chakra-ui/react";
 import { MiniCard } from "./components/MiniCard";
 import GraphicGrowingIcon from "@/frontend/core/icons/GraphicGrowingIcon";
 import DashboardTable from "./components/DashboardTable";
+import { BarChart } from "@/frontend/core/components/BarChart";
 
 export default function OrdersScreen() {
   return (
@@ -103,6 +104,15 @@ export default function OrdersScreen() {
 
         <Flex width={"full"}>
           <DashboardTable title="Ganancia Vendedores" />
+        </Flex>
+      </Flex>
+      <Flex w={"100%"} gap={"25px"}>
+        <Flex width={"full"}>
+          <BarChart />
+        </Flex>
+
+        <Flex width={"full"}>
+          <BarChart />
         </Flex>
       </Flex>
     </Flex>
