@@ -3,9 +3,9 @@ import { Badge, Flex } from "@chakra-ui/react";
 import { MiniCard } from "./components/MiniCard";
 import GraphicGrowingIcon from "@/frontend/core/icons/GraphicGrowingIcon";
 import DashboardTable from "./components/DashboardTable";
-import { BarChart } from "@/frontend/core/components/BarChart";
+import { CustomBarChart } from "@/frontend/core/components/BarChart";
 
-export default function OrdersScreen() {
+export default function DashboardScreen() {
   return (
     <Flex
       paddingY={"20px"}
@@ -108,11 +108,11 @@ export default function OrdersScreen() {
       </Flex>
       <Flex w={"100%"} gap={"25px"}>
         <Flex width={"full"}>
-          <BarChart />
+          <CustomBarChart />
         </Flex>
 
         <Flex width={"full"}>
-          <BarChart />
+          <CustomBarChart />
         </Flex>
       </Flex>
     </Flex>

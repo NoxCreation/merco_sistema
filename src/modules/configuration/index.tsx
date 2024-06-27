@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Flex, Grid, Stack } from "@chakra-ui/react";
+import { Box, Grid, Stack } from "@chakra-ui/react";
 import { BarFilter } from "@/frontend/core/components/BarFilter";
 import CurrencySettings from "./components/settings/CurrencySettings";
 import CapitalizationAndFundsSettings from "./components/settings/CapitalizationAndFundsSettings";

@@ -1,12 +1,12 @@
-import { Stack, Flex, Heading, Box, StackProps } from "@chakra-ui/react";
-import React, { ReactNode } from "react";
+import { Stack, Heading, Box, StackProps } from "@chakra-ui/react";
+import React, { MutableRefObject, ReactNode, forwardRef } from "react";
 
 interface Props extends StackProps {
   title: string;
   children: ReactNode | ReactNode[];
 }
 
-export default function GenericContainer({ children, title, ...props }: Props) {
+export const GenericContainer = ({ children, title, ...props }: Props) => {
   return (
     <Stack
       spacing={5}
@@ -30,4 +30,6 @@ export default function GenericContainer({ children, title, ...props }: Props) {
       <Box>{children}</Box>
     </Stack>
   );
-}
+};
+
+export default GenericContainer;
