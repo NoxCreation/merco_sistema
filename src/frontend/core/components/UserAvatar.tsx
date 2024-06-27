@@ -8,6 +8,7 @@ import {
   MenuDivider,
 } from "@chakra-ui/react";
 import { signOut } from "next-auth/react";
+import Link from "next/link";
 import React from "react";
 
 type Props = {
@@ -15,19 +16,21 @@ type Props = {
 };
 
 export default function UserAvatar({ photoUrl }: Props) {
-  const onSignOut= async () => {
-    await signOut({ callbackUrl: '/auth', redirect: false })
-  }
+  const onSignOut = async () => {
+    await signOut({ callbackUrl: "/auth", redirect: false });
+  };
 
   return (
     <Menu>
-      <MenuButton  >
-        <Avatar src={photoUrl} cursor={'pointer'} >
+      <MenuButton>
+        <Avatar src={photoUrl} cursor={"pointer"}>
           <AvatarBadge boxSize="1.25em" bg="green.500" />
         </Avatar>
       </MenuButton>
       <MenuList>
-        <MenuItem>Perfil</MenuItem>
+        <Link href={"/profile"}>
+          <MenuItem>Perfil</MenuItem>
+        </Link>
         <MenuDivider></MenuDivider>
         <MenuItem onClick={onSignOut}>Salir</MenuItem>
       </MenuList>
