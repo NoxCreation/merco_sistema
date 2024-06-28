@@ -66,7 +66,7 @@ export const Manager = () => {
     const Sale = SaleModel(Coin, ValueCoin, Product, User, ProfitEmployee, CardAccount)// en el api modificar el post
     const OfferRule = OfferRuleModel()
     const SMSHistory = SMSHistoryModel(Employee, User)
-    const PaymentRule = PaymentRuleModel(OfferRule)
+    const PaymentRule = PaymentRuleModel()
     const Configuration = ConfigurationModel(Business, Coin, PaymentRule)
     const Expense = ExpenseModel(ValueCoin, Business)
     const DailyDebt = DailyDebtModel(ValueCoin)
@@ -420,7 +420,7 @@ export const Manager = () => {
         OfferRule,
         'paymentrule1',
         'data_by_quantity_sponser',
-        'PaymentRuleOfferRule',
+        'PaymentRule1OfferRule',
     )
 
     // Relación Mucho a Mucho entre PaymentRule y OfferRule
@@ -429,7 +429,7 @@ export const Manager = () => {
         OfferRule,
         'paymentrule2',
         'data_by_quantity_seller',
-        'PaymentRuleOfferRule',
+        'PaymentRule2OfferRule',
     )
 
     // Relación Mucho a Mucho entre PaymentRule y OfferRule
@@ -438,7 +438,7 @@ export const Manager = () => {
         OfferRule,
         'paymentrule3',
         'data_by_quantity_sponser_fixed_payment',
-        'PaymentRuleOfferRule',
+        'PaymentRule3OfferRule',
     )
 
     // Relación Mucho a Mucho entre PaymentRule y OfferRule
@@ -447,17 +447,8 @@ export const Manager = () => {
         OfferRule,
         'paymentrule4',
         'data_by_quantity_seller_fixed_payment',
-        'PaymentRuleOfferRule',
+        'PaymentRule4OfferRule',
     )
-
-    // Relación Mucho a Mucho entre Configuration y Coin
-    /* relateManyToMany(
-        Configuration,
-        Coin,
-        'configurations',
-        'coins',
-        'ConfigurationCoin',
-    ) */
 
     // Relación Mucho a Mucho entre Configuration y OfferRule
     relateManyToMany(

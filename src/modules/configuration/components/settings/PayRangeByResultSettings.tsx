@@ -106,7 +106,7 @@ export default function PayRangeByResultSettings() {
   const onAdd = async () => {
     setLoading(true);
     const data = {
-      isOffersRules: false,
+      anchor_in: 2,
       configurations_id: config ? config?.id : 0,
       comparative_symbol: '>',
       value: 0,

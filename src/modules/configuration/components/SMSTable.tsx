@@ -2,6 +2,7 @@ import { Checkbox } from "@chakra-ui/react";
 import { ColumnDef } from "@tanstack/react-table";
 import React from "react";
 import GenericTable from "@/frontend/core/components/GenericTable";
+import { SmsHistory } from "@/backend/types";
 
 const mockData: SMSTableItem[] = [
   {
@@ -32,9 +33,9 @@ type SMSTableItem = {
   sms: string;
 };
 
-export default function SMSTable() {
+export default function SMSTable({sms_history}: {sms_history: Array<SmsHistory>}) {
   const page = 1;
-  const pageSize = 10;
+  const pageSize = 15;
 
   const columns: ColumnDef<SMSTableItem>[] = React.useMemo(
     () => [
@@ -52,7 +53,7 @@ export default function SMSTable() {
             Id
           </Checkbox>
         ),
-        accessorKey: "id",
+        accessorKey: "sms_id",
         cell: ({ row, getValue }) => (
           <Checkbox
             size={"sm"}
@@ -73,6 +74,14 @@ export default function SMSTable() {
         header: "SMS",
         accessorKey: "sms",
       },
+      {
+        header: "Usuario",
+        accessorKey: "user.username",
+      },
+      {
+        header: "Promotor",
+        accessorKey: "employee.first_name",
+      },
     ],
     []
   );
@@ -81,10 +90,10 @@ export default function SMSTable() {
     <GenericTable
       noExportable
       columns={columns}
-      data={mockData}
+      data={sms_history as Array<any>}
       title="Inventario"
       pagination={{
-        count: 10,
+        count: 15,
         page,
         pageSize,
       }}
