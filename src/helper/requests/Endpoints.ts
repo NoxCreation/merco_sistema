@@ -24,7 +24,8 @@ export const ENDPOINTS = {
     inventary_history: '/inventary_history',
     inventary_relocation: '/inventary_relocation',
     configuration: '/configuration',
-    offerrule: '/offerrule'
+    offerrule: '/offerrule',
+    paymentrule: '/paymentrule'
 }
 
 type RequestMethod = 'POST' | 'PUT' | 'GET' | 'DELETE';

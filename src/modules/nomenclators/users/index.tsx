@@ -207,24 +207,28 @@ export default function NomenclatorsUsersScreen() {
                     }
                     create_edit_user("edit", user?.id as number, data, (status: number, data: any) => {
                         if (status == 200 && (data[0] == undefined || data[0] == 1)) {
-                            send_sms(`Su contraseña temporal es: ${password}`, user.phone, mdata?.user.id as string, (status: number, data: any) => {
-                                if (status == 200) {
-                                    swal("¡Se ha cambiado la contraseña satisfactoriamente!", {
-                                        icon: "success",
-                                    });
-                                }
-                                else {
-                                    console.log("error", status, data)
-                                    toast({
-                                        description: "No se ha podido enviar el sms de la nueva contraseña.",
-                                        status: 'error',
-                                        duration: 9000,
-                                        isClosable: true,
-                                        variant: "error"
-                                    })
-                                }
-                                setLoading(false)
-                            })
+                            send_sms(`Su contraseña temporal es: ${password}`,
+                                user.phone,
+                                mdata?.user.id as string,
+                                businesses?.id as number,
+                                (status: number, data: any) => {
+                                    if (status == 200) {
+                                        swal("¡Se ha cambiado la contraseña satisfactoriamente!", {
+                                            icon: "success",
+                                        });
+                                    }
+                                    else {
+                                        console.log("error", status, data)
+                                        toast({
+                                            description: "No se ha podido enviar el sms de la nueva contraseña.",
+                                            status: 'error',
+                                            duration: 9000,
+                                            isClosable: true,
+                                            variant: "error"
+                                        })
+                                    }
+                                    setLoading(false)
+                                })
                         }
                         else {
                             console.log("error", status, data)

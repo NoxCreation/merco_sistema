@@ -29,7 +29,6 @@ export default function OfferRulesSettings() {
         setApplyRulesOfers(config.apply_rules_ofers)
         setOffersRules(config.offers_rules)
         setConfig(config)
-        console.log(config.offers_rules)
       }
       else {
         console.log("error", status, data)
@@ -106,7 +105,7 @@ export default function OfferRulesSettings() {
   const onAdd = async () => {
     setLoading(true);
     const data = {
-      isOffersRules: true,
+      anchor_in: 1,
       configurations_id: config ? config?.id : 0,
       comparative_symbol: '>',
       value: 0,

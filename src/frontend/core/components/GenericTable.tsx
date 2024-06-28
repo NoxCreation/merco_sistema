@@ -202,7 +202,7 @@ export default function GenericTable<T>({
   if (noExportable)
     return (
       <Stack spacing={1}>
-        <TableFilterCount onChangeFilterCount={onChangeFilterCount} />
+        {onChangeFilterCount && <TableFilterCount onChangeFilterCount={onChangeFilterCount} />}
         {tableContent}
         {paginationElement}
       </Stack>
