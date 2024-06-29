@@ -1,4 +1,3 @@
-import { CalendarIcon } from "@chakra-ui/icons";
 import {
   Input,
   Popover,
@@ -35,6 +34,7 @@ import {
   startOfMonth,
   startOfWeek,
 } from "date-fns";
+import CalendarIcon from "../icons/CalendarIcon";
 
 type DateRange = {
   startDate: Date;
@@ -186,6 +186,7 @@ export default function DateRangeSelector({ onChange }: Props) {
       <PopoverTrigger>
         <Flex>
           <Input
+            fontSize={"13px"}
             value={formatDate(dateRange.startDate)}
             type="text"
             background={"white"}
@@ -196,6 +197,7 @@ export default function DateRangeSelector({ onChange }: Props) {
           />
           <InputGroup>
             <Input
+              fontSize={"13px"}
               type="text"
               value={formatDate(dateRange.endDate)}
               background={"white"}
@@ -215,8 +217,8 @@ export default function DateRangeSelector({ onChange }: Props) {
         <PopoverHeader>Selecciona un rango de fechas</PopoverHeader>
         <PopoverBody>
           <DateRangePicker
-          inputRanges={defaultInputRanges}
-          staticRanges={defaultStaticRanges}
+            inputRanges={defaultInputRanges}
+            staticRanges={defaultStaticRanges}
             ranges={[
               {
                 startDate: dateRange.startDate,
