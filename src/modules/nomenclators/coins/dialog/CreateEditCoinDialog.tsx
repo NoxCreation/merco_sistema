@@ -126,7 +126,7 @@ export default function CreateEditCoinDialog({
             </FormControl>
             <FormControl>
               <FormLabel><Box as="span" color={"red"}>*</Box> Valor de Cambio</FormLabel>
-              <Input type="text" value={value_change} onChange={t => setValueChange(parseFloat(t.target.value))} />
+              <Input type="number" value={value_change} onChange={t => setValueChange(parseFloat(t.target.value))} />
             </FormControl>
             <FormControl>
               <FormLabel><Box as="span" color={"red"}>*</Box> Símbolo</FormLabel>
