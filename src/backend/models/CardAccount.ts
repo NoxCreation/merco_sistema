@@ -13,10 +13,13 @@ export const CardAccountModel = (Business?: any, Coin?: any) => {
         code: {
             type: (Sequelize as any).STRING
         },
-        value: {
+        value: { // valor actual en tarjeta
             type: (Sequelize as any).FLOAT
         },
-        limit: {
+        limit: { // limite establecido
+            type: (Sequelize as any).FLOAT
+        },
+        limit_month: { // valor que tiene en el mes
             type: (Sequelize as any).FLOAT
         },
         flexibility: {

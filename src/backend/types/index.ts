@@ -229,6 +229,7 @@ export type CardAccount = {
     code: string
     value: number
     limit: number
+    limit_month: number
     coinId: number
     flexibility: string
     percent_flexibility: 0

@@ -86,7 +86,7 @@ export default function CapitalizationAndFundsSettings() {
   }, []);
 
   return (
-    <GenericContainer title="Capitalización y fondos" width={"full"} position={'relative'}>
+    <GenericContainer title="Capitalización y fondos" position={'relative'}>
       <Loading isLoading={loading} adapted />
       <Stack spacing={"10px"}>
         <FormControl isRequired>

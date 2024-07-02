@@ -1,5 +1,5 @@
 import GenericContainer from "@/frontend/core/components/GenericContainer";
-import { Stack } from "@chakra-ui/react";
+import { Flex, Stack } from "@chakra-ui/react";
 import React from "react";
 import UnitsSection from "../sections/UnitsSection";
 import QuantitySection from "../sections/QuantitySection";
@@ -9,14 +9,12 @@ export default function VariablePaymentSettings() {
   return (
     <GenericContainer
       title="Reglas pagos variables"
-      width={"full"}
-      height={"fit-content"}
     >
-      <Stack spacing={"20px"} >
+      <Flex flexDir={'column'} /* spacing={"20px"} */ >
         <UnitsSection />
         <QuantitySection />
         <FixedPaymentQuantitySection />
-      </Stack>
+      </Flex>
     </GenericContainer>
   );
 }

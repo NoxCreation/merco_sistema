@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Flex, Box, Select, Button, Text, useToast } from "@chakra-ui/react";
+import { Flex, Box, Select, Button, Text, useToast, useDisclosure } from "@chakra-ui/react";
 import { BarFilter } from "@/frontend/core/components/BarFilter";
 import TabGroup from "@/frontend/core/components/TabGroup";
 import DateRangeSelector from "@/frontend/core/components/DateRangeSelector";
@@ -15,6 +15,7 @@ import { Loading } from "@/frontend/core/components/Loading";
 import { get_configuration } from "@/helper/requests/Configuration";
 import { InvoiceType } from "./type";
 import { get_cardaccount } from "@/helper/requests/CardAccount";
+import NumericKeypadDialog from "./dialogs/NumericKeypadDialog";
 
 export default function SalesScreen() {
   const tabs = ["Stock", "Historial"];
@@ -28,7 +29,9 @@ export default function SalesScreen() {
   const [shops, setShops] = useState([] as Array<Shop>)
   const [coins, setCoins] = useState([] as Array<Coin>)
   const [offers_rules, setOffersRules] = useState([] as Array<OfferRule>)
+  const [apply_rules_ofers, setApplyRulesOfers] = useState(true as boolean)
   const [payment_rule, setPaymentRules] = useState({} as PaymentRule)
+  const [apply_payment_results, setApplyPaymentResults] = useState(true as boolean)
   const [cards_account, setCardsAccount] = useState([] as Array<CardAccount>)
   const [currency_payment_to_workers_id, set_currency_payment_to_workers_id] = useState(0)
 
@@ -91,8 +94,11 @@ export default function SalesScreen() {
     get_configuration({ page: 1, pageSize: 10000, filter }, (status: number, data: any) => {
       if (status == 200) {
         let config = data.data[0] as ConfigurationType
+        //console.log(config)
         setOffersRules(config.offers_rules)
+        setApplyRulesOfers(config.apply_rules_ofers)
         setPaymentRules(config.paymentrule)
+        setApplyPaymentResults(config.apply_payment_results)
         set_currency_payment_to_workers_id(config.currency_payment_to_workers_id)
         //console.log(config)
         callback()
@@ -140,7 +146,7 @@ export default function SalesScreen() {
     onLoadShop(() => {
       onLoadCoins(() => {
         onLoadConfiguration(() => {
-          onLoadCards(()=>{
+          onLoadCards(() => {
             setLoading(false)
           })
         })
@@ -160,10 +166,8 @@ export default function SalesScreen() {
         amount: 0
       }
     }),
-    payment_method: {
-      type: "effective",
-      card_number: ''
-    },
+    payment_method: "effective",
+    card_payment: []
   } as InvoiceType)
 
   const onAddProductOnCar = (inventary: InventaryType) => {
@@ -172,27 +176,61 @@ export default function SalesScreen() {
       inventary,
       unit: 1,
       stock: inventary.product.count_unit,
-      prices: coins.toReversed().map(t=> {
+      prices: coins.toReversed().map(t => {
         return inventary.valuecoin.value * t.value_change
       }),
-      disconts: coins.map(t=> {
+      disconts: coins.map(t => {
         return inventary.valuecoin.value * t.value_change
       }),
-      payment: 0
+      payment: 0,
     })
     setInvoiceProducts(temp)
   }
 
   const onDeleteProductOnCar = (inventary: InventaryType) => {
     let temp = JSON.parse(JSON.stringify(invoice_products)) as InvoiceType
-    const index = temp.products.findIndex(t=>t.inventary.id == inventary.id)
+    const index = temp.products.findIndex(t => t.inventary.id == inventary.id)
     temp.products.splice(index, 1)
     setInvoiceProducts(temp)
   }
 
-  const onUpdateProductOnCar = (invoice: InvoiceType) =>{
+  const onUpdateProductOnCar = (invoice: InvoiceType) => {
     setInvoiceProducts(invoice)
   }
+
+  const [mode_pos, set_mode_pos] = useState(false)
+  const ref_mode_pos = useRef(false)
+  useEffect(()=>{
+    ref_mode_pos.current = mode_pos
+  }, [mode_pos])
+  const onModePOS = () => {
+    try {
+      (window as any).electron.toggleFrame();
+      set_mode_pos(!ref_mode_pos.current)
+    }
+    catch {
+      toast({
+        description: "Solo puede ejecutarse el modo POS cuando esta compilado en electron la aplicacion",
+        status: 'error',
+        duration: 9000,
+        isClosable: true,
+        variant: "error"
+      })
+    }
+  }
+
+  // Para detectar cuando se presiona esc
+  useEffect(() => {
+    const handleInputKeyboard = (evento: any) => {
+      if (evento.key == "Escape") {
+        onModePOS()
+      }
+    }
+    window.addEventListener('keydown', handleInputKeyboard);
+    return () => {
+      window.removeEventListener('keydown', handleInputKeyboard);
+    }
+  }, []);
 
   return (
     <Box>
@@ -200,50 +238,57 @@ export default function SalesScreen() {
       <Loading isLoading={loading} />
 
       {/* Barra de Filteros */}
-      <BarFilter
-        breadcrumb={[
-          {
-            label: `Finanzas`,
-            icon: undefined,
-            link: "/finanzas",
-          },
-          {
-            label: tabs[activeTabIndex],
-            icon: undefined,
-            link: "/finanzas",
-          },
-        ]}
-      >
-        <TabGroup tabs={tabs} onChange={setActiveTabIndex} />
-        <Select
-          fontSize={"13px"}
-          colorScheme="cyan"
-          maxWidth={"210px"}
-          backgroundColor={"white"}
-          value={shop_select}
-          onChange={t => {
-            setShopSelect(parseInt(t.target.value))
-          }}
+      {!mode_pos && (
+        <BarFilter
+          breadcrumb={[
+            {
+              label: `Finanzas`,
+              icon: undefined,
+              link: "/finanzas",
+            },
+            {
+              label: tabs[activeTabIndex],
+              icon: undefined,
+              link: "/finanzas",
+            },
+          ]}
         >
-          {shops.map((s, i) => (
-            <option key={i} value={s.id}>{s.name}</option>
-          ))}
-        </Select>
-        {activeTabIndex === 1 && <DateRangeSelector />}
-        <Button color={"white"} colorScheme="cyan">
-          <Flex paddingX={"40px"} gap={"10px"} alignItems={'center'}>
-            <BarCode />
-            <Text>MODO POS</Text>
-          </Flex>
-        </Button>
-      </BarFilter>
+          <TabGroup tabs={tabs} onChange={setActiveTabIndex} />
+          <Select
+            fontSize={"13px"}
+            colorScheme="cyan"
+            maxWidth={"210px"}
+            backgroundColor={"white"}
+            value={shop_select}
+            onChange={t => {
+              setShopSelect(parseInt(t.target.value))
+            }}
+          >
+            {shops.map((s, i) => (
+              <option key={i} value={s.id}>{s.name}</option>
+            ))}
+          </Select>
+          {activeTabIndex === 1 && <DateRangeSelector />}
+          <Button color={"white"} colorScheme="cyan" onClick={onModePOS}>
+            <Flex paddingX={"40px"} gap={"10px"} alignItems={'center'}>
+              <BarCode />
+              <Text>MODO POS</Text>
+            </Flex>
+          </Button>
+        </BarFilter>
+      )}
+      {/* FIN */}
+
       {activeTabIndex === 0 && (
         <Stock
+          mode_pos={mode_pos}
           shop_select={shop_select}
           invoice_products={invoice_products}
           coins={coins}
+          apply_rules_ofers={apply_rules_ofers}
           offers_rules={offers_rules}
           payment_rule={payment_rule}
+          apply_payment_results={apply_payment_results}
           cards_account={cards_account}
           currency_payment_to_workers_id={currency_payment_to_workers_id}
           onAddProductOnCar={onAddProductOnCar}

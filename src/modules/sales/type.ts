@@ -13,8 +13,9 @@ export interface InvoiceType {
         coin: Coin
         amount: number
     }>
-    payment_method: {
-        type: string
-        card_number: string
-    }
+    payment_method: string
+    card_payment: Array<{
+        card_account_id: number,
+        enabled: boolean
+    }>
 }
