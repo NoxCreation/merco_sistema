@@ -33,6 +33,7 @@ import { StorePickUpDataModel } from "./StorePickUpData";
 import { DebtDataModel } from "./DebtData";
 import { TransitModel } from "./Transit";
 import { InventaryHistoryModel } from "./InventaryHistory";
+import { Umzug, SequelizeStorage } from "umzug";
 
 export const sequelize = new Sequelize({
     dialect: 'sqlite',
@@ -41,6 +42,17 @@ export const sequelize = new Sequelize({
         busyTimeout: 3000, // Tiempo de espera en milisegundos
     },
 }) as Sequelize;
+
+const umzug = new Umzug({
+    migrations: { glob: 'migrations/*.js' },
+    context: sequelize.getQueryInterface(),
+    storage: new SequelizeStorage({ sequelize }),
+    logger: console,
+})
+
+async function run() {
+    await umzug.up()
+}
 
 let sync = false
 export const Manager = () => {
@@ -205,7 +217,7 @@ export const Manager = () => {
         'inventaryhistorys',
         'business',
         'businessId'
-    )        
+    )
 
     // Relación Mucho a Mucho entre Bussiness y Shop
     relateManyToMany(
@@ -748,15 +760,16 @@ export const Manager = () => {
     )
 
     // Si no esta sincronizado, se sincroniza la primera vez nada mas.
-    console.log("sync", sync)
     if (!sync) {
         sync = true
-        console.log("entre")
+        console.log("Sincronizando")
         const sc = async () => {
             await sequelize.sync()
             console.log('Base de datos y tablas creadas!')
         }
         sc()
+        console.log("Migrando lo necesario", sync)
+        run()
     }
 
     return {

@@ -62,7 +62,7 @@ export default function ProductGrid({
   }, [pagination, shop_select])
 
   const isSelected = (inv: InventaryType) => {
-    return invoice_products.products.find(t => t.inventary.id == inv.id) != null
+    return inv ? invoice_products.products.find(t => t.inventary.id == inv.id) != null : false
   }
 
   const onFindAndSelect = (code: string) => {
@@ -76,8 +76,7 @@ export default function ProductGrid({
       if (status == 200) {
         //setInventary(data.data)
         const inv = data.data[0] as InventaryType
-        console.log(inv)
-        if (!isSelected(inv))
+        if (!isSelected(inv) && inv)
           onAddProductOnCar(inv)
       }
       else {
@@ -99,7 +98,8 @@ export default function ProductGrid({
   useEffect(() => {
     const handleInputKeyboard = (evento: any) => {
       if (evento.key === 'Enter') {
-        onFindAndSelect(codeBars)
+        if (codeBars != '')
+          onFindAndSelect(codeBars)
         setCodeBars('');
       } else {
         setCodeBars(codeBars + evento.key);

@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Grid, Stack } from "@chakra-ui/react";
+import { Box, Flex, Grid, Stack } from "@chakra-ui/react";
 import { BarFilter } from "@/frontend/core/components/BarFilter";
 import CurrencySettings from "./components/settings/CurrencySettings";
 import CapitalizationAndFundsSettings from "./components/settings/CapitalizationAndFundsSettings";
@@ -11,18 +11,20 @@ import SMSSettings from "./components/settings/SMSSettings";
 
 export default function ConfigurationScreen() {
   return (
-    <Box mt={"50px"}>
-      <Grid templateColumns={"1fr 1fr"} gap={"25px"} fontSize={'14px'}>
+    <Flex mt={"50px"} gap={'25px'}>
+      <Flex flex={1} flexDir={'column'} gap={'25px'} w={'50%'}>
         <CurrencySettings />
-        <CapitalizationAndFundsSettings />
-        <Stack gap={"25px"}>
+        <Flex flexDir={'column'} gap={"25px"}>
           <OfferRulesSettings />
           <PayRangeByResultSettings />
           <WorkersPaySettings />
           <SMSSettings />
-        </Stack>
+        </Flex>
+      </Flex>
+      <Flex flex={1} flexDir={'column'} gap={"25px"} w={'50%'}>
+        <CapitalizationAndFundsSettings />
         <VariablePaymentSettings />
-      </Grid>
-    </Box>
+      </Flex>
+    </Flex>
   );
 }

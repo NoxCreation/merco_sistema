@@ -9,13 +9,17 @@ import {
     NumberInputStepper,
     Stack,
     Tooltip,
-    Text
+    Text,
+    useDisclosure
 } from "@chakra-ui/react"
 import { InvoiceType } from "../type"
 import { Coin } from "@/backend/types"
+import NumericKeypadDialog from "../dialogs/NumericKeypadDialog"
+import { useEffect, useRef, useState } from "react"
 
 interface Props {
     coins: Array<Coin>
+    mode_pos: boolean
     invoice_products: InvoiceType
     payment_currency: Array<{
         symbol: string,
@@ -36,11 +40,28 @@ interface Props {
 
 export const ItemCurrencyPayment = ({
     coins,
+    mode_pos,
     invoice_products,
     payment_currency,
     set_payment_currency,
     save_payment_currency
 }: Props) => {
+    const [index, setIndex] = useState(0)
+
+    const ref_payment_currency = useRef(payment_currency)
+    const ref_index = useRef(index)
+    const ref_save_payment_currency = useRef(save_payment_currency)
+    useEffect(() => {
+        ref_payment_currency.current = payment_currency
+        ref_index.current = index
+        ref_save_payment_currency.current = save_payment_currency
+    }, [payment_currency, index])
+
+    const {
+        isOpen: isOpenKeypay,
+        onClose: onCloseKeypay,
+        onOpen: onOpenKeypay,
+    } = useDisclosure();
 
     function dividir(a: number, b: number) {
         let resultado = a / b;
@@ -92,8 +113,25 @@ export const ItemCurrencyPayment = ({
         save_payment_currency(temp_payment_currency)
     }
 
+    const onUpdate = (value: string) => {
+        let temp_payment_currency = JSON.parse(JSON.stringify(ref_payment_currency.current)) as Array<{
+            symbol: string,
+            active: boolean,
+            value: number
+        }>
+        temp_payment_currency[ref_index.current].value = parseFloat(value)
+        ref_save_payment_currency.current(temp_payment_currency)
+    }
+
     return (
         <Stack paddingY={"10px"}>
+            <NumericKeypadDialog
+                isOpen={isOpenKeypay}
+                onClose={onCloseKeypay}
+                onEnter={onUpdate}
+                initValue={payment_currency.length != 0 ? payment_currency[index].value : 0}
+            />
+
             <Text fontSize={"14px"} fontWeight={"bold"}>
                 Moneda de pago
             </Text>
@@ -114,31 +152,21 @@ export const ItemCurrencyPayment = ({
                                 </Tooltip>
                             </Flex>
                         </Flex>
-                        <NumberInput value={c.value} isDisabled={!c.active} step={0.1} onChange={t => {
-                            let temp_payment_currency = JSON.parse(JSON.stringify(payment_currency)) as Array<{
-                                symbol: string,
-                                active: boolean,
-                                value: number
-                            }>
-                            temp_payment_currency[i].value = parseFloat(t)
-                            const total_usd = invoice_products.products.map(t => t.disconts[0] != 0 ? t.disconts[0] : t.prices[0]).reduce((prev, cur) => prev + cur)
-                            save_payment_currency(temp_payment_currency)
-                            //set_payment_currency(temp_payment_currency)
-                            //recal_payment_currency(total_usd, parseFloat(t), "USD", true, temp_payment_currency)
-                            /* if (c.symbol == "USD") {
-                                const total_usd = invoice_products.products.map(t => t.disconts[0] != 0 ? t.disconts[0] : t.prices[0]).reduce((prev, cur) => prev + cur)
-                                recal_payment_currency(total_usd, parseFloat(t), "USD", true, invoice_products)
+                        <NumberInput onClick={() => {
+                            if (mode_pos) {
+                                setIndex(i)
+                                onOpenKeypay()
                             }
-                            else {
+                        }} cursor={'pointer'} value={c.value} isDisabled={!c.active} step={0.1} onChange={t => {
+                            if (!mode_pos) {
                                 let temp_payment_currency = JSON.parse(JSON.stringify(payment_currency)) as Array<{
                                     symbol: string,
                                     active: boolean,
                                     value: number
                                 }>
                                 temp_payment_currency[i].value = parseFloat(t)
-                                set_payment_currency(temp_payment_currency)
-                            } */
-                            //check_cal()
+                                save_payment_currency(temp_payment_currency)
+                            }
                         }} errorBorderColor={'red.400'} isInvalid={get_total_usd() != sum() ? true : false}>
                             <NumberInputField fontSize={"16px"}></NumberInputField>
                             <NumberInputStepper>

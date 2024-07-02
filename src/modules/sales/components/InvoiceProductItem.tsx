@@ -14,12 +14,16 @@ import {
   IconButton,
   RadioGroup,
   Radio,
+  useDisclosure,
 } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useId, useRef, useState } from "react";
+import NumericKeypadDialog from "../dialogs/NumericKeypadDialog";
 
 type Props = {
   onDelete: () => void
   onUpdate: (counts: Array<number>) => void
+  onOpenNumericKeypad: (representation: string, max: number, min_stock: number) => void
+  mode_pos: boolean
   productName: string
   price: number
   currency: string
@@ -35,13 +39,15 @@ type Props = {
 export default function InvoiceProductItem({
   onDelete,
   onUpdate,
+  onOpenNumericKeypad,
+  mode_pos,
   price,
   currency,
   productName,
   image,
   min_stock,
   count_max_stock,
-  count_max_unit, 
+  count_max_unit,
   stock,
   unit,
   symbol_unit,
@@ -59,8 +65,11 @@ export default function InvoiceProductItem({
     }
   }
 
+
+
   return (
     <Card variant={"outline"} padding={"5px"}>
+
       <Flex alignItems={"center"} width={"full"}>
         <Box width={"100px"} height={"full"}>
           <Image
@@ -82,8 +91,13 @@ export default function InvoiceProductItem({
           <Flex alignItems={"center"} gap={"5px"} >
             <NumberInput size={"sm"} width={"100px"}
               precision={2} step={representation == 'unidad' ? 1 : 0.1} min={representation == 'unidad' ? 1 : 0.1} max={representation == 'unidad' ? count_max_unit : count_max_stock}
-              value={representation == 'unidad' ? unit : stock} 
-              onChange={t => onChangeValue(parseFloat(t))}
+              value={representation == 'unidad' ? unit : stock}
+              onChange={t => {
+                !mode_pos && onChangeValue(parseFloat(t))
+              }}
+              onClick={() => {
+                mode_pos && onOpenNumericKeypad(representation, representation == 'unidad' ? count_max_unit : count_max_stock, min_stock)
+              }}
             >
               <NumberInputField
                 fontSize={"16px"}

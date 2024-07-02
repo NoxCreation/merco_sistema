@@ -5,8 +5,9 @@ import {
   Divider,
   Button,
   Box,
+  useDisclosure,
 } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useId, useRef, useState } from "react";
 import InvoiceProductItem from "./InvoiceProductItem";
 import { InvoiceType } from "../type";
 import { CardAccount, Coin, InventaryType, OfferRule, PaymentRule } from "@/backend/types";
@@ -14,22 +15,29 @@ import { ItemCurrencyPayment } from "./ItemCurrencyPayment";
 import { ItemProfitSeller } from "./ItemProfitSeller";
 import { ItemTotalPayable } from "./ItemTotalPayable";
 import { ItemMethodPayment } from "./ItemMethodPayment";
+import NumericKeypadDialog from "../dialogs/NumericKeypadDialog";
 
 interface Props {
   onDelete: (inventary: InventaryType) => void
   onUpdateProductOnCar: (invoice: InvoiceType) => void
+  mode_pos: boolean
   invoice_products: InvoiceType
   coins: Array<Coin>
+  apply_rules_ofers: boolean
   offers_rules: Array<OfferRule>
   cards_account: Array<CardAccount>
   payment_rule: PaymentRule
+  apply_payment_results: boolean
   currency_payment_to_workers_id: number
 }
 
 export default function InvoicePanel({
+  mode_pos,
   invoice_products,
   coins,
+  apply_rules_ofers,
   offers_rules,
+  apply_payment_results,
   payment_rule,
   cards_account,
   currency_payment_to_workers_id,
@@ -169,13 +177,14 @@ export default function InvoicePanel({
 
     let apply_offer = undefined as undefined | OfferRule
     let valueOffer = 0
-    offers_rules.forEach((offer) => {
-      if (compare(total_price_usd, offer.value, offer.comparative_symbol)) {
-        apply_offer = offer
-        valueOffer = offer.value
-        return
-      }
-    })
+    if (apply_rules_ofers)
+      offers_rules.forEach((offer) => {
+        if (compare(total_price_usd, offer.value, offer.comparative_symbol)) {
+          apply_offer = offer
+          valueOffer = offer.value
+          return
+        }
+      })
     //console.log("aplica descuento de ", valueOffer)
 
     // Aplica a algun descuento
@@ -251,9 +260,12 @@ export default function InvoicePanel({
 
   // Boton de pagar
   const onPay = () => {
-    console.log(invoice_products)
+    //console.log(invoice_products)
     const {
-      products
+      products,
+      payment_method,
+      payment_currency,
+      card_payment
     } = invoice_products
     products.forEach((p, index) => {
       console.log("Producto: " + p.inventary.product.name)
@@ -266,15 +278,84 @@ export default function InvoicePanel({
 
       console.log("")
     })
+
+    console.log("----------------------")
+
+
+    console.log("Va a pagar en estas monedas:")
+    payment_currency.forEach(p => {
+      console.log("Moneda: " + p.coin.symbol)
+      console.log("Monto: " + p.amount)
+      if (payment_method == "transfer") {
+        const card_found = cards_account.filter(t => card_payment.find(e => e.card_account_id == t.id) && t.coin.symbol == p.coin.symbol)
+        console.log(card_found.length != 0 ? `Transferencia a ${card_found[0].code}` : "En efectivo")
+      }
+      else {
+        console.log("En efectivo")
+      }
+      console.log("")
+    })
+
   }
 
 
+  const id = useId()
+  const {
+    isOpen: isOpenKeypay,
+    onClose: onCloseKeypay,
+    onOpen: onOpenKeypay,
+  } = useDisclosure({ id });
+
+  const [_index, setIndex] = useState(0)
+  const [max, setMax] = useState(0)
+  const [min_stock, setMinStock] = useState(0)
+  const [representation, setRepresentation] = useState("unidad")
+  const ref = useRef({
+    invoice_products,
+    _index,
+    max,
+    min_stock,
+    representation
+  })
+  useEffect(() => {
+    ref.current = {
+      invoice_products,
+      _index,
+      max,
+      min_stock,
+      representation
+    }
+  }, [invoice_products, _index, max, min_stock, representation])
+  let counts = [0, 0]
+  const onEnter = (value: string) => {
+    if (ref.current.representation == 'unidad') {
+      counts = [parseFloat(value) * ref.current.min_stock, parseFloat(value)]
+    }
+    else if (ref.current.representation == 'medida') {
+      counts = [parseFloat(value), parseFloat(value) / ref.current.min_stock]
+    }
+    let temp = JSON.parse(JSON.stringify(ref.current.invoice_products))
+    temp.products[ref.current._index].stock = counts[0]
+    temp.products[ref.current._index].unit = counts[1]
+    onUpdateProductOnCar(temp)
+  }
+
   return (
     <GenericContainer title="Factura" color={'#2D3748'}>
+      <NumericKeypadDialog
+        isOpen={isOpenKeypay}
+        onClose={onCloseKeypay}
+        onEnter={onEnter}
+        initValue={invoice_products.products.length ? (representation == 'unidad' ? invoice_products.products[_index].unit : invoice_products.products[_index].stock) : 0}
+        max={max}
+        isDecimal={representation == 'unidad' ? false : true}
+      />
+
       <Stack >
         {invoice_products.products.length == 0 && (<Text fontSize={'12px'} textAlign={'center'} color={'gray'}>Sin producto seleccionado</Text>)}
         {invoice_products.products.map((product, index) => (
           <InvoiceProductItem
+            mode_pos={mode_pos}
             key={index}
             image={`/api/statics${product.inventary.product.image}`}
             currency="USD"
@@ -293,6 +374,13 @@ export default function InvoicePanel({
               temp.products[index].unit = counts[1]
               onUpdateProductOnCar(temp)
             }}
+            onOpenNumericKeypad={(representation: string, max: number, min_stock: number) => {
+              setIndex(index)
+              setMax(max)
+              setMinStock(min_stock)
+              setRepresentation(representation)
+              onOpenKeypay()
+            }}
           />
         ))}
       </Stack>
@@ -310,13 +398,14 @@ export default function InvoicePanel({
       <Divider marginY={"20px"} />
       <ItemCurrencyPayment
         coins={coins}
+        mode_pos={mode_pos}
         invoice_products={invoice_products}
         payment_currency={payment_currency}
         set_payment_currency={set_payment_currency}
         save_payment_currency={save_payment_currency}
       />
       <Divider marginY={"20px"} />
-      <ItemMethodPayment 
+      <ItemMethodPayment
         invoice_products={invoice_products}
         cards_account={cards_account}
         onUpdateProductOnCar={onUpdateProductOnCar}
